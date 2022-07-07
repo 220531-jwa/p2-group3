@@ -1,8 +1,11 @@
 package dev.group3.controller;
 
+import dev.group3.service.UserService;
 import io.javalin.http.Context;
 
 public class UserController {
+    
+    private UserService userService = new UserService();
     
     /*
      * === POST ===
