@@ -29,7 +29,6 @@ MVP
 - Users can see their current scheduled days
     - Users can cancel a scheduled day
 - Owner can see all owners/dogs
-- Owner can change prices for hourly/grooming
 
 * Owner checks-in the dog at the doggy-care (when the dog is physically there)
 * Owner can checkout the dog
@@ -40,3 +39,4 @@ Stretch
 - Add Employees (owner can hire people - add more dogs per day)
 - Dogs can stay for more specific times instead of by hour.
 - Reward System
+- Owner can change prices for hourly/grooming
