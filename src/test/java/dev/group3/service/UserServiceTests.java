@@ -62,7 +62,6 @@ public class UserServiceTests {
         mockUsers = MockDataSet.getUserTestSet();
         
         // Mocking DAO behavior
-        when(mockUserDAO.getAllUsers()).thenReturn(mockUsers);
         for (User user: mockUsers) {
             when(mockUserDAO.getUserByUsername(user.getEmail())).thenReturn(user);
         }

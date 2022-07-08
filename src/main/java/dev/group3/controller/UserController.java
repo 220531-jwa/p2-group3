@@ -28,9 +28,10 @@ public class UserController {
      */
     
     // Owner is authorized
-    public void getAllUsers(Context ctx) {
-        
-    }
+    // NOTE: NOT USED
+//    public void getAllUsers(Context ctx) {
+//        
+//    }
     
     // Owner is authorized
     // Customer can get their own

@@ -1,7 +1,5 @@
 package dev.group3.repo;
 
-import java.util.List;
-
 import dev.group3.model.User;
 
 public class UserDAO {
@@ -10,15 +8,23 @@ public class UserDAO {
      * === CREATE ===
      */
     
+    public User createNewUser(User userData) {
+        return null;
+    }
+    
     /*
      * === READ ===
      */
     
-    public List<User> getAllUsers() {
+    public User getUserByUsername(String username) {
         return null;
     }
     
-    public User getUserByUsername(String username) {
+    /*
+     * === UPDATE ===
+     */
+    
+    public User updateUserByUsername(User userData) {
         return null;
     }
 }
