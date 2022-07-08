@@ -1,6 +1,6 @@
 package dev.group3.model;
 
-import dev.group3.model.enums.userType;
+import dev.group3.model.enums.UserType;
 
 public class User {
     
@@ -8,13 +8,13 @@ public class User {
     private String pswd;
     private String firstName;
     private String lastName;
-    private userType userType;
+    private UserType userType;
     private String phoneNumber;
     private Double funds;
     
     public User() {}
 
-    public User(String email, String pswd, String firstName, String lastName, dev.group3.model.enums.userType userType,
+    public User(String email, String pswd, String firstName, String lastName, dev.group3.model.enums.UserType userType,
             String phoneNumber, Double funds) {
         super();
         this.email = email;
@@ -62,11 +62,11 @@ public class User {
         return this;
     }
 
-    public userType getUserType() {
+    public UserType getUserType() {
         return userType;
     }
 
-    public User setUserType(userType userType) {
+    public User setUserType(UserType userType) {
         this.userType = userType;
         return this;
     }

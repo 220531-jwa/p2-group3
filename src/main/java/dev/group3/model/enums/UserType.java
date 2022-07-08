@@ -1,6 +1,6 @@
 package dev.group3.model.enums;
 
-public enum userType {
+public enum UserType {
     OWNER,
     CUSTOMER
 }

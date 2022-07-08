@@ -1,8 +1,11 @@
 package dev.group3.controller;
 
+import dev.group3.service.ReservationService;
 import io.javalin.http.Context;
 
 public class ReservationController {
+    
+    private ReservationService resService = new ReservationService();
     
     /*
      * === POST ===

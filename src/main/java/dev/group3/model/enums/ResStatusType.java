@@ -1,6 +1,6 @@
 package dev.group3.model.enums;
 
-public enum resStatusType {
+public enum ResStatusType {
     REGISTERED,
     CHECKEDIN,
     CHECKEDOUT,

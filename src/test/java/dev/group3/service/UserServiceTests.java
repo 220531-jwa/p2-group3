@@ -21,7 +21,7 @@ import org.junit.jupiter.params.provider.NullAndEmptySource;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import dev.group3.model.User;
-import dev.group3.model.enums.userType;
+import dev.group3.model.enums.UserType;
 import dev.group3.repo.UserDAO;
 import dev.group3.util.ActiveUserSessions;
 import dev.group3.util.MockDataSet;
@@ -46,7 +46,7 @@ public class UserServiceTests {
     @BeforeAll
     public static void setup() {
         mockUserDAO = mock(UserDAO.class);
-        userService = new UserService();
+        userService = new UserService(mockUserDAO);
         refreshMockData();
     }
     
@@ -69,8 +69,6 @@ public class UserServiceTests {
             when(mockUserDAO.getUserByUsername(user.getEmail())).thenReturn(user);
         }
     }
-    
-    //
     
     /*
      * === loginUserWithCredentials TESTS ===
@@ -213,7 +211,7 @@ public class UserServiceTests {
         arguments.add(Arguments.of(MockDataSet.getDefaultNewUserData().setFunds(-1.00)));
         arguments.add(Arguments.of(MockDataSet.getDefaultNewUserData().setFunds(10000.00)));
         arguments.add(Arguments.of(MockDataSet.getDefaultNewUserData().setPhoneNumber("123")));
-        arguments.add(Arguments.of(MockDataSet.getDefaultNewUserData().setUserType(userType.OWNER)));
+        arguments.add(Arguments.of(MockDataSet.getDefaultNewUserData().setUserType(UserType.OWNER)));
         return arguments.stream();
     }
     
@@ -293,7 +291,7 @@ public class UserServiceTests {
     
     @ParameterizedTest
     @MethodSource("gubu_validInputs")
-    public void gubu_userisAuthorized_200(int userIndex, String username, String userUsername) {
+    public void gubu_userisAuthorized_200User(int userIndex, String username, String userUsername) {
         // Init mock test data
         String token = ActiveUserSessions.addActiveUser(userUsername);
         
