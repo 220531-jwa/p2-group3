@@ -29,4 +29,10 @@ public class MockDataSet {
         setupUserTestSet();
         return userTestSet;
     }
+    
+    // === GET DEFAULTS ===
+    
+    public static User getDefaultNewUserData() {
+        return new User("newUser@email.com",      "pass",    "Zed",   "Zod",   userType.CUSTOMER,     "1248163264",   100.00);
+    }
 }

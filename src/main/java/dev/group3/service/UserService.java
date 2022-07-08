@@ -52,6 +52,10 @@ public class UserService {
     /**
      * Creates a new user with the given user information.
      * All fields of the user are required.
+     * - Email must have '@email.com'
+     * - Funds must be between 0 and 9999.99
+     * - PhoneNumber must have 10 digits (ignores all other characters)
+     * - Usertype must not be OWNER
      * If the user is successfully created will login the user.
      * @param userData The data of the new user
      * @return 200 with user information if successful, and 400 null series error otherwise.
@@ -85,13 +89,18 @@ public class UserService {
     /**
      * Updates the user information of the given username.
      * Requires a token associated with an active user session to access this service.
+     * Valid update fields:
+     * - First name
+     * - Last name
+     * - Phone Number
+     * - Note: Everything else is ignored
      * Authorization:
      * - Customer can only update their own user information
      * @param username The user to update the information of.
      * @param token The associated active user session of the requester
      * @return 200 with updated user information if successful, and 400 null series error otherwise
      */
-    public Pair<User, Integer> updateUserByUsername(String username, String token) {
+    public Pair<User, Integer> updateUserByUsername(String username, User userData, String token) {
         return null;
     }
 }

@@ -30,56 +30,63 @@ public class User {
         return email;
     }
 
-    public void setEmail(String email) {
+    public User setEmail(String email) {
         this.email = email;
+        return this;
     }
 
     public String getPswd() {
         return pswd;
     }
 
-    public void setPswd(String pswd) {
+    public User setPswd(String pswd) {
         this.pswd = pswd;
+        return this;
     }
 
     public String getFirstName() {
         return firstName;
     }
 
-    public void setFirstName(String firstName) {
+    public User setFirstName(String firstName) {
         this.firstName = firstName;
+        return this;
     }
 
     public String getLastName() {
         return lastName;
     }
 
-    public void setLastName(String lastName) {
+    public User setLastName(String lastName) {
         this.lastName = lastName;
+        return this;
     }
 
     public userType getUserType() {
         return userType;
     }
 
-    public void setUserType(userType userType) {
+    public User setUserType(userType userType) {
         this.userType = userType;
+        return this;
     }
 
     public String getPhoneNumber() {
         return phoneNumber;
     }
 
-    public void setPhoneNumber(String phoneNumber) {
+    public User setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
+        return this;
     }
 
     public Double getFunds() {
         return funds;
     }
 
-    public void setFunds(Double funds) {
+    public User setFunds(Double funds) {
         this.funds = funds;
+        return this;
     }
 
     @Override
