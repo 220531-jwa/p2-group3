@@ -24,7 +24,7 @@ public class Driver {
                 
             });
             // and so on
-        });
+        }); 
         
         // End of end-points
     }
