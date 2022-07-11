@@ -65,7 +65,7 @@ public class UserController {
     /**
      * Handles the http POST request for creating a new user.
      * Takes the user information from the body
-     * @return 200 with employee information (with token replacing password), and 400 series error otherwise
+     * @return 200 with user information (with token replacing password), and 400 series error otherwise
      */
     public void createNewUser(Context ctx) {
         log.debug("HTTP POST request recieved at endpoint /users");
@@ -89,17 +89,59 @@ public class UserController {
      * === GET ===
      */
     
-    // Owner is authorized
-    // Customer can get their own
+    /**
+     * Handles the http GET request for getting user information
+     * Takes the username from the path
+     * Takes the token from the header
+     * @return 200 with user information, and 400 series error otherwise
+     */
     public void getUserByUsername(Context ctx) {
+        log.debug("HTTP GET request recieved at endpoint /users/{username}");
         
+        // Getting user input
+        String username = ctx.pathParam("username");
+        String token = ctx.header("Token");
+        
+        // Attempting to get user
+        Pair<User, Integer> result = userService.getUserByUsername(username, token);
+        
+        // Checking if user was successfully retrieved
+        if (result.getFirst() != null) {
+            log.info("Successfully retrieved user information");
+            ctx.json(result.getFirst());
+        }
+        
+        ctx.status(result.getSecond());
     }
     
     /*
      * === PATCH ===
      */
     
+    /**
+     * Handles the http PATCH request for updating user information
+     * Takes the username from the path
+     * Takes updated fields from body
+     * Takes the token from the header
+     * @return 200 with updated user information, and 400 series error otehrwise
+     */
     public void updateUserByUsername(Context ctx) {
+        log.debug("HTTP PATCH request recieved at endpoint /users/{username}");
         
+        // Getting user input
+        String username = ctx.pathParam("username");
+        User userData = ctx.bodyAsClass(User.class);
+        String token = ctx.header("Token");
+        
+        // Attempting to get user
+        Pair<User, Integer> result = userService.updateUserByUsername(username, userData, token);
+        
+        // Checking if user was successfully updated
+        if (result.getFirst() != null) {
+            log.info("Successfully updated user information");
+            ctx.json(result.getFirst());
+        }
+        
+        ctx.status(result.getSecond());
     }
 }

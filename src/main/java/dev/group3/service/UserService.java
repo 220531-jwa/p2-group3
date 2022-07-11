@@ -191,7 +191,48 @@ public class UserService {
      * @return 200 with user information if successful, and 400 null series error otherwise
      */
     public Pair<User, Integer> getUserByUsername(String username, String token) {
-        return null;
+        log.debug("Attempting to get user with username: " + username + " token: " + token);
+        
+        // Validating input
+        if (username == null || token == null || username.isBlank() || token.isBlank()) {
+            log.error("Invalid username and/or token input(s)");
+            return new Pair<User, Integer>(null, 400);
+        }
+        
+        // Checking if user is in an active session
+        if (!ActiveUserSessions.isActiveUser(token)) {
+            log.error("User is not in an active session");
+            return new Pair<User, Integer>(null, 401);
+        }
+        
+        // Getting users (requesters) information
+        String requesterUsername = ActiveUserSessions.getActiveUserUsername(token);
+        User requesterUser = userDAO.getUserByUsername(requesterUsername);
+        
+        // Checking if requester user exists
+        if (requesterUser == null) {
+            // This should never happen - All active users should have an existing user account
+            log.fatal("Requester user does not exist");
+            return new Pair<User, Integer>(null, 503);
+        }
+        
+        // Checking if user is authorized to know about the given usernames information
+        if (!requesterUsername.equals(username) && requesterUser.getUserType() != UserType.OWNER) {
+            log.error("User is not authorized to know about user information associated with given username");
+            return new Pair<User, Integer>(null, 403);
+        }
+        
+        // Attempting to get user associated with given username
+        User user = userDAO.getUserByUsername(username);
+        
+        // Checking if user exists
+        if (user == null) {
+            log.error("User information associated with given username does not exist");
+            return new Pair<User, Integer>(null, 404);
+        }
+        
+        // Successfully got users information
+        return new Pair<User, Integer>(user, 200);
     }
     
     /*
