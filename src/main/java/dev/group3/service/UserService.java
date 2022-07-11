@@ -1,12 +1,17 @@
 package dev.group3.service;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import dev.group3.model.User;
 import dev.group3.repo.UserDAO;
+import dev.group3.util.ActiveUserSessions;
 import kotlin.Pair;
 
 public class UserService {
     
     private UserDAO userDAO;
+    private static Logger log = LogManager.getLogger(UserService.class);
     
     // Use default user DAO
     public UserService() {
@@ -36,7 +41,41 @@ public class UserService {
      * @return 200 with user information if successful, and 400 null series error otherwise
      */
     public Pair<User, Integer> loginUserWithCredentials(String username, String password) {
-        return null;
+        log.debug("Attempting to login with credentials with username: " + username + " password: " + password);
+        
+        // Validating input
+        if (username == null || password == null || username.isBlank() || password.isBlank()) {
+            log.error("Invalid username and/or password input(s)");
+            return new Pair<>(null, 400);
+        }
+        
+        // Getting user associated with given username
+        User user = userDAO.getUserByUsername(username);
+        
+        // Checking if user exists
+        if (user == null) {
+            log.error("User associated with username does not exist");
+            return new Pair<>(null, 404);
+        }
+        
+        // Checking if credentials match
+        if (!user.getPswd().equals(password)) {
+            log.error("User credentials do not match");
+            return new Pair<>(null, 401);
+        }
+        
+        // Credentials match -> create active user session
+        String token = ActiveUserSessions.addActiveUser(username);
+        
+        // Checking if token was generated correctly - This should never happen
+        if (token == null || token.isBlank()) {
+            log.fatal("Token failed to generate for active session");
+            return new Pair<>(null, 503);
+        }
+        
+        // User successfully logged in
+        // Returning user information with password replaced with token
+        return new Pair<User, Integer>(user.setPswd(token), 200);
     }
     
     /**
@@ -46,7 +85,25 @@ public class UserService {
      * @return 200 if successful, and 400 series error otherwise.
      */
     public int logoutUser(String token) {
-        return 0;
+        log.debug("Attempting to logout user with token: " + token);
+        
+        // Validating input
+        if (token == null || token.isBlank()) {
+            log.error("Invalid token input");
+            return 400;
+        }
+        
+        // Attempting to remove session token
+        boolean result = ActiveUserSessions.removeActiveUser(token);
+        
+        // Checking if user was in an active session
+        if (!result) {
+            log.error("Token was not associated with an active user session");
+            return 404;
+        }
+        
+        // User logged out
+        return 200;
     }
     
     /**

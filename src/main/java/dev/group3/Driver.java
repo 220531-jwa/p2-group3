@@ -1,7 +1,8 @@
 package dev.group3;
 
-import static io.javalin.apibuilder.ApiBuilder.path;
+import static io.javalin.apibuilder.ApiBuilder.*;
 
+import dev.group3.controller.UserController;
 import io.javalin.Javalin;
 import io.javalin.http.staticfiles.Location;
 
@@ -14,6 +15,7 @@ public class Driver {
         });
         
         // Creating controllers
+        UserController uc = new UserController();
         
         // Starting server
         app.start(8080);
@@ -21,11 +23,12 @@ public class Driver {
         // Handling end-points
         app.routes(() -> {
             path("/login", () -> {
-                
+                post(uc::loginUserWithCredentials);
             });
-            // and so on
+            path("/logout", () -> {
+                post(uc::logoutUser);
+            });
         }); 
-        
         // End of end-points
     }
 
