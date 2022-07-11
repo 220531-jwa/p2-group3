@@ -9,10 +9,18 @@
  * @param {The body of the request} reqBody 
  * @returns The response status with the body data as JSON if successful, and null otherwise.
  */
- async function fetchPostRequest(reqUrl, reqBody, getData = true) {
+ async function fetchPostRequest(reqUrl, reqBody, getData = true, login = false) {
     // Getting userdata
-    const userData = getSessionUserData();
-
+    let userData;
+    if (login) {
+        userData = {
+            password: 'NA'
+        }
+    }
+    else {
+        userData = getSessionUserData();
+    }
+    
     // Sending request
     let response = await fetch(reqUrl, {
         method: 'POST',
@@ -84,7 +92,7 @@
     const url = "http://localhost:8080/logout";
 
     // Logging out - Don't care about response
-    fetchPostRequest(url, null, false);
+    fetchPostRequest(url, null, false, false);
 
     // Moving to inacitve session
     notInActiveSession();

@@ -28,6 +28,9 @@ public class Driver {
             path("/logout", () -> {
                 post(uc::logoutUser);
             });
+            path("/users", () -> {
+                post(uc::createNewUser);
+            });
         }); 
         // End of end-points
     }

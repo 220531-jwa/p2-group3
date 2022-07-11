@@ -4,6 +4,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import dev.group3.model.User;
+import dev.group3.model.enums.UserType;
 import dev.group3.repo.UserDAO;
 import dev.group3.util.ActiveUserSessions;
 import kotlin.Pair;
@@ -108,17 +109,71 @@ public class UserService {
     
     /**
      * Creates a new user with the given user information.
-     * All fields of the user are required.
-     * - Email must have '@email.com'
-     * - Funds must be between 0 and 9999.99
+     * All fields of the user are required. (Other than usertype)
+     * - Email must follow standard
+     * - Password must follow standard
      * - PhoneNumber must have 10 digits (ignores all other characters)
-     * - Usertype must not be OWNER
+     * - Funds must be between 0 and 9999.99
      * If the user is successfully created will login the user.
      * @param userData The data of the new user
      * @return 200 with user information if successful, and 400 null series error otherwise.
      */
     public Pair<User, Integer> createNewUser(User userData) {
-        return null;
+        log.debug("Attempting to create user with userData: " + userData);
+        
+        // Validating input
+        if (userData == null) {
+            log.error("Invald userData input");
+            return new Pair<User, Integer>(null, 400);
+        }
+        
+        // Checking if required fields are missing
+        if (userData.getEmail() == null || userData.getEmail().isBlank() ||
+            userData.getPswd() == null || userData.getPswd().isBlank() ||
+            userData.getFirstName() == null || userData.getFirstName().isBlank() ||
+            userData.getLastName() == null || userData.getLastName().isBlank() ||
+            userData.getPhoneNumber() == null || userData.getPhoneNumber().isBlank() ||
+            userData.getFunds() == null) {
+            log.error("userData is missing required field(s)");
+            return new Pair<User, Integer>(null, 400);
+        }
+        
+        // Populating fields
+        userData.setPhoneNumber(userData.getPhoneNumber().replaceAll("[^0-9]", ""));
+        userData.setUserType(UserType.CUSTOMER);
+        
+        // Checking if required fields are valid
+        // Note: Regex found at: https://www.baeldung.com/ && https://www.geeksforgeeks.org/
+        String validEmailRegex = "^(?=.{1,64}@)[A-Za-z0-9_-]+(\\.[A-Za-z0-9_-]+)*@[^-][A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$";
+        String validPasswordRegex = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^!&-+=()])(?=\\S+$).{8,}$";
+        if (!userData.getEmail().matches(validEmailRegex) ||
+            !userData.getPswd().matches(validPasswordRegex) ||
+            userData.getPhoneNumber().length() != 10 ||
+            userData.getFunds() < 0.00 || userData.getFunds() > 10000.00) {
+            log.error("Invalid email and/or password and/or phoneNumber and/or funds input(s)");
+            return new Pair<User, Integer>(null, 400);
+        }
+        
+        // Creating user
+        User user = userDAO.createNewUser(userData);
+        
+        // Checking if user was successfully created
+        if (user == null) {
+            log.error("Failed to create user. Possible: Username already in use.");
+            return new Pair<User, Integer>(null, 400);
+        }
+        
+        // Successfully created new user -> create active user session
+        String token = ActiveUserSessions.addActiveUser(user.getEmail());
+        
+        // Checking if token was generated correctly - This should never happen
+        if (token == null || token.isBlank()) {
+            log.fatal("Token failed to generate for active session");
+            // User was still created - but failed to login
+        }
+        
+        // Returning user information with password replaced with token
+        return new Pair<User, Integer>(user.setPswd(token), 200);
     }
     
     /*

@@ -21,14 +21,54 @@ public class UserDAO {
      * === CREATE ===
      */
     
+    /**
+     * Adds a new user to the users tables in the database.
+     * @param userData The new user to add
+     * @return The added user if successful, and null otherwise
+     */
     public User createNewUser(User userData) {
-        return null;
+        log.debug("Attempting to add new user to database with userData: " + userData);
+        
+        // Init
+        String sql = "insert into users values"
+                + " (?, ?, ?, ?, ?, ?, ?)"
+                + " returning *";
+        User user = null;
+        
+        // Attempting to execute query
+        try (Connection conn = conUtil.getConnection()) {
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setString(1, userData.getEmail());
+            ps.setString(2, userData.getPswd());
+            ps.setString(3, userData.getUserType().name());
+            ps.setString(4, userData.getFirstName());
+            ps.setString(5, userData.getLastName());
+            ps.setString(6, userData.getPhoneNumber());
+            ps.setDouble(7, userData.getFunds());
+            ResultSet rs = ps.executeQuery();
+            
+            // Going through results
+            if (rs.next()) {
+                // Successfully found user
+                user = createUserFromResultSet(rs);
+            }
+        } catch (SQLException e) {
+            log.error("Failed to execute query: " + sql);
+            e.printStackTrace();
+        }
+                
+        return user;
     }
     
     /*
      * === READ ===
      */
     
+    /**
+     * Retrieves a specific user from the users table in the database.
+     * @param username The username associated with the user to find
+     * @return The user if found successfully, and null otherwise.
+     */
     public User getUserByUsername(String username) {
         log.debug("Attempting to get user from database with username: " + username);
         

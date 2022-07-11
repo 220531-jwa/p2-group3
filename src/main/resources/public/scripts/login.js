@@ -14,19 +14,12 @@
     };
     const credentialsJson = JSON.stringify(credentials);
 
-    // Sending request
-    let response = await fetch(url, {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: credentialsJson
-    });
-    
+    // Sending response
+    let result = await fetchPostRequest(url, credentialsJson, true, true);
+
     // Processing response
-    if (response.status === 200) {
-        let userData = await response.json();
-        sessionStorage.userData = JSON.stringify(userData);
+    if (result[0] === 200) {
+        sessionStorage.userData = result[1];
         location.href = "../html/index.html";
     }
     else {
@@ -38,6 +31,5 @@
  * Redirects user to registration page to create a new user.
  */
 function register() {
-    // TODO: Redirect to registration page
-    console.log("Registration Button Clicked");
+    location.href = "../html/registration.html";
 }

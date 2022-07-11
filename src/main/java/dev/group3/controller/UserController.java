@@ -62,8 +62,27 @@ public class UserController {
         ctx.status(result);
     }
     
+    /**
+     * Handles the http POST request for creating a new user.
+     * Takes the user information from the body
+     * @return 200 with employee information (with token replacing password), and 400 series error otherwise
+     */
     public void createNewUser(Context ctx) {
+        log.debug("HTTP POST request recieved at endpoint /users");
         
+        // Getting entered user data
+        User userData = ctx.bodyAsClass(User.class);
+        
+        // Attempting to create new user
+        Pair<User, Integer> result = userService.createNewUser(userData);
+        
+        // Checking if user was created successfully
+        if (result.getFirst() != null) {
+            log.info("User successfully created");
+            ctx.json(result.getFirst());
+        }
+        
+        ctx.status(result.getSecond());
     }
     
     /*
