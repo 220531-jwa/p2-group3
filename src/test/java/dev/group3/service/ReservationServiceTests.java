@@ -36,7 +36,7 @@ public class ReservationServiceTests {
     
     // Mock Database Data
     private static List<User> mockUsers;
-    private static List<Reservation> mockReses;
+    private static Pair<List<Reservation>, Integer> mockReses;
     
     /*
      * === SETUP ===
@@ -75,7 +75,7 @@ public class ReservationServiceTests {
         for (User user: mockUsers) {
             when(mockResDAO.getAllRservationsByUsername(user.getEmail())).thenReturn(MockDataSet.getFilteredReservationDataSet(user.getEmail()));
         }
-        for (Reservation res: mockReses) {
+        for (Reservation res: mockReses.getFirst()) {
             when(mockResDAO.getReservationById(res.getId())).thenReturn(res);
         }
     }
@@ -371,7 +371,7 @@ public class ReservationServiceTests {
         
         // Running test
         Pair<Reservation, Integer> actualRes = resService.getReservationById(username, rid, token);
-        Object[] expectedResults = {mockReses.get(resIndex), 200};
+        Object[] expectedResults = {mockReses.getFirst(), 200};
         Object[] actualResults = {actualRes.getFirst(), actualRes.getSecond()};
         
         // Assertions
@@ -380,7 +380,7 @@ public class ReservationServiceTests {
     private static Stream<Arguments> gubu_validInputs() {
         List<Arguments> arguments = new ArrayList<Arguments>();
         int resIndex = 0;
-        for (Reservation res: mockReses) {
+        for (Reservation res: mockReses.getFirst()) {
             // Users can get their own
             arguments.add(Arguments.of(resIndex, res.getUserEmail(), res.getId(), res.getUserEmail()));
             // Owner can get anyone

@@ -41,3 +41,7 @@ function register() {
     // TODO: Redirect to registration page
     console.log("Registration Button Clicked");
 }
+
+
+
+

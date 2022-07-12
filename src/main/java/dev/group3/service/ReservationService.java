@@ -62,7 +62,11 @@ public class ReservationService {
      * @return 200 with reservations if successful, and 400 null series error otherwise
      */
     public Pair<List<Reservation>, Integer> getAllReservations(String token) {
-        return null;
+    	
+    	
+    	Pair<List<Reservation>, Integer> respPair = resDAO.getAllReservations();
+    	
+        return respPair;
     }
     
     /**
@@ -76,7 +80,11 @@ public class ReservationService {
      * @return 200 with reservations if successful, and 400 null series error otherwise
      */
     public Pair<List<Reservation>, Integer> getAllReservationsByUsername(String username, String token) {
-        return null;
+       
+    	Pair<List<Reservation>, Integer> resPair = resDAO.getAllRservationsByUsername(username);
+    	
+    	
+    	return resPair;
     }
     
     /**
@@ -91,7 +99,18 @@ public class ReservationService {
      * @return 200 with reservation if successful, and 400 null series otherwise
      */
     public Pair<Reservation, Integer> getReservationById(String username, Integer rid, String token) {
-        return null;
+    	
+    	
+    	Reservation res = resDAO.getReservationById(rid);
+    	
+    	if(res != null) {
+    		Pair<Reservation, Integer> resPair = new Pair<Reservation, Integer>(res,200);
+    		return resPair;
+    	}else {
+    		Pair<Reservation, Integer> resPair = new Pair<Reservation, Integer>(null,400);
+    		return resPair;
+    	}
+    	
     }
     
     /*

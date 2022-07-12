@@ -9,6 +9,7 @@ import dev.group3.model.Reservation;
 import dev.group3.model.User;
 import dev.group3.model.enums.ResStatusType;
 import dev.group3.model.enums.UserType;
+import kotlin.Pair;
 
 public class MockDataSet {
 
@@ -65,7 +66,7 @@ public class MockDataSet {
         return reservationTestSet;
     }
     
-    public static List<Reservation> getFilteredReservationDataSet(String username) {
+    public static Pair<List<Reservation>, Integer> getFilteredReservationDataSet(String username) {
         // Checking if tests sets were made
         if (userTestSet == null || reservationTestSet == null) {
             return null;
@@ -81,6 +82,7 @@ public class MockDataSet {
             username = "";
         }
         if (filterStorage.contains(username)) {
+        	filterStorage.get
             return filterStorage.get(username);
         }
         
