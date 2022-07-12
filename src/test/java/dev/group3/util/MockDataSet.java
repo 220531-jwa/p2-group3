@@ -102,7 +102,7 @@ public class MockDataSet {
     // === GET DEFAULTS ===
     
     public static User getDefaultNewUserData() {
-        return new User("newUser@email.com", "pass", UserType.CUSTOMER, "Zed", "Zod", "1248163264", 100.00);
+        return new User("newUser@email.com", "NewPass123!", null, "Zed", "Zod", "1248163264", 100.00);
     }
     
     public static Reservation getDefaultNewReservationData() {

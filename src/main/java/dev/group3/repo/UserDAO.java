@@ -100,8 +100,76 @@ public class UserDAO {
      * === UPDATE ===
      */
     
+    /**
+     * Updates a specific user from the users table in the database.
+     * Can update password, firstname, lastname, and phonenumber
+     * @param userData The data to use to update the users information
+     * @return The updated user if successful, and null otherwise.
+     */
     public User updateUserByUsername(User userData) {
-        return null;
+        log.debug("Attempting to update user from database with userData: " + userData);
+        
+        // Init
+        String sql = "update users set"
+                + " pswd = coalesce(?, pswd),"
+                + " first_name = coalesce(?, first_name),"
+                + " last_name = coalesce(?, last_name),"
+                + " phone_number = coalesce(?, phone_number)"
+                + " where email = ?"
+                + " returning *";
+        User user = null;
+        
+        // Attempting to execute update query
+        try (Connection conn = conUtil.getConnection()) {
+            PreparedStatement ps = conn.prepareStatement(sql.toString());
+            ps.setString(1, userData.getPswd());
+            ps.setString(2, userData.getFirstName());
+            ps.setString(3, userData.getLastName());
+            ps.setString(4, userData.getPhoneNumber());
+            ps.setString(5, userData.getEmail());
+            ResultSet rs = ps.executeQuery();
+            
+            if (rs.next()) {
+                // Successfully updated user
+                user = createUserFromResultSet(rs);
+            }
+        } catch (SQLException e) {
+            log.error("Failed to execute query: " + sql);
+            e.printStackTrace();
+        }
+       
+        return user;
+    }
+    
+    /**
+     * Updates the funds of a specific user from the users table in the database.
+     * @param userData The data to use to update the users information
+     * @return True if successful, and false otherwise
+     */
+    public boolean updateUserFunds(User userData) {
+        log.debug("Attempting to update user funds from database with userData: " + userData);
+        
+        // Init
+        String sql = "update users set funds = ?"
+                + " where email = ?";
+        
+        // Attempting to execute update query
+        try (Connection conn = conUtil.getConnection()) {
+            PreparedStatement ps = conn.prepareStatement(sql.toString());
+            ps.setDouble(1, userData.getFunds());
+            ps.setString(2, userData.getEmail());
+            int changes = ps.executeUpdate();
+            
+            if (changes > 0) {
+                // Successfully updated user
+                return true;
+            }
+        } catch (SQLException e) {
+            log.error("Failed to execute query: " + sql);
+            e.printStackTrace();
+        }
+        
+        return false;
     }
     
     /*

@@ -139,17 +139,14 @@ public class UserService {
         }
         
         // Populating fields
-        userData.setPhoneNumber(userData.getPhoneNumber().replaceAll("[^0-9]", ""));
+        userData.setPhoneNumber(trimPhoneNumber(userData.getPhoneNumber()));
         userData.setUserType(UserType.CUSTOMER);
         
         // Checking if required fields are valid
-        // Note: Regex found at: https://www.baeldung.com/ && https://www.geeksforgeeks.org/
-        String validEmailRegex = "^(?=.{1,64}@)[A-Za-z0-9_-]+(\\.[A-Za-z0-9_-]+)*@[^-][A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$";
-        String validPasswordRegex = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^!&-+=()])(?=\\S+$).{8,}$";
-        if (!userData.getEmail().matches(validEmailRegex) ||
-            !userData.getPswd().matches(validPasswordRegex) ||
-            userData.getPhoneNumber().length() != 10 ||
-            userData.getFunds() < 0.00 || userData.getFunds() > 10000.00) {
+        if (!isValidEmail(userData.getEmail()) ||
+            !isValidPassword(userData.getPswd()) ||
+            !isValidPhoneNumber(userData.getPhoneNumber()) ||
+            !isValidFunds(userData.getFunds())) {
             log.error("Invalid email and/or password and/or phoneNumber and/or funds input(s)");
             return new Pair<User, Integer>(null, 400);
         }
@@ -243,6 +240,7 @@ public class UserService {
      * Updates the user information of the given username.
      * Requires a token associated with an active user session to access this service.
      * Valid update fields:
+     * - Password
      * - First name
      * - Last name
      * - Phone Number
@@ -254,6 +252,86 @@ public class UserService {
      * @return 200 with updated user information if successful, and 400 null series error otherwise
      */
     public Pair<User, Integer> updateUserByUsername(String username, User userData, String token) {
-        return null;
+        log.debug("Attempting to update user with username: " + username + " userData: " + userData + " token: " + token);
+        
+        // Validating input
+        if (username == null || userData == null || token == null || username.isBlank() || token.isBlank()) {
+            log.error("Invalid username and/or userData and/or token input(s)");
+            return new Pair<User, Integer>(null, 400);
+        }
+        
+        // Checking if user is in an active session
+        if (!ActiveUserSessions.isActiveUser(token)) {
+            log.error("User is not in an active user session");
+            return new Pair<User, Integer>(null, 401);
+        }
+        
+        // Getting users (requesters) information
+        String requesterUsername = ActiveUserSessions.getActiveUserUsername(token);
+        
+        // Checking if user is authorized to update user
+        if (!requesterUsername.equals(username)) {
+            log.error("User is not authorized to update user information associated with given username");
+            return new Pair<User, Integer>(null, 403);
+        }
+        
+        // Checking if new data was provided
+        if ((userData.getPswd() == null || userData.getPswd().isBlank()) &&
+            (userData.getFirstName() == null || userData.getFirstName().isBlank()) &&
+            (userData.getLastName() == null || userData.getLastName().isBlank()) &&
+            (userData.getPhoneNumber() == null || userData.getPhoneNumber().isBlank())) {
+            log.error("No new user data was provided to update use with");
+            return new Pair<User, Integer>(null, 400);
+        }
+        
+        // Checking if provided data is valid
+        if ((userData.getPswd() != null && !isValidPassword(userData.getPswd())) ||
+            (userData.getPhoneNumber() != null && !isValidPhoneNumber(userData.getPhoneNumber()))) {
+            log.error("Password and/or phoneNumber input(s) are invalid");
+            return new Pair<User, Integer>(null, 400);
+        }
+        
+        // Populating necessary userData
+        userData.setEmail(username);
+        
+        // Attempting to update user
+        User user = userDAO.updateUserByUsername(userData);
+        
+        // Checking if user was successfully updated
+        if (user == null) {
+            log.error("Failed to update user. Possible: user does not exist");
+            return new Pair<User, Integer>(null, 404);
+        }
+        
+        // Successfully updated user
+        return new Pair<User, Integer>(user, 200);
+    }
+    
+    /*
+     * === UTILLITY ===
+     */
+    
+    private boolean isValidEmail(String email) {
+        // Note: Regex found at: https://www.baeldung.com/ && https://www.geeksforgeeks.org/
+        String validEmailRegex = "^(?=.{1,64}@)[A-Za-z0-9_-]+(\\.[A-Za-z0-9_-]+)*@[^-][A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$";
+        return email.matches(validEmailRegex);
+    }
+    
+    private boolean isValidPassword(String password) {
+        // Note: Regex found at: https://www.baeldung.com/ && https://www.geeksforgeeks.org/
+        String validPasswordRegex = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^!&-+=()])(?=\\S+$).{8,}$";
+        return password.matches(validPasswordRegex);
+    }
+    
+    private boolean isValidPhoneNumber(String phoneNumber) {
+        return phoneNumber.length() == 10;
+    }
+    
+    private boolean isValidFunds(double funds) {
+        return !(funds < 0.00 || funds > 10000.00);
+    }
+    
+    private String trimPhoneNumber(String phoneNumber) {
+        return phoneNumber.replaceAll("[^0-9]", "");
     }
 }

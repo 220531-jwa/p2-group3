@@ -310,7 +310,7 @@ public class UserServiceTests {
             // Users can get their own
             arguments.add(Arguments.of(userIndex, user.getEmail(), user.getEmail()));
             // Owner can get anyone
-            arguments.add(Arguments.of(userIndex, user.getEmail(), mockUsers.get(0)));
+            arguments.add(Arguments.of(userIndex, user.getEmail(), mockUsers.get(0).getEmail()));
             userIndex++;
         }
         return arguments.stream();
@@ -341,8 +341,11 @@ public class UserServiceTests {
     
     @Test
     public void uubu_invalidInputs_noUserDataInputs_400null() {
+     // Init mock data set
+        String token = ActiveUserSessions.addActiveUser("a");
+        
         // Running test
-        Pair<User, Integer> actualUser = userService.updateUserByUsername("a", new User(), "a");
+        Pair<User, Integer> actualUser = userService.updateUserByUsername("a", new User(), token);
         Object[] expectedResults = {null, 400};
         Object[] actualResults = {actualUser.getFirst(), actualUser.getSecond()};
         
@@ -352,8 +355,11 @@ public class UserServiceTests {
     
     @Test
     public void uubu_invalidInputs_userDataIsInvalid_400null() {
+        // Init mock data set
+        String token = ActiveUserSessions.addActiveUser("a");
+        
         // Running test
-        Pair<User, Integer> actualUser = userService.updateUserByUsername("a", new User().setPhoneNumber("123"), "a");
+        Pair<User, Integer> actualUser = userService.updateUserByUsername("a", new User().setPhoneNumber("123"), token);
         Object[] expectedResults = {null, 400};
         Object[] actualResults = {actualUser.getFirst(), actualUser.getSecond()};
         
@@ -390,13 +396,25 @@ public class UserServiceTests {
     public void uubu_userIsAuthorized_200UpdatedUser() {
         // Init mock test data
         String token = ActiveUserSessions.addActiveUser("email1");
+        User userData = new User().setFirstName("newName");
+        when(mockUserDAO.updateUserByUsername(userData)).thenReturn(mockUsers.get(1).setFirstName("newName"));
         
         // Running test
-        Pair<User, Integer> actualUser = userService.updateUserByUsername("email1", new User().setFirstName("newName"), token);
-        Object[] expectedResults = {null, 401};
-        Object[] actualResults = {actualUser.getFirst(), actualUser.getSecond()};
+        Pair<User, Integer> actualUser = userService.updateUserByUsername("email1", userData, token);
+        Object[] expectedResults = {
+                // Service result
+                mockUsers.get(1), 200,
+                // Updated user information
+                userData.getFirstName()
+                };
+        Object[] actualResults = {
+                // Service result
+                actualUser.getFirst(), actualUser.getSecond(),
+                // Updated User information
+                actualUser.getFirst().getFirstName()
+                };
         
         // Assertions
-        assertArrayEquals(expectedResults, actualResults); 
+        assertArrayEquals(expectedResults, actualResults);
     }
 }
