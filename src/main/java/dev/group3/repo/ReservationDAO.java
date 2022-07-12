@@ -100,7 +100,7 @@ public class ReservationDAO {
     		ps.setString(1, username);
     		
     		ResultSet rs = ps.executeQuery();
-    		System.out.println(rs.getFetchSize());
+    		
     		
     		while(rs.next()) {
     			

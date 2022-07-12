@@ -43,7 +43,7 @@ public class ReservationController {
         String userName = ctx.pathParam("username");
 //        String userName = ctx.queryParam("username");
         
-        System.out.println(userName);
+        
         Pair<List<Reservation>,Integer> resPair = rs.getAllReservationsByUsername(userName, token);
         
         ArrayList<Reservation> reservList = (ArrayList<Reservation>) resPair.getFirst();

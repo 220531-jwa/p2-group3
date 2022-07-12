@@ -24,10 +24,10 @@ const OwnerTopNav =` <nav class="navbar navbar-expand-lg bg-dark fixed-top">
         <a class="nav-link active" aria-current="page" href="#" style="color:seagreen">Home</a>
       </li> -->
       <li class="nav-item">
-        <li><a class="dropdown-item" href="#" style="color:seagreen">Create Employee</a></li>
+        <li><a class="dropdown-item" href="#" style="color:seagreen">option 1</a></li>
       </li>
       <li class="nav-item">
-        <li><a class="dropdown-item" href="" style="color:seagreen">username</a></li>
+        <li><a class="dropdown-item" href="#" style="color:seagreen">option 2</a></li>
       </li>
     </ul>
     <form class="d-flex" role="login">
@@ -41,7 +41,7 @@ const OwnerTopNav =` <nav class="navbar navbar-expand-lg bg-dark fixed-top">
     
 const CustomerTopNav =` <nav class="navbar navbar-expand-lg bg-dark fixed-top">
 <div class="container-fluid">
-  <a class="navbar-brand" href="#" style="color:seagreen">Welcome Customer userName</a>
+  <a class="navbar-brand" href="#" style="color:seagreen">Welcome Customer</a>
   <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
@@ -77,8 +77,8 @@ const CustomerTopNav =` <nav class="navbar navbar-expand-lg bg-dark fixed-top">
 
     const ownerSideNavdos =`<div class="sidenav">
     <h6>Owner</h6>
-    <a href="/html/ReservationsPage.html">Update Profile</a>
-    <a href="#">Reservations</a>
+    <a href="#">Update Profile</a>
+    <a href=""/html/ReservationsPage.html"">Reservations</a>
     <a href="#">other</a>
     </div>`
 
