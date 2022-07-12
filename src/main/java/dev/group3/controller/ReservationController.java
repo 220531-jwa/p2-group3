@@ -1,5 +1,6 @@
 package dev.group3.controller;
 
+import dev.group3.model.Reservation;
 import dev.group3.service.ReservationService;
 import io.javalin.http.Context;
 
@@ -11,8 +12,16 @@ public class ReservationController {
      * === POST ===
      */
     
-    public void createNewReservation(Context ctx) {
-        
+    public ReservationController(ReservationService reservationService) {
+		
+	}
+
+	//Creating a new Reservation
+    public void createReservation(Context ctx) {
+		ctx.status(201);
+		Reservation reservationFromUserBody = ctx.bodyAsClass(Reservation.class);
+		Reservation r = resService.createReservation(reservationFromUserBody); 
+		ctx.json(r);
     }
     
     /*

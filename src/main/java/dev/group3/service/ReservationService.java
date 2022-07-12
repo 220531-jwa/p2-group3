@@ -40,13 +40,13 @@ public class ReservationService {
      * - endDateTime
      * Authorization:
      * - Only customer can create a reservation for their dog
-     * @param username The user to create the reservation for
      * @param resData The data of the reservation
-     * @param token The associated active user session of the requester
-     * @return 200 with resevation information if successful, and 400 null series error otherwise
+     * @return 200 with reservation information if successful, and 400 null series error otherwise
      */
-    public Pair<Reservation, Integer> createNewReservation(String username, Reservation resData, String token) {
-        return null;
+    public Reservation createReservation(Reservation resData) {
+    	Reservation createdReservation = resDAO.createReservation(resData);
+		return createdReservation;
+       
     }
     
     /*
@@ -114,4 +114,6 @@ public class ReservationService {
     public Pair<Reservation, Integer> updateReservationById(String username, Integer rid, Reservation resData, String token) {
         return null;
     }
+
+	
 }

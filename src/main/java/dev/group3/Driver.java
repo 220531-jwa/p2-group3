@@ -2,19 +2,22 @@ package dev.group3;
 
 import static io.javalin.apibuilder.ApiBuilder.path;
 
+import dev.group3.controller.ReservationController;
+import dev.group3.repo.ReservationDAO;
+import dev.group3.service.ReservationService;
 import io.javalin.Javalin;
 import io.javalin.http.staticfiles.Location;
 
 public class Driver {
     
     public static void main(String[] args) {
-     // Init server
+    	// Creating controllers
+        ReservationDAO rd = new ReservationDAO();
+        ReservationController rc = new ReservationController(new ReservationService(new ReservationDAO()));
+    	// Init server
         Javalin app = Javalin.create(config -> {
             config.addStaticFiles("/public", Location.CLASSPATH);
         });
-        
-        // Creating controllers
-        
         // Starting server
         app.start(8080);
 
@@ -23,10 +26,15 @@ public class Driver {
             path("/login", () -> {
                 
             });
+        });
             // and so on
-        }); 
+            //User can submit a reservation 
+            path("/{userid}/newreservation", () -> { 
+            	post(rc::createReservation);
+            });
+    } 
         
         // End of end-points
     }
 
-}
+
