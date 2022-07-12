@@ -371,7 +371,7 @@ public class ReservationServiceTests {
         
         // Running test
         Pair<Reservation, Integer> actualRes = resService.getReservationById(username, rid, token);
-        Object[] expectedResults = {mockReses.get(resIndex), 200};
+        Object[] expectedResults = {mockReses, 200};
         Object[] actualResults = {actualRes.getFirst(), actualRes.getSecond()};
         
         // Assertions

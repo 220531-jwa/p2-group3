@@ -6,7 +6,9 @@ import static io.javalin.apibuilder.ApiBuilder.patch;
 import static io.javalin.apibuilder.ApiBuilder.path;
 import static io.javalin.apibuilder.ApiBuilder.post;
 
+
 import dev.group3.controller.DogController;
+
 import dev.group3.controller.ReservationController;
 import dev.group3.controller.UserController;
 import io.javalin.Javalin;
@@ -22,8 +24,10 @@ public class Driver {
 
         // Creating controllers
         UserController uc = new UserController();
+
         DogController dc = new DogController();
         ReservationController rc = new ReservationController();
+
 
         // Starting server
         app.start(8080);
@@ -36,6 +40,7 @@ public class Driver {
             path("/logout", () -> {
                 post(uc::logoutUser);
             });
+
             path("/users", () -> {
                 post(uc::createNewUser);
                 path("/{username}", () -> {
@@ -61,12 +66,14 @@ public class Driver {
                     post(rc::createReservation);
                     get(rc::getAllRservationsByUsername);
                 });
-                path("/{rid}", () -> {
+                path("/{res_id}", () -> {
                     get(rc::getReservationById);
                     patch(rc::updateReservationById);
                 });
             });
         });
+
+
         // End of end-points
     }
 }

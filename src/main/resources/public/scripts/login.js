@@ -31,5 +31,10 @@
  * Redirects user to registration page to create a new user.
  */
 function register() {
+
     location.href = "../html/registration.html";
 }
+
+    
+
+
