@@ -58,7 +58,7 @@ public class Driver {
             path("/reservations", () -> {
                 get(rc::getAllReservations);
                 path("/{username}", () -> {
-                    post(rc::createNewReservation);
+                    post(rc::createReservation);
                     get(rc::getAllRservationsByUsername);
                 });
                 path("/{rid}", () -> {
@@ -69,5 +69,4 @@ public class Driver {
         });
         // End of end-points
     }
-
 }
