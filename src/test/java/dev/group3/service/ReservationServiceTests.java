@@ -88,7 +88,7 @@ public class ReservationServiceTests {
     @MethodSource("cnr_invalidInputs")
     public void cnr_invalidInputs_nullBlank_400null(String username, Reservation resData, String token) {
         // Running test
-        Pair<Reservation, Integer> actualRes = resService.createNewReservation(username, resData, token);
+        Pair<Reservation, Integer> actualRes = resService.createReservation(username, resData, token);
         Object[] expectedResults = {null, 400};
         Object[] actualResults = {actualRes.getFirst(), actualRes.getSecond()};
         
@@ -108,7 +108,7 @@ public class ReservationServiceTests {
     @Test
     public void cnr_invalidInputs_noResData_400null() {
         // Running test
-        Pair<Reservation, Integer> actualRes = resService.createNewReservation("a", new Reservation(), "a");
+        Pair<Reservation, Integer> actualRes = resService.createReservation("a", new Reservation(), "a");
         Object[] expectedResults = {null, 400};
         Object[] actualResults = {actualRes.getFirst(), actualRes.getSecond()};
         
@@ -119,7 +119,7 @@ public class ReservationServiceTests {
     @Test
     public void cnr_invalidInputs_resDataIsInvalid_400null() {
         // Running test
-        Pair<Reservation, Integer> actualRes = resService.createNewReservation("a", MockDataSet.getDefaultNewReservationData().setDogId(-1), "a");
+        Pair<Reservation, Integer> actualRes = resService.createReservation("a", MockDataSet.getDefaultNewReservationData().setDogId(-1), "a");
         Object[] expectedResults = {null, 400};
         Object[] actualResults = {actualRes.getFirst(), actualRes.getSecond()};
         
@@ -130,7 +130,7 @@ public class ReservationServiceTests {
     @Test
     public void cnr_userDoesNotExist_404null() {
         // Running test
-        Pair<Reservation, Integer> actualRes = resService.createNewReservation("ghostUser", MockDataSet.getDefaultNewReservationData(), "a");
+        Pair<Reservation, Integer> actualRes = resService.createReservation("ghostUser", MockDataSet.getDefaultNewReservationData(), "a");
         Object[] expectedResults = {null, 404};
         Object[] actualResults = {actualRes.getFirst(), actualRes.getSecond()};
         
@@ -141,7 +141,7 @@ public class ReservationServiceTests {
     @Test
     public void cnr_dogDoesNotExist_404null() {
         // Running test
-        Pair<Reservation, Integer> actualRes = resService.createNewReservation("owner", MockDataSet.getDefaultNewReservationData().setDogId(100), "a");
+        Pair<Reservation, Integer> actualRes = resService.createReservation("owner", MockDataSet.getDefaultNewReservationData().setDogId(100), "a");
         Object[] expectedResults = {null, 404};
         Object[] actualResults = {actualRes.getFirst(), actualRes.getSecond()};
         
@@ -152,7 +152,7 @@ public class ReservationServiceTests {
     @Test
     public void cnr_userNotInActiveSession_401null() {
         // Running test
-        Pair<Reservation, Integer> actualRes = resService.createNewReservation("owner", MockDataSet.getDefaultNewReservationData(), "notActiveToken");
+        Pair<Reservation, Integer> actualRes = resService.createReservation("owner", MockDataSet.getDefaultNewReservationData(), "notActiveToken");
         Object[] expectedResults = {null, 401};
         Object[] actualResults = {actualRes.getFirst(), actualRes.getSecond()};
         
@@ -166,7 +166,7 @@ public class ReservationServiceTests {
         String token = ActiveUserSessions.addActiveUser("email1");
         
         // Running test
-        Pair<Reservation, Integer> actualRes = resService.createNewReservation("email2", MockDataSet.getDefaultNewReservationData(), token);
+        Pair<Reservation, Integer> actualRes = resService.createReservation("email2", MockDataSet.getDefaultNewReservationData(), token);
         Object[] expectedResults = {null, 403};
         Object[] actualResults = {actualRes.getFirst(), actualRes.getSecond()};
         
@@ -181,7 +181,7 @@ public class ReservationServiceTests {
         Reservation resData = MockDataSet.getDefaultNewReservationData();
         
         // Running test
-        Pair<Reservation, Integer> actualRes = resService.createNewReservation("email1", resData, token);
+        Pair<Reservation, Integer> actualRes = resService.createReservation("email1", resData, token);
         Object[] expectedResults = {resData, 200};
         Object[] actualResults = {actualRes.getFirst(), actualRes.getSecond()};
         

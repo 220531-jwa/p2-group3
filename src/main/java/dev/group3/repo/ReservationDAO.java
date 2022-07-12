@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 import dev.group3.model.Reservation;
+import dev.group3.model.enums.ResStatusType;
 import dev.group3.util.ConnectionUtil;
 
 public class ReservationDAO {
@@ -23,7 +24,7 @@ public class ReservationDAO {
 			PreparedStatement ps = conn.prepareStatement(sql);
 			ps.setString(1, resData.getUserEmail());
 			ps.setInt(2, resData.getDogId());
-			ps.setString(3, resData.getStatus());
+			ps.setString(3, resData.getStatus().name());
 			ps.setTimestamp(4, resData.getStartDateTime());
 			ps.setTimestamp(5, resData.getEndDateTime());
 			
@@ -34,7 +35,7 @@ public class ReservationDAO {
 						rs.getInt("id"),
 						rs.getString("user_email"),
 						rs.getInt("dog_id"),
-						rs.getString("status"),
+						ResStatusType.valueOf(rs.getString("status")),
 						rs.getTimestamp("start_datetime"),
 						rs.getTimestamp("end_datetime")
 						);

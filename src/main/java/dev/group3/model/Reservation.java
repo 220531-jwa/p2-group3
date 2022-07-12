@@ -2,18 +2,20 @@ package dev.group3.model;
 
 import java.sql.Timestamp;
 
+import dev.group3.model.enums.ResStatusType;
+
 public class Reservation {
 
     private int id;
     private String userEmail;
     private int dogId;
-    private String status;
+    private ResStatusType status;
     private Timestamp startDateTime;
     private Timestamp endDateTime;
     
     public Reservation() {}
 
-    public Reservation(int id, String userEmail, int dogId, String status, Timestamp startDateTime,
+    public Reservation(int id, String userEmail, int dogId, ResStatusType status, Timestamp startDateTime,
             Timestamp endDateTime) {
         super();
         this.id = id;
@@ -51,12 +53,12 @@ public class Reservation {
         return this;
     }
 
-    public String getStatus() {
+    public ResStatusType getStatus() {
         return status;
     }
 
-    public Reservation setStatus(String status) {
-        this.status = status;
+    public Reservation setStatus(ResStatusType checkedin) {
+        this.status = checkedin;
         return this;
     }
 

@@ -21,13 +21,13 @@ public class MockDataSet {
 
     private static void setupUserTestSet() {
         userTestSet = new ArrayList<User>();
-        userTestSet.add(new User("owner",       "secret",   "Wolf",     "Flow",     UserType.OWNER,        "5555555555",   100.00));
-        userTestSet.add(new User("email1",      "pass1",    "Alice",    "Apple",    UserType.CUSTOMER,     "1234567890",   1000.00));
-        userTestSet.add(new User("email2",      "pass2",    "Bob",      "Bacon",    UserType.CUSTOMER,     "1112223333",   100.00));
-        userTestSet.add(new User("email3",      "pass3",    "Carl",     "Cake",     UserType.CUSTOMER,     "4445556666",   10.00));
-        userTestSet.add(new User("email4",      "pass4",    "David",    "Dumpling", UserType.CUSTOMER,     "7778889999",   0.00));
-        userTestSet.add(new User("email5",      "pass5",    "Evelyn",   "Eggnog",   UserType.CUSTOMER,     "2224448888",   1000.00));
-        userTestSet.add(new User("dogLover",    "pass6",    "Frank",    "Fudge",    UserType.CUSTOMER,     "2358132134",   3.92));
+        userTestSet.add(new User("owner",       "secret",   UserType.OWNER,     "Wolf",     "Flow",     "5555555555",   100.00));
+        userTestSet.add(new User("email1",      "pass1",    UserType.CUSTOMER,  "Alice",    "Apple",    "1234567890",   1000.00));
+        userTestSet.add(new User("email2",      "pass2",    UserType.CUSTOMER,  "Bob",      "Bacon",    "1112223333",   100.00));
+        userTestSet.add(new User("email3",      "pass3",    UserType.CUSTOMER,  "Carl",     "Cake",     "4445556666",   10.00));
+        userTestSet.add(new User("email4",      "pass4",    UserType.CUSTOMER,  "David",    "Dumpling", "7778889999",   0.00));
+        userTestSet.add(new User("email5",      "pass5",    UserType.CUSTOMER,  "Evelyn",   "Eggnog",   "2224448888",   1000.00));
+        userTestSet.add(new User("dogLover",    "pass6",    UserType.CUSTOMER,  "Frank",    "Fudge",    "2358132134",   3.92));
     }
     
     private static void setupReservationTestSet() {
@@ -102,7 +102,7 @@ public class MockDataSet {
     // === GET DEFAULTS ===
     
     public static User getDefaultNewUserData() {
-        return new User("newUser@email.com",      "pass",    "Zed",   "Zod",   UserType.CUSTOMER,     "1248163264",   100.00);
+        return new User("newUser@email.com", "pass", UserType.CUSTOMER, "Zed", "Zod", "1248163264", 100.00);
     }
     
     public static Reservation getDefaultNewReservationData() {

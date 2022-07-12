@@ -43,9 +43,9 @@ public class ReservationService {
      * @param resData The data of the reservation
      * @return 200 with reservation information if successful, and 400 null series error otherwise
      */
-    public Reservation createReservation(Reservation resData) {
+    public Pair<Reservation, Integer> createReservation(String username, Reservation resData, String token) {
     	Reservation createdReservation = resDAO.createReservation(resData);
-		return createdReservation;
+		return new Pair<Reservation, Integer>(createdReservation, 200);
        
     }
     

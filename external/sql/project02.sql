@@ -13,7 +13,7 @@ create table if not exists users (
 	first_name varchar,
 	last_name varchar,
 	phone_number varchar(10),
-	fund numeric(6, 2)
+	funds numeric(6, 2)
 );
 
 create table if not exists dogs (
@@ -62,13 +62,13 @@ create table if not exists transactions (
 
 -- Initial Data set
 insert into users values
-('owner',		'secret',	'Wolf',		'Flow',		'OWNER',		'5555555555',	100.00),
-('email1',		'pass1',	'Alice',	'Apple',	'CUSTOMER',		'1234567890',	1000.00),
-('email2',		'pass2',	'Bob',		'Bacon',	'CUSTOMER',		'1112223333',	100.00),
-('email3',		'pass3',	'Carl',		'Cake',		'CUSTOMER',		'4445556666',	10.00),
-('email4',		'pass4',	'David',	'Dumpling',	'CUSTOMER',		'7778889999',	0.00),
-('email5',		'pass5',	'Evelyn',	'Eggnog',	'CUSTOMER',		'2224448888',	1000.00),
-('dogLover',	'pass6',	'Frank',	'Fudge',	'CUSTOMER',		'2358132134',	3.92);
+('owner',		'secret',	'OWNER',	'Wolf',		'Flow',		'5555555555',	100.00),
+('email1',		'pass1',	'CUSTOMER',	'Alice',	'Apple',	'1234567890',	1000.00),
+('email2',		'pass2',	'CUSTOMER',	'Bob',		'Bacon',	'1112223333',	100.00),
+('email3',		'pass3',	'CUSTOMER',	'Carl',		'Cake',		'4445556666',	10.00),
+('email4',		'pass4',	'CUSTOMER',	'David',	'Dumpling',	'7778889999',	0.00),
+('email5',		'pass5',	'CUSTOMER',	'Evelyn',	'Eggnog',	'2224448888',	1000.00),
+('dogLover',	'pass6',	'CUSTOMER',	'Frank',	'Fudge',	'2358132134',	3.92);
 
 insert into dogs values
 -- email1

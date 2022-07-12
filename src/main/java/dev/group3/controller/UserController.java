@@ -1,37 +1,93 @@
 package dev.group3.controller;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import dev.group3.model.User;
 import dev.group3.service.UserService;
 import io.javalin.http.Context;
+import kotlin.Pair;
 
 public class UserController {
     
     private UserService userService = new UserService();
+    private static Logger log = LogManager.getLogger(UserController.class);
     
     /*
      * === POST ===
      */
     
+    /**
+     * Handles the HTTP POST request for logging in a user and creating an active user session.
+     * Takes username and password as JSON from body
+     * @return 200 with user information with password replaced with session token, 400 series error otherwise.
+     */
     public void loginUserWithCredentials(Context ctx) {
+        log.debug("HTTP POST request recieved at endpoint /login");
         
+        // Getting user credentials
+        User userData = ctx.bodyAsClass(User.class);
+        
+        // Attempting to login
+        Pair<User, Integer> result = userService.loginUserWithCredentials(userData.getEmail(), userData.getPswd());
+        
+        // Checking if login was successful
+        if (result.getFirst() != null) {
+            log.info("User successfully logged in");
+            ctx.json(result.getFirst());
+        }
+        
+        ctx.status(result.getSecond());
     }
     
+    /**
+     * Handles the http POST request for logging out a user that is currently in an active user session.
+     * Takes the active session token from the header
+     * @return Always a 200
+     */
     public void logoutUser(Context ctx) {
+        log.debug("HTTP POST request recieved at endpoint /logout");
         
+        // Getting user token
+        String token = ctx.header("Token");
+        
+        // Attempting to logout - Don't care about return
+        int result = userService.logoutUser(token);
+        
+        // Checking if logout was successful
+        if (result == 200) {
+            log.info("User was successfully logged out");
+        }
+        
+        ctx.status(result);
     }
     
+    /**
+     * Handles the http POST request for creating a new user.
+     * Takes the user information from the body
+     * @return 200 with employee information (with token replacing password), and 400 series error otherwise
+     */
     public void createNewUser(Context ctx) {
+        log.debug("HTTP POST request recieved at endpoint /users");
         
+        // Getting entered user data
+        User userData = ctx.bodyAsClass(User.class);
+        
+        // Attempting to create new user
+        Pair<User, Integer> result = userService.createNewUser(userData);
+        
+        // Checking if user was created successfully
+        if (result.getFirst() != null) {
+            log.info("User successfully created");
+            ctx.json(result.getFirst());
+        }
+        
+        ctx.status(result.getSecond());
     }
     
     /*
      * === GET ===
      */
-    
-    // Owner is authorized
-    // NOTE: NOT USED
-//    public void getAllUsers(Context ctx) {
-//        
-//    }
     
     // Owner is authorized
     // Customer can get their own
