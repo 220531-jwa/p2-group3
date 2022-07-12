@@ -21,7 +21,6 @@ import org.junit.jupiter.params.provider.NullAndEmptySource;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import dev.group3.model.User;
-import dev.group3.model.enums.UserType;
 import dev.group3.repo.UserDAO;
 import dev.group3.util.ActiveUserSessions;
 import dev.group3.util.MockDataSet;
@@ -208,10 +207,10 @@ public class UserServiceTests {
     private static Stream<Arguments> cnu_invalidInputs() {
         List<Arguments> arguments = new ArrayList<Arguments>();
         arguments.add(Arguments.of(MockDataSet.getDefaultNewUserData().setEmail("email")));
+        arguments.add(Arguments.of(MockDataSet.getDefaultNewUserData().setPswd("pass")));
         arguments.add(Arguments.of(MockDataSet.getDefaultNewUserData().setFunds(-1.00)));
         arguments.add(Arguments.of(MockDataSet.getDefaultNewUserData().setFunds(10000.00)));
         arguments.add(Arguments.of(MockDataSet.getDefaultNewUserData().setPhoneNumber("123")));
-        arguments.add(Arguments.of(MockDataSet.getDefaultNewUserData().setUserType(UserType.OWNER)));
         return arguments.stream();
     }
     
@@ -316,7 +315,7 @@ public class UserServiceTests {
         return arguments.stream();
     }
     
-    // updateUserByUsername TESTS ===
+    // === updateUserByUsername TESTS ===
     
     @ParameterizedTest
     @MethodSource("uubu_invalidInputs")
@@ -341,7 +340,7 @@ public class UserServiceTests {
     
     @Test
     public void uubu_invalidInputs_noUserDataInputs_400null() {
-     // Init mock data set
+        // Init mock data set
         String token = ActiveUserSessions.addActiveUser("a");
         
         // Running test
