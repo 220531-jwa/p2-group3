@@ -14,8 +14,6 @@ function back() {
  * Handles when the submit button is clicked
  */
 async function submit() {
-    // Init
-    const url = "http://localhost:8080/users";
     // Validating user input
     if (!validateInput()) {
         // Not valid
@@ -34,14 +32,12 @@ async function submit() {
     const userDataJson = JSON.stringify(userData);
 
     // Sending response
-    let result = await fetchPostRequest(url, userDataJson, true, true);
-    console.log('got result');
-    console.log(result);
+    let result = await fetchCreateNewUser(userDataJson);
 
     // Processing response
     if (result[0] === 200) {
-        sessionStorage.userData = result[1];
-        location.href = "../html/index.html";
+        // User creation successful - saving session data and moving to home page
+        inActiveSession(result[1]);
     }
     else {
         document.getElementById("error").innerHTML = "Invalid User Input";
@@ -59,7 +55,6 @@ async function submit() {
  */
 function validateInput() {
     // Init
-    console.log('in validateINput');
     let success = true;
 
     // Getting inputs to validate
