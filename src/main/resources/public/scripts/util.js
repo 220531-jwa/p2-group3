@@ -98,7 +98,7 @@ function addTokenHeader(headers, token) {
 
 /**
  * Converts a timestamp into a HH:MM:SS format
- * @param {The timestamp to convert} timestamp 
+ * @param {Timestamp} timestamp The timestamp to convert
  */
 function getTimeFromTimestamp(timestamp) {
     // Init
@@ -113,7 +113,7 @@ function getTimeFromTimestamp(timestamp) {
 
 /**
  * Converts a timestamp into a YYYY-MM-DD HH:MM:SS format
- * @param {The timestamp to convert} timestamp 
+ * @param {Timestamp} timestamp The timestamp to convert
  * @returns 
  */
 function getDateTimeFromTimestamp(timestamp) {

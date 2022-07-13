@@ -109,8 +109,7 @@ async function fetchGetUserByUsername(username, token) {
     // Sending response
     let response = await fetch(url, {
         method: 'GET',
-        headers: addTokenHeader(baseHeaders, token),
-        body: userData
+        headers: addTokenHeader(baseHeaders, token)
     });
 
     // Getting data if status is ok
