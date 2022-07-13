@@ -13,7 +13,7 @@ public class DogService {
 
 	
 	// ASSIGN THE DOA TO USE
-	private DogDAO dd;
+	private static DogDAO dd;
 	
 	public DogService(DogDAO dd) {
 		this.dd = dd;
@@ -22,8 +22,7 @@ public class DogService {
 	
 	
 	
-	Dog dg = new Dog();
-	List<Dog> lstDogs = new ArrayList<>();
+
 	
 	
 	/**
@@ -33,13 +32,11 @@ public class DogService {
 	
 	
 	// RETURNS DOG IF CREATED RETURNS NULL IF NOT CREATED ---> STORE OWNER AND STORE CLIENT
-	public static Pair<Dog,String> postCreateNewDog(Dog dg) {
-		
-		Pair<Dog,String> dgPair = new Pair<Dog,String>(null,null);
+	public static Dog postCreateNewDog(Dog dg) {
 
-//		Pair<Dog,String> dgPair = dd.postCreateNewDog(dg);
+		Dog newdg = dd.createDog(dg);
 
-		return dgPair;
+		return newdg;
 	}
 
 	
@@ -53,37 +50,39 @@ public class DogService {
 	// RETURNS ALL DOGS FROM DB  --> FOR THE OWNER
 	public static  List<Dog> getAllDogs() {
 		
-		List<Dog> lstDogs = new ArrayList<>();
-//		Dog dg = dd.getAllDogs();
+		List<Dog> dg = dd.getAllDogs();
 		
-		return lstDogs;
+		return dg;
 	}
 	
 	
 	
 	// RETURNS ONE DOG BY ID --> STORE OWNER AND CLIENT
-	public static List<Dog> getAllDogsByUserId(int userName) {
-		Dog dg = new Dog();
-		List<Dog> lstDogs = new ArrayList<>();
+	public static List<Dog> getAllDogsByUserId(String userName) {
 		
-//		Dog dg = dd.getAllDogsByUserId(userName);
-		
-		
-		return lstDogs;
-	}
-	
-	
-	// RETURNS ONE DOG BY ID --> STORE OWNER AND STORE CLIENT
-	public static Dog getDogById(int dogId) {
-		Dog dg = new Dog();
-		
-//			Dog dg = dd.getDogByID(dogId);
+		List<Dog> dg = dd.getAllDogsByUserId(userName);
 		
 		
 		return dg;
 	}
 	
 	
+	// RETURNS ONE DOG BY ID --> STORE OWNER AND STORE CLIENT
+	public static Dog getDogById(int dogId) {
+		
+		Dog dg = dd.getDogByID(dogId);
+		
+		
+		return dg;
+	}
+	
+	// RETURNS ALL DOG BY STATUS
+	public static List<Dog> getAllDogsByStatus(String userEmail, boolean status){
+		
+		List<Dog> dg = dd.getAllDogsByStatus(userEmail, status);
+		
+		return dg;
+	}
 
 		
 	
@@ -100,15 +99,11 @@ public class DogService {
 	 */
 	
 	// RETURNS A DOG AND STRING MESSAGE ---> STORE OWNER AND STORE CLIENT
-	public static Pair<Dog,String> patchUpdateDog(Dog dg) {
-		
-		Pair<Dog,String> dgPair = new Pair<Dog,String>(null,null);
+	public static Dog patchUpdateDog(Dog dg) {
 
-//		Pair<Dog,String> dgPair = dd.patchUpdateDog(dg);
-
+		Dog dogUpdated = dd.patchUpdateDog(dg);
 		
-		
-		return dgPair;
+		return dogUpdated;
 	}
 	
 	
@@ -118,14 +113,10 @@ public class DogService {
 	 * 
 	 */
 	
-	
-	public static String deleteDog(int dogId) {
-		
-		String dogDeleted = "";
+	//RETURNS A BOOLEAN INDICATING IF THE DELETION WAS SUCCESSFUL
+	public static boolean deleteDog(int dogId) {
 
-//		String dogDeleted = = dd.deleteDog(dogId);
-
-		
+		boolean dogDeleted = dd.deleteDog(dogId);
 		
 		return dogDeleted;
 	}
