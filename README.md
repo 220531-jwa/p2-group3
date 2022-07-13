@@ -1,8 +1,8 @@
-# PROJECT NAME
+# Doggy Daycare System (DDS)
 
 ## Project Description
 
-Here goes your awesome project description!
+The Doggy Daycare System (DDS) manages the process of customers booking and tracking reservations and services for their furry friends at the Doggy Daycare. Once a customer has created their account they have the ability to login, update their personal information, register their dog(s), update their dog information, book a new reservation and services for a dog, view all past/current reservations and services, as well as cancel a reservation if needed. The owner has the ability to login and view all customers, dogs, reservations and check-in/check-out the dogs upon arrival/departure. 
 
 ## Technologies Used
 
