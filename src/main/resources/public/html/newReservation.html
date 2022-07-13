@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Reservation Page</title>
+    <!-- CSS only -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+</head>
+<body>
+    <div class="container bg-light">
+        <h1 class="mb-4 bg-dark">#</h1>
+        <h1 id="title" class="mb-4">New Reservation:</h1>
+        <div id="error" style="Color: red"></div>
+        <form id="form">
+            <hr>
+            <p><b>New Reservation Information</b></p>
+            <div class="form-group row mb-4">
+                <div class="col">
+                    <div id="inputEmailError" style="color: red"></div>
+                    <label style="display: block" for="inputEmail">Email:</label>
+                    <input id="inputEmail" class="input" type="text">
+                </div>
+                <div class="col">
+                    <div id="inputDogIdError" style="color: red"></div>
+                    <label style="display: block" for="inputDogId">Dog ID:</label>
+                    <input id="inputDogId" class="input" type="text">
+                </div>
+            </div>
+            <div class="form-group row mb-4">
+                <div class="col">
+                    <div id="inputStartDateTimeError" style="color: red"></div>
+                    <label style="display: block" for="inputStartDateTime">Check-in:</label>
+                    <input id="inputStartDateTime" class="input" type="datetime-local">
+                </div>
+                <div class="col">
+                    <div id="inputEndDateTimeError" style="color: red"></div>
+                    <label style="display: block" for="inputEndDateTime">Check-out:</label>
+                    <input id="inputEndDateTime" class="input" type="datetime-local">
+                </div>
+            </div>
+        </form>
+        <div class="row">
+            <div class="col">
+                <button class="btn btn-primary mb-4" type="button" onclick="back()">Back</button>
+            </div>
+            <div class="col text-end">
+                <button class="btn btn-primary mb-4" type="button" onclick="submit()">Submit</button>
+            </div>
+        </div>
+        <h1 class="mb-4 bg-dark">#</h1>
+    </div>
+
+    <script src="../scripts/newReservation.js"></script>
+    <!-- JavaScript Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
+</body>
+</html>
