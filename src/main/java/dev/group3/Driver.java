@@ -10,6 +10,7 @@ import static io.javalin.apibuilder.ApiBuilder.post;
 import dev.group3.controller.DogController;
 
 import dev.group3.controller.ReservationController;
+import dev.group3.controller.ResourcesController;
 import dev.group3.controller.UserController;
 import dev.group3.repo.DogDAO;
 import dev.group3.service.DogService;
@@ -26,11 +27,9 @@ public class Driver {
 
         // Creating controllers
         UserController uc = new UserController();
-
         DogController dc = new DogController(new DogService(new DogDAO()));
-
         ReservationController rc = new ReservationController();
-
+        ResourcesController resourceC = new ResourcesController();
 
         // Starting server
         app.start(8080);
@@ -76,6 +75,9 @@ public class Driver {
                     get(rc::getReservationById);
                     patch(rc::updateReservationById);
                 });
+            });
+            path("/services", () -> {
+                get(resourceC::getAllServices);
             });
         });
 
