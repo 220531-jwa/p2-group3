@@ -1,54 +1,4 @@
 /*
- * === FETCH CALLS ===
- */
-
-/**
- * Fetches a post request at a given url.
- * If the user isn't in an active session, redirects them to the login page.
- * @param {The url to send the request to} reqUrl 
- * @param {The body of the request} reqBody 
- * @returns The response status with the body data as JSON if successful, and null otherwise.
- */
- async function fetchPostRequest(reqUrl, reqBody, getData = true, login = false) {
-    // Getting userdata
-    let userData;
-    if (login) {
-        userData = {
-            password: 'NA'
-        }
-    }
-    else {
-        userData = getSessionUserData();
-    }
-    
-    // Sending request
-    let response = await fetch(reqUrl, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'Token': userData.password
-        },
-        body: reqBody
-    });
-
-    // Processing response
-    let data = null;
-    if (response.ok) {
-        // Checking if returning any data
-        if (getData === true) {
-            // Returning data
-            data = await response.json();
-        }
-    }
-    else if (response.status === 401) {
-        // Not in active session
-        notInActiveSession();
-    }
-
-    return [response.status, data];
-}
-
-/*
  * === ACTIVE SESSION ===
  */
 
@@ -72,6 +22,19 @@
 }
 
 /**
+ * Is called when a user logins in or creates a new user
+ * Stores the user session data and moves to home page
+ * @param {Object} userData The user data to save
+ */
+function inActiveSession(userData) {
+    // Saving user session
+    sessionStorage.userData = JSON.stringify(userData);
+
+    // Moving to home page
+    location.href = "../html/index.html";
+}
+
+/**
  * Is called when the user isn't in an active session.
  * Clears any left over session data, and redirects user to login page.
  */
@@ -89,22 +52,40 @@
  */
  function logout() {
     // Init
-    const url = "http://localhost:8082/logout";
+    const url = "http://localhost:8080/logout";
+    const userData = getSessionUserData();
+
 
     // Logging out - Don't care about response
-    fetchPostRequest(url, null, false, false);
+    fetchLogoutUser(userData.password);
 
     // Moving to inacitve session
     notInActiveSession();
 }
 
+/*
+ * === FETCH ===
+ */
+
 /**
- * === UTILITY ===
+ * Adds a token field to the given HTTP headers object
+ * @param {Object} headers The HTTP headers to add the token to
+ * @param {String} token The token to add to the headers
+ * @returns The headers with the token added
+ */
+function addTokenHeader(headers, token) {
+    let newHeaderrs = {...headers};
+    newHeaderrs.Token = token;
+    return newHeaderrs;
+}
+
+/*
+ * === TIMESTAMPS ===
  */
 
 /**
  * Converts a timestamp into a YYYY-MM-DD format
- * @param {The timestamp to convert} timestamp 
+ * @param {Timestamp} timestamp The timestamp to convert
  */
  function getDateFromTimestamp(timestamp) {
     // Init
@@ -119,7 +100,7 @@
 
 /**
  * Converts a timestamp into a HH:MM:SS format
- * @param {The timestamp to convert} timestamp 
+ * @param {Timestamp} timestamp The timestamp to convert
  */
 function getTimeFromTimestamp(timestamp) {
     // Init
@@ -134,7 +115,7 @@ function getTimeFromTimestamp(timestamp) {
 
 /**
  * Converts a timestamp into a YYYY-MM-DD HH:MM:SS format
- * @param {The timestamp to convert} timestamp 
+ * @param {Timestamp} timestamp The timestamp to convert
  * @returns 
  */
 function getDateTimeFromTimestamp(timestamp) {
