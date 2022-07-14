@@ -6,14 +6,17 @@ import java.util.Hashtable;
 import java.util.List;
 
 import dev.group3.model.Reservation;
+import dev.group3.model.Service;
 import dev.group3.model.User;
 import dev.group3.model.enums.ResStatusType;
+import dev.group3.model.enums.ServiceType;
 import dev.group3.model.enums.UserType;
 
 public class MockDataSet {
 
     private static List<User> userTestSet;
     private static List<Reservation> reservationTestSet;
+    private static List<Service> serviceTestSet;
     
     private static Hashtable<String, List<Reservation>> filterStorage;
 
@@ -51,6 +54,15 @@ public class MockDataSet {
         reservationTestSet.add(new Reservation(15,  "dogLover", 19, ResStatusType.CHECKEDOUT,   getTS("2022-06-01 9:00:00"),   getTS("2022-06-01 11:00:00")));
         reservationTestSet.add(new Reservation(16,  "dogLover", 20, ResStatusType.CHECKEDOUT,   getTS("2022-06-01 9:00:00"),   getTS("2022-06-01 11:00:00")));
     }
+    
+    private static void setupServicesTestSet() {
+        serviceTestSet = new ArrayList<Service>();
+        serviceTestSet.add(new Service(1,   ServiceType.RATE,         1,  10.00));
+        serviceTestSet.add(new Service(2,   ServiceType.GROOMING,     2,  25.00));
+        serviceTestSet.add(new Service(3,   ServiceType.BELLYRUB,     1,  0.99));
+        serviceTestSet.add(new Service(4,   ServiceType.DOGWALK,      2,  15.00));
+        serviceTestSet.add(new Service(5,   ServiceType.TRIMNAILS,    1,  19.99));
+    }
 
     // === GETTERS ===
 
@@ -63,6 +75,11 @@ public class MockDataSet {
     public static List<Reservation> getReservationTestSet() {
         setupReservationTestSet();
         return reservationTestSet;
+    }
+    
+    public static List<Service> getServiceTestSet() {
+        setupServicesTestSet();
+        return serviceTestSet;
     }
     
     public static List<Reservation> getFilteredReservationDataSet(String username) {
