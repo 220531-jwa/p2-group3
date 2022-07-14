@@ -81,7 +81,7 @@ public class DogDAO {
 	
 	public List<Dog> getAllDogsByStatus(String userEmail, boolean status) {
 		List<Dog> dogs = new ArrayList<>();
-		String sql = "Select * from dogs where user_email = ?, status = ?";
+		String sql = "Select * from dogs where user_email = ? and status = ?";
 		
 		try(Connection conn = cu.getConnection()){
 			PreparedStatement ps = conn.prepareStatement(sql);
