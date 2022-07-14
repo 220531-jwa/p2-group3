@@ -284,15 +284,18 @@ public class UserService {
             return new Pair<User, Integer>(null, 400);
         }
         
+        // Populating necessary userData fields
+        userData.setEmail(username);
+        if (userData.getPhoneNumber() != null) {
+            userData.setPhoneNumber(trimPhoneNumber(userData.getPhoneNumber()));
+        }
+        
         // Checking if provided data is valid
         if ((userData.getPswd() != null && !isValidPassword(userData.getPswd())) ||
             (userData.getPhoneNumber() != null && !isValidPhoneNumber(userData.getPhoneNumber()))) {
             log.error("Password and/or phoneNumber input(s) are invalid");
             return new Pair<User, Integer>(null, 400);
         }
-        
-        // Populating necessary userData
-        userData.setEmail(username);
         
         // Attempting to update user
         User user = userDAO.updateUserByUsername(userData);
@@ -304,7 +307,7 @@ public class UserService {
         }
         
         // Successfully updated user
-        return new Pair<User, Integer>(user, 200);
+        return new Pair<User, Integer>(user.setPswd(""), 200);
     }
     
     /*

@@ -11,6 +11,8 @@ import dev.group3.controller.DogController;
 
 import dev.group3.controller.ReservationController;
 import dev.group3.controller.UserController;
+import dev.group3.repo.DogDAO;
+import dev.group3.service.DogService;
 import io.javalin.Javalin;
 import io.javalin.http.staticfiles.Location;
 
@@ -25,7 +27,8 @@ public class Driver {
         // Creating controllers
         UserController uc = new UserController();
 
-        DogController dc = new DogController();
+        DogController dc = new DogController(new DogService(new DogDAO()));
+
         ReservationController rc = new ReservationController();
 
 
@@ -53,6 +56,9 @@ public class Driver {
                 path("/{username}", () -> {
                     post(dc::createNewDog);
                     get(dc::getAllDogsByUsername);
+                    	path("/{status}",() -> {
+                    		get(dc::getAllDogsByStatus);
+                    	});
                 });
                 path("/{did}", () -> {
                     get(dc::getDogById);

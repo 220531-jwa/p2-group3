@@ -1,12 +1,12 @@
 -- Refresh Tables
-drop table if exists project_Two.users cascade;
-drop table if exists project_Two.dogs cascade;
-drop table if exists project_Two.services cascade;
-drop table if exists project_Two.reservations cascade;
-drop table if exists project_Two.transactions cascade;
+drop table if exists users cascade;
+drop table if exists dogs cascade;
+drop table if exists services cascade;
+drop table if exists reservations cascade;
+drop table if exists transactions cascade;
 
 -- Creating Tables
-create table if not exists project_Two.users (
+create table if not exists users (
 	email varchar primary key,
 	pswd varchar,
 	user_type varchar,	-- shopOwner, dogOwner
@@ -16,7 +16,7 @@ create table if not exists project_Two.users (
 	funds numeric(6, 2)
 );
 
-create table if not exists project_Two.dogs (
+create table if not exists dogs (
 	id serial primary key,
 	user_email varchar references users(email),
 	status boolean,		-- active, not active (whether user can see it) - delete from user perspective : BUT we need this for transactions
@@ -33,7 +33,7 @@ create table if not exists project_Two.dogs (
 -- DogWalk $15
 -- === Business Services ===
 -- HourlyRate $20
-create table if not exists project_Two.services (
+create table if not exists services (
 	id serial primary key,
 	service_type varchar,
 	duration_hour int,
@@ -43,7 +43,7 @@ create table if not exists project_Two.services (
 -- REVIEW: Question: Combine Reservations & Transations (keep in mind)
 
 -- Avaliable hours are from 8AM - 4PM
-create table if not exists project_Two.reservations (
+create table if not exists reservations (
 	id serial primary key,
 	user_email varchar references users(email),
 	dog_id int references dogs(id),
@@ -52,7 +52,7 @@ create table if not exists project_Two.reservations (
 	end_datetime timestamp
 );
 
-create table if not exists project_Two.transactions (
+create table if not exists transactions (
 	id serial primary key,
 	user_email varchar references users(email),
 	service_id int references services(id),		-- Dog Related Service
@@ -61,7 +61,7 @@ create table if not exists project_Two.transactions (
 );
 
 -- Initial Data set
-insert into project_Two.users values
+insert into users values
 ('owner',		'secret',	'OWNER',	'Wolf',		'Flow',		'5555555555',	100.00),
 ('email1',		'pass1',	'CUSTOMER',	'Alice',	'Apple',	'1234567890',	1000.00),
 ('email2',		'pass2',	'CUSTOMER',	'Bob',		'Bacon',	'1112223333',	100.00),
@@ -70,7 +70,7 @@ insert into project_Two.users values
 ('email5',		'pass5',	'CUSTOMER',	'Evelyn',	'Eggnog',	'2224448888',	1000.00),
 ('dogLover',	'pass6',	'CUSTOMER',	'Frank',	'Fudge',	'2358132134',	3.92);
 
-insert into project_Two.dogs values
+insert into dogs values
 -- email1
 (default,	'email1',	true,	'Nikita',		'Black Russian Terrier',	2,	true),
 (default,	'email1',	true,	'Tyrion',		'German Shepherd',			2,	false),
@@ -98,14 +98,14 @@ insert into project_Two.dogs values
 (default,	'dogLover',	true,	'Pip',			'Brussels Griffon',			2,	true),
 (default,	'dogLover',	true,	'Mixie',		'French Bulldog',			2,	true);
 
-insert into project_Two.services values
+insert into services values
 (default,	'RATE',			1,	10.00),
 (default,	'GROOMING',		2,	25.00),
 (default,	'BELLYRUB',		1,	0.99),
 (default,	'DOGWALK',		2,	15.00),
 (default,	'TRIMNAILS',	1,	19.99);
 
-insert into project_Two.reservations values
+insert into reservations values
 -- Current day (7 dogs)
 (default,	'email1',	1,	'REGISTERED',	'2022-07-01 9:00:00',	'2022-07-01 11:00:00'),
 (default,	'email1',	2,	'REGISTERED',	'2022-07-01 9:00:00',	'2022-07-01 11:00:00'),
@@ -125,7 +125,7 @@ insert into project_Two.reservations values
 (default,	'dogLover',	19,	'CHECKEDOUT',	'2022-06-01 9:00:00',	'2022-06-01 11:00:00'),
 (default,	'dogLover',	20,	'CHECKEDOUT',	'2022-06-01 9:00:00',	'2022-06-01 11:00:00');
 
-insert into project_Two.transactions values
+insert into transactions values
 -- Current day
 (default,	'email1',	null,	1,	20.00),
 (default,	'email1',	2,		2,	45.00),

@@ -28,7 +28,7 @@ public class ReservationService {
     }
     
     /**
-     * Used for a cusome reservationDAO, more generally used for Mockito
+     * Used for a customer reservationDAO, more generally used for Mockito
      * @param resDAO The resDAO for this service to use
      */
     public ReservationService(UserDAO userDAO, ReservationDAO resDAO) {
