@@ -121,3 +121,23 @@ function getTimeFromTimestamp(timestamp) {
 function getDateTimeFromTimestamp(timestamp) {
     return `${getDateFromTimestamp(timestamp)} ${getTimeFromTimestamp(timestamp)}`
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/**
+ * Common Elements
+ */
+
+
+
