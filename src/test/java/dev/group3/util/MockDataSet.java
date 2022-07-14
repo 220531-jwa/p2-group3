@@ -2,7 +2,7 @@ package dev.group3.util;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Hashtable;
+import java.util.HashMap;
 import java.util.List;
 
 import dev.group3.model.Reservation;
@@ -18,7 +18,7 @@ public class MockDataSet {
     private static List<Reservation> reservationTestSet;
     private static List<Service> serviceTestSet;
     
-    private static Hashtable<String, List<Reservation>> filterStorage;
+    private static HashMap<String, List<Reservation>> filterStorage;
 
     // === SETUP ===
 
@@ -74,6 +74,7 @@ public class MockDataSet {
     
     public static List<Reservation> getReservationTestSet() {
         setupReservationTestSet();
+        resetFilteredStorage();     // This depends on reservation test set
         return reservationTestSet;
     }
     
@@ -83,25 +84,25 @@ public class MockDataSet {
     }
     
     public static List<Reservation> getFilteredReservationDataSet(String username) {
-        // Checking if tests sets were made
-        if (userTestSet == null || reservationTestSet == null) {
+        // Checking if test sets were made
+        if (reservationTestSet == null) {
             return null;
         }
         
         // Checking if making new filters
         if (filterStorage == null) {
-            filterStorage = new Hashtable<>();
+            filterStorage = new HashMap<>();
         }
         
         // Checking if filtered data set already exists
         if (username == null) {
             username = "";
         }
-        if (filterStorage.contains(username)) {
+        if (filterStorage.containsKey(username)) {
             return filterStorage.get(username);
         }
         
-        // Getting filters - Not applicable atm
+        // Creating new list for filtered reservations
         List<Reservation> filteredReservations = new ArrayList<Reservation>();
         
         // Going through reservations to find ones associated with username
@@ -112,6 +113,7 @@ public class MockDataSet {
             }
         }
         
+        // Storing filtered list of reservations to return on subsequent calls for the same list
         filterStorage.put(username, filteredReservations.isEmpty() ? null : filteredReservations);
         return filterStorage.get(username);
     }
@@ -132,7 +134,7 @@ public class MockDataSet {
         return Timestamp.valueOf(timestamp);
     }
     
-    public static void resetFilteredStorage() {
+    private static void resetFilteredStorage() {
         filterStorage = null;
     }
 }

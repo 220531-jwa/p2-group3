@@ -149,8 +149,10 @@ public class ReservationService {
      */
     public Pair<Reservation, Integer> getReservationById(String username, Integer rid, String token) {
     	
-    	
+    	System.out.println(1);
+    	System.out.println(resDAO == null);
     	Reservation res = resDAO.getReservationById(rid);
+    	System.out.println(2);
     	
     	if(res != null) {
     		Pair<Reservation, Integer> resPair = new Pair<Reservation, Integer>(res,200);
@@ -180,7 +182,7 @@ public class ReservationService {
      * @return 200 with updated reservation if successful, and 400 null series otherwise
      */
     public Pair<Reservation, Integer> updateReservationById(String username, Integer rid, Reservation resData, String token) {
-        return null;
+        return new Pair<Reservation, Integer>(null, 500);
     }
 
 	
