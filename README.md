@@ -6,9 +6,20 @@ The Doggy Daycare System (DDS) manages the process of customers booking and trac
 
 ## Technologies Used
 
-* Tech 1 - version 1.0
-* Tech 2 - version 2.0
-* Tech 3 - version 3.0
+* Java - version 8.0
+* HTML 
+* JavaScript 
+* AWS RDS
+* CSS
+* Maven
+* Mockito
+* Bootstrap
+* PostgreSQL
+* Selenium
+* Javalin
+* JUnit
+* JDBC
+
 
 ## Features
 
