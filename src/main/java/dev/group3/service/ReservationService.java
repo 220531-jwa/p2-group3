@@ -2,15 +2,24 @@ package dev.group3.service;
 
 import java.util.List;
 
+//import org.eclipse.jetty.util.log.Log;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import dev.group3.model.Reservation;
+import dev.group3.model.User;
 import dev.group3.repo.ReservationDAO;
 import dev.group3.repo.UserDAO;
+import dev.group3.util.ActiveUserSessions;
 import kotlin.Pair;
 
 public class ReservationService {
     
     private UserDAO userDAO;
     private ReservationDAO resDAO;
+    
+    private static Logger log = LogManager.getLogger(UserService.class);
     
     // Use default reservation dao;
     public ReservationService() {
@@ -64,10 +73,50 @@ public class ReservationService {
     public Pair<List<Reservation>, Integer> getAllReservations(String token) {
     	
     	
-    	List<Reservation> respPair = resDAO.getAllReservations();
-    	Pair<List<Reservation>, Integer> newPair = new Pair<List<Reservation>, Integer>(respPair,200);
-        return newPair;
-    }
+    	
+    	if(token == "" || token == null) {
+    		Pair<List<Reservation>, Integer> newPair400 = new Pair<List<Reservation>, Integer>(null,400);
+    		log.error("incoming token was null or empty string");
+    		return newPair400;
+    		
+    	}
+    	
+    	// Checking if user is in an active session
+        if (!ActiveUserSessions.isActiveUser(token)) {
+            log.error("User is not in an active session");
+    		return new Pair<List<Reservation>, Integer>(null,401);
+        }
+        
+        String userName = ActiveUserSessions.getActiveUserUsername(token);
+        User user = userDAO.getUserByUsername(userName);
+        
+        
+        // CHECKING TO MAKE SURE THE USERTYPE IS AUTHORIZED TO VIEW ALL RESERVATIONS
+        String userType = user.getUserType().toString();
+        
+        if(userType == "OWNER") {
+        	
+        	List<Reservation> respPair = resDAO.getAllReservations();
+        	if(respPair != null) {
+        		
+        		Pair<List<Reservation>, Integer> newPair = new Pair<List<Reservation>, Integer>(respPair,200);
+        		return newPair;
+        		
+        	}else {
+        		
+        		Pair<List<Reservation>, Integer> newPair505 = new Pair<List<Reservation>, Integer>(null,505);
+        		return newPair505;
+        	}
+        	
+        }else {
+        	Pair<List<Reservation>, Integer> newPair403 = new Pair<List<Reservation>, Integer>(null,403);
+        	return newPair403;
+        }
+        	
+        
+//        return newPair;
+}
+    	
     
     /**
      * Retrieves all the reservations associated with the given username.

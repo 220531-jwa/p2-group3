@@ -1,14 +1,13 @@
 
-const user = getSessionUserData();
 
 
+    var user = getSessionUserData();
 
 
-async function setup(){
-
+function setup(){
+    
     let userType = user.userType;
 
-    // setErrUp();
     setupTopNav("forTheTopDiv",userType);
     setupSideNav("forTheSideDiv",userType);
 

@@ -27,6 +27,7 @@
 .tableHolder{
     /* margin-left:8vh;. */
     border:black solid 2px;
+    margin-bottom:4vh;
 }
 
 #getReservationByIdRow{
@@ -35,4 +36,9 @@
 
 .off{
     display:none;
+}
+
+.editButt{
+    color:white;
+    background-color: lightblue;
 }

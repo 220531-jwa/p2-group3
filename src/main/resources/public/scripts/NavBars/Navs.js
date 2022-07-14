@@ -14,14 +14,14 @@ window.addEventListener('load', function () {
 
 const OwnerTopNav =` <nav class="navbar navbar-expand-lg bg-dark fixed-top">
 <div class="container-fluid">
-  <a class="navbar-brand" href="#" style="color:seagreen">Welcome Owner</a>
+  <a class="navbar-brand" href="#" style="color:seagreen">Welcome</a>
   <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
       <!-- <li class="nav-item">
-        <a class="nav-link active" aria-current="page" href="#" style="color:seagreen">Home</a>
+        <a class="nav-link active" aria-current="page" href="#" style="color:seagreen">Owner Home</a>
       </li> -->
       <li class="nav-item">
         <li><a class="dropdown-item" href="#" style="color:seagreen">option 1</a></li>
@@ -41,14 +41,14 @@ const OwnerTopNav =` <nav class="navbar navbar-expand-lg bg-dark fixed-top">
     
 const CustomerTopNav =` <nav class="navbar navbar-expand-lg bg-dark fixed-top">
 <div class="container-fluid">
-  <a class="navbar-brand" href="#" style="color:seagreen">Welcome Customer</a>
+  <a class="navbar-brand" href="#" style="color:seagreen">Welcome</a>
   <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
       <li class="nav-item">
-        <a class="nav-link active" aria-current="page" href="#" style="color:seagreen">Home</a>
+        <a class="nav-link active" aria-current="page" href="#" style="color:seagreen">Customer Home</a>
       </li>
       <li class="nav-item">
         <a class="nav-link active" aria-current="page" href="#" style="color:seagreen">Option 1</a>
@@ -72,7 +72,7 @@ const CustomerTopNav =` <nav class="navbar navbar-expand-lg bg-dark fixed-top">
         <h6>customer</h6>
     <a href="#">Update Profile</a>
     <a href="/html/ReservationsPage.html">Reservations</a>
-    <a href="#">other</a>
+    <a href="#">Dogs</a>
     </div>`
 
     const ownerSideNavdos =`<div class="sidenav">

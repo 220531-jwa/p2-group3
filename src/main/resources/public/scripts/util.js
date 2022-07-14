@@ -38,6 +38,7 @@
         if (getData === true) {
             // Returning data
             data = await response.json();
+            
         }
     }
     else if (response.status === 401) {

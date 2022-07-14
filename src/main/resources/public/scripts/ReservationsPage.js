@@ -111,11 +111,11 @@ async function setup(){
     setupSideNav("forTheSideDiv",userType);
 
     // CUSTOMER SIDE
-    setUpAllReservations();
     setUpAllCustomerReservations();
-
-
+    
+    
     // OWNER SIDE
+    setUpAllReservations();
 
 }
 
@@ -181,15 +181,10 @@ function testLvlButtonsHandler(e){
 
 async function setUpAllReservations(){
 
-
     let allReservationsTableCol = document.getElementById("allReservationsTableCol");
     
     let seshToken = user.pswrd;
     let username = user.email;
-
-    // PULL IN ALL RESERVATIONS
-    // let allReservations = await getAllReservations(seshToken);
-
 
     // PULL IN ALL RESERVATIONS
     let reservations = await getAllReservations(seshToken);
@@ -199,96 +194,6 @@ async function setUpAllReservations(){
     // Passing to create table function to create the table append to appropriate place.
     createTableData(allReservationsTableCol,"multiple");
 
-
-
-
-
-
-
-    // let allReservationsTableCol = document.getElementById("allReservationsTableCol");
-    
-    // let seshToken = user.pswrd;
-    // let username = user.email;
-
-    // PULL IN ALL RESERVATIONS
-    // let allReservations = await getAllReservations(seshToken);
-
-
-    // PULL IN ALL RESERVATIONS
-    // let allReservations = await getAllRservationsByUsername(username, seshToken);
-
-    // let tbl = document.createElement("table");
-    // let tblHead = document.createElement("thead");
-    // let tblHdrRow = document.createElement("tr");
-
-    // tbl.className="table";
-
-
-    // let newHdr = ""
-
-
-
-    // if(allReservations.length > 0){
-
-    //      //  Appending Table Headers to Table.
-    //         for(reservProp in allReservations[0]){
-    //             let tblHdr = document.createElement("th")
-    //             let reservPropStrng = reservProp.toString();
-
-    //             newHdr = reservPropStrng
-    //             tblHdr.scope = "col"
-    //             tblHdr.innerText = newHdr
-    //             tblHdrRow.append(tblHdr);
-            
-    //         }
-    // }
-    // let tblHdr = document.createElement("th");
-    // tblHdr.scope = "col"
-    // tblHdr.innerText = "edit"
-    // tblHdrRow.append(tblHdr);
-    // tblHead.append(tblHdrRow)
-
-    // let tbleBody = document.createElement("tbody");
-
-
-    // for(x = 0; x<=allReservations.length -1; x++){
-        
-    //     let reqRow = document.createElement("tr");
-    //     w = 0;
-    //     await updateIncomingReservationPage(allReservations[x]);
-
-    //     // for (key in allSessionCustomerResVations[x]) {
-
-    //     if(reservation){
-
-
-    //         for (key in reservation) {
-    
-    //         // for (key in allReservations[x]) {
-                
-                
-    //             let reqTd = document.createElement("td")
-                  
-    //             reqTd.innerText = allReservations[x][key];
-    //             reqRow.append(reqTd);
-                
-    //             w++;
-    //         }
-    //         let editbutt = document.createElement("button");
-    //         editbutt.className="btn btn-primary";
-    //         editbutt.id=w;
-    //         w++;
-            
-    //         tbleBody.append(reqRow)
-
-    //     }
-
-    // }
-
-
-    // tbl.append(tblHead)
-    // tbl.append(tbleBody);
-    // allReservationsTableCol.append(tbl)
 
 }
 
@@ -300,81 +205,16 @@ async function setUpAllCustomerReservations(){
     let seshToken = user.pswrd;
     let username = user.email;
 
-    // PULL IN ALL RESERVATIONS
-    // let allReservations = await getAllReservations(seshToken);
-
 
     // PULL IN ALL RESERVATIONS
     let allSessionCustomerResVations = await getAllRservationsByUsername(username, seshToken);
 
+    // SETTING MAIN VARIABLE TO THE ARRAY OF RESERVATIONS
     allReservations = allSessionCustomerResVations
 
     // Passing to create table function to create the table append to appropriate place.
     createTableData(allReservationsByUserNameTableCol,"multiple");
 
-
-
-
-
-
-
-    // let tbl = document.createElement("table");
-    // let tblHead = document.createElement("thead");
-    // let tblHdrRow = document.createElement("tr");
-
-    // tbl.className="table";
-
-
-    // let newHdr = ""
-
-
-
-    // if(allSessionCustomerResVations.length > 0){
-
-    //      //  Appending Table Headers to Table.
-    //         for(reservProp in allSessionCustomerResVations[0]){
-    //             let tblHdr = document.createElement("th")
-    //             let reservPropStrng = reservProp.toString();
-
-    //             newHdr = reservPropStrng
-    //             tblHdr.scope = "col"
-    //             tblHdr.innerText = newHdr
-    //             tblHdrRow.append(tblHdr);
-            
-    //         }
-    // }
-    // tblHead.append(tblHdrRow)
-
-    // let tbleBody = document.createElement("tbody");
-
-
-    // for(x = 0; x<=allSessionCustomerResVations.length - 1; x++){
-        
-    //     let reqRow = document.createElement("tr");
-    //     w = 0;
-    //     await updateIncomingReservationPage(allSessionCustomerResVations[x]);
-
-    //     // for (key in allSessionCustomerResVations[x]) {
-        
-    //     for (key in reservation) {
-            
-            
-    //         let reqTd = document.createElement("td")
-              
-    //         reqTd.innerText = allSessionCustomerResVations[x][key];
-    //         reqRow.append(reqTd);
-            
-    //         w++;
-    //     }
-        
-    //     tbleBody.append(reqRow)
-
-    // }
-
-
-    // tbl.append(tblHead)
-    // tbl.append(tbleBody);
-    // allReservationsByUserNameTableCol.append(tbl)
 
 }
 
@@ -388,9 +228,6 @@ async function setUpReservationById(){
     
     let seshToken = user.pswrd;
     let username = user.email;
-
-    // PULL IN ALL RESERVATIONS
-    // let allReservations = await getAllReservations(seshToken);
 
 
     // PULL IN ALL RESERVATIONS
@@ -407,7 +244,7 @@ async function setUpReservationById(){
 
 
     let newHdr = ""
-
+    let r = 0;
 
     //  Appending Table Headers to Table.
     for(reservProp in reservation){
@@ -418,24 +255,44 @@ async function setUpReservationById(){
         tblHdr.scope = "col"
         tblHdr.innerText = newHdr
         tblHdrRow.append(tblHdr);
+
+        
+
+        if(r===5){
+            let editHdr = document.createElement("th");
+            editHdr.scope="col";
+            editHdr.innerText = "Edit";
+            tblHdrRow.append(editHdr);
+        }
+
+        r++
     
     }
+
+    
     
     tblHead.append(tblHdrRow)
 
+
+    //CREATING TABLE BODY
     let tbleBody = document.createElement("tbody");
-
-    
-    
     let reqRow = document.createElement("tr");
+    let reqTdID = document.createElement("td");
+    let reqTduserEmail = document.createElement("td");
+    let reqTddogId = document.createElement("td");
+    let reqTdstatus = document.createElement("td");
+    let reqTdstartDateTime = document.createElement("td");
+    let reqTdendDateTime = document.createElement("td");
+    let buttTd = document.createElement("td");
+    let buttn = document.createElement("button");
 
-    let reqTdID = document.createElement("td")
-    let reqTduserEmail = document.createElement("td")
-    let reqTddogId= document.createElement("td")
-    let reqTdstatus = document.createElement("td")
-
-    let reqTdstartDateTime = document.createElement("td")
-    let reqTdendDateTime = document.createElement("td")
+    // ASSIGNING ATTRIBUTES TO BUTTON
+    buttn.type = "button";
+    buttn.className = "btn editButt";
+    buttn.innerText = "Edit";
+    buttTd.append(buttn);
+       
+    
 
     reqTdID.innerText = reservation.id;
     reqTduserEmail.innerText = reservation.userEmail;
@@ -450,20 +307,8 @@ async function setUpReservationById(){
     reqRow.append(reqTdstatus);
     reqRow.append(reqTdstartDateTime);
     reqRow.append(reqTdendDateTime);
+    reqRow.append(buttTd);
 
-        // w = 0;
-
-        // for (key in reservation) {
-            
-            
-        //     let reqTd = document.createElement("td")
-              
-        //     reqTd.innerText = reservation[key];
-        //     reqRow.append(reqTd);
-            
-        //     w++;
-        // }
-        
     tbleBody.append(reqRow)
     tbl.append(tblHead)
     tbl.append(tbleBody);
@@ -490,8 +335,10 @@ function createTableData(divToAppendTo, singleOrMultiple){
 
     if(allReservations.length > 0){
 
+        let r = 0;
          //  Appending Table Headers to Table.
             for(reservProp in allReservations[0]){
+                
                 let tblHdr = document.createElement("th")
                 let reservPropStrng = reservProp.toString();
 
@@ -499,6 +346,15 @@ function createTableData(divToAppendTo, singleOrMultiple){
                 tblHdr.scope = "col"
                 tblHdr.innerText = newHdr
                 tblHdrRow.append(tblHdr);
+
+                if(r===5){
+                    let editHdr = document.createElement("th");
+                    editHdr.scope="col";
+                    editHdr.innerText = "Edit";
+                    tblHdrRow.append(editHdr);
+                }
+
+                r++
             
             }
     }
@@ -524,6 +380,18 @@ function createTableData(divToAppendTo, singleOrMultiple){
               
             reqTd.innerText = reservation[key];
             reqRow.append(reqTd);
+
+            if(w===5){
+
+                let buttTd = document.createElement("td")
+                let buttn = document.createElement("button");
+                buttn.type="button";
+                buttn.className="btn editButt"
+                // buttnTD.className="btn btn-primary editButt"
+                buttn.innerText="Edit"
+                buttTd.append(buttn);
+                reqRow.append(buttTd)
+            }
             
             w++;
         }
