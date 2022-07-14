@@ -2,6 +2,27 @@
  * === EVENT LISTENERS ===
  */
 /**
+ * Handles when the dog dropdown is clicked
+ */
+//sending get request to API and waiting for response to be returned and printing response to dropdown list
+async function getAllDogsByUsername(){
+    //getting user input
+    const id = document.querySelector('select');
+    //Init
+    console.log(inputDogId)
+    let res = await fetch(`http://localhost:8080/html/dogs/{username}/`);
+
+    if(res.status == 200){
+        let data = await res.json();
+        console.log(data);
+        populateData(data);
+    } else {
+        console.log("Dogs are on the loose!")
+    }
+    
+}
+
+/**
  * Handles when the submit button is clicked
  */
 async function submitReservation() {

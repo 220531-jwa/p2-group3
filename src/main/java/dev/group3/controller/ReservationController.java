@@ -22,11 +22,11 @@ public class ReservationController {
     	//Getting user input
     	String username = ctx.pathParam("username");
     	String token = ctx.header("Token");   	
-		ctx.status(201);
 		Reservation reservationFromUserBody = ctx.bodyAsClass(Reservation.class);
 		//Attempting to get user
 		Pair<Reservation, Integer> r = rs.createReservation(username, reservationFromUserBody, token); 
 		ctx.json(r);
+		ctx.status(201);
     }
     
     /*

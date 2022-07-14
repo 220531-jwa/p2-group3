@@ -20,7 +20,7 @@
                 <div class="dropdown">
                     <div id="inputDogIdError" style="color: red"></div>
                     <label style="display: block" for="inputDogId">Select the dog for your reservation:</label>
-                    <select name="inputDogId" id="inputDogId">
+                    <select name="inputDogId" id="inputDogId" onchange="getAllDogsByUsername()">
                         <option>Select your dog</option>
                         <option dogId="dog1" value="10">Basquiat</option>
                         <option dogId="dog2" value="11">Caramel</option>
