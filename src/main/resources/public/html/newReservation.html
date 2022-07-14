@@ -17,15 +17,24 @@
             <hr>
             <p><b>New Reservation Information</b></p>
             <div class="form-group row mb-4">
-                <div class="col">
-                    <div id="inputEmailError" style="color: red"></div>
-                    <label style="display: block" for="inputEmail">Email:</label>
-                    <input id="inputEmail" class="input" type="text">
-                </div>
-                <div class="col">
+                <div class="dropdown">
                     <div id="inputDogIdError" style="color: red"></div>
-                    <label style="display: block" for="inputDogId">Dog ID:</label>
-                    <input id="inputDogId" class="input" type="text">
+                    <label style="display: block" for="inputDogId">Select the dog for your reservation:</label>
+                    <select name="inputDogId" id="inputDogId">
+                        <option>Select your dog</option>
+                        <option dogId="dog1" value="10">Basquiat</option>
+                        <option dogId="dog2" value="11">Caramel</option>
+                        <option dogId="dog3" value="12">Pimms</option>
+                        <option dogId="dog4" value="13">Arrow</option>
+                        <option dogId="dog5" value="14">Ash</option>
+                        <option dogId="dog6" value="15">Cinder</option>
+                        <option dogId="dog7" value="16">Harper</option>
+                        <option dogId="dog8" value="17">Kane</option>
+                        <option dogId="dog9" value="18">Ursa</option>
+                        <option dogId="dog10" value="19">Pip</option>
+                        <option dogId="dog11" value="20">Mixie</option>
+
+                    </select>
                 </div>
             </div>
             <div class="form-group row mb-4">
@@ -40,18 +49,27 @@
                     <input id="inputEndDateTime" class="input" type="datetime-local">
                 </div>
             </div>
+            <div class="form-group row mb-4">
+                <div class="dropdown">
+                    <div id="inputServiceIdError" style="color: red"></div>
+                    <label style="display: block" for="inputServiceId">Additional Service (optional)</label>
+                    <select name="inputServiceId" id="inputServiceId">
+                        <option>Select an Option</option>>
+                        <option id="bellyrub3" value="2">Belly Rub - $0.99</option>
+                        <option id="dogwalk4" value="3">Walk - $15.00</option>
+                        <option id="nailtrim5" value="4">Nail Trimming - $19.99</option>
+                    </select>
+                </div>
+            </div>
         </form>
         <div class="row">
-            <div class="col">
-                <button class="btn btn-primary mb-4" type="button" onclick="back()">Back</button>
-            </div>
             <div class="col text-end">
-                <button class="btn btn-primary mb-4" type="button" onclick="submit()">Submit</button>
+                <button class="btn btn-primary mb-4" type="button" onclick="submitReservation()">Submit</button>
             </div>
         </div>
         <h1 class="mb-4 bg-dark">#</h1>
     </div>
-
+    <script src="../scripts/util.js"></script>
     <script src="../scripts/newReservation.js"></script>
     <!-- JavaScript Bundle with Popper -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>

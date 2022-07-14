@@ -89,7 +89,7 @@
  */
  function logout() {
     // Init
-    const url = "http://localhost:8080/logout";
+    const url = "http://localhost:8082/logout";
 
     // Logging out - Don't care about response
     fetchPostRequest(url, null, false, false);

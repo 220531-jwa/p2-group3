@@ -19,7 +19,7 @@
 
     // Processing response
     if (result[0] === 200) {
-        sessionStorage.userData = result[1];
+        sessionStorage.userData = stringify.JSON(result[1]);
         location.href = "../html/index.html";
     }
     else {

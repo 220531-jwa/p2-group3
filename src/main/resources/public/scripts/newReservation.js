@@ -1,21 +1,13 @@
 /*
  * === EVENT LISTENERS ===
  */
-
-/**
- * Handles when the back button is clicked.
- * Redirects user back to user page
- */
- function back() {
-    InActiveSession();
-}
-
 /**
  * Handles when the submit button is clicked
  */
-async function submit() {
+async function submitReservation() {
     // Init
-    const url = "http://localhost:8080/reservations/{username}";
+    console.log("Submit button clicked")
+    const url = "http://localhost:8080/index";
     // Validating reservation input
     if (!validateInput()) {
         // Not valid
@@ -24,10 +16,11 @@ async function submit() {
 
     // Getting Reservation input
     const resData = {
-        userEmail: document.getElementById("inputEmail").value,
         dogId: document.getElementById("inputDogId").value,
         startDateTime: document.getElementById("inputStartDateTime").value,
         endDateTime: document.getElementById("inputEndDateTime").value,
+        serviceId: document.getElementById("inputServiceId").value
+
     }
     const resDataJson = JSON.stringify(resData);
 
