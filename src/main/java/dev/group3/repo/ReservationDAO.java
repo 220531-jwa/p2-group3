@@ -29,6 +29,7 @@ public class ReservationDAO {
     public Reservation createReservation(Reservation resData) {
        
     	String sql = "insert into reservations values(default, ?, ?, ?, ?, ?)";
+    	//need to update SQL statement to also add serviceId (if selected)
     	
     	try (Connection conn = cu.getConnection()){
 			PreparedStatement ps = conn.prepareStatement(sql);
@@ -37,6 +38,8 @@ public class ReservationDAO {
 			ps.setString(3, resData.getStatus().name());
 			ps.setTimestamp(4, resData.getStartDateTime());
 			ps.setTimestamp(5, resData.getEndDateTime());
+			//add 'set' serviceId (if selected)
+			
 			
 			ResultSet rs = ps.executeQuery();
 			
@@ -48,6 +51,7 @@ public class ReservationDAO {
 						ResStatusType.valueOf(rs.getString("status")),
 						rs.getTimestamp("start_datetime"),
 						rs.getTimestamp("end_datetime")
+						//add 'get' serviceId (if selected)
 						);
 			}
     	}catch (SQLException q) {
@@ -84,8 +88,6 @@ public class ReservationDAO {
     			inComingReserv.setStatus(stat);
     			inComingReserv.setStartDateTime(rs.getTimestamp("start_datetime"));
     			inComingReserv.setEndDateTime(rs.getTimestamp("end_datetime"));
-    			
-    			
     		    
     			
     			resList.add(inComingReserv);
