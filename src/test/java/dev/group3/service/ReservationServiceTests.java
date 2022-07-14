@@ -1,6 +1,8 @@
 package dev.group3.service;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -19,6 +21,7 @@ import org.junit.jupiter.params.provider.NullAndEmptySource;
 import dev.group3.model.Reservation;
 import dev.group3.model.User;
 import dev.group3.model.enums.ResStatusType;
+import dev.group3.model.enums.UserType;
 import dev.group3.repo.ReservationDAO;
 import dev.group3.repo.UserDAO;
 import dev.group3.util.ActiveUserSessions;
@@ -29,10 +32,13 @@ public class ReservationServiceTests {
     
     // Init
     private static ReservationService resService;
+    private static ActiveUserSessions aus = new ActiveUserSessions();
     
     // Mock DAO
     private static UserDAO mockUserDAO;
     private static ReservationDAO mockResDAO;
+   
+    private static ActiveUserSessions mockActUsSesh;
     
     // Mock Database Data
     private static List<User> mockUsers;
@@ -46,6 +52,7 @@ public class ReservationServiceTests {
     public static void setup() {
         mockUserDAO = mock(UserDAO.class);
         mockResDAO = mock(ReservationDAO.class);
+        mockActUsSesh = mock(ActiveUserSessions.class);
         resService = new ReservationService(mockUserDAO, mockResDAO);
         refreshMockData();
     }
@@ -63,21 +70,23 @@ public class ReservationServiceTests {
     public static void refreshMockData() {
         // Getting refreshed mock data
         mockUsers = MockDataSet.getUserTestSet();
+        mockReses = MockDataSet.getReservationTestSet();
+        MockDataSet.resetFilteredStorage();
         
         // Mocking DAO behavior
         // Users
-        for (User user: mockUsers) {
-            when(mockUserDAO.getUserByUsername(user.getEmail())).thenReturn(user);
-        }
+//        for (User user: mockUsers) {
+//            when(mockUserDAO.getUserByUsername(user.getEmail())).thenReturn(user);
+//        }
         
         // Reservations
-        when(mockResDAO.getAllReservations()).thenReturn(mockReses);
-        for (User user: mockUsers) {
-            when(mockResDAO.getAllRservationsByUsername(user.getEmail())).thenReturn(MockDataSet.getFilteredReservationDataSet(user.getEmail()));
-        }
-        for (Reservation res: mockReses) {
-            when(mockResDAO.getReservationById(res.getId())).thenReturn(res);
-        }
+//        when(mockResDAO.getAllReservations()).thenReturn(mockReses);
+//        for (User user: mockUsers) {
+//            when(mockResDAO.getAllRservationsByUsername(user.getEmail())).thenReturn(MockDataSet.getFilteredReservationDataSet(user.getEmail()));
+//        }
+//        for (Reservation res: mockReses) {
+//            when(mockResDAO.getReservationById(res.getId())).thenReturn(res);
+//        }
     }
     
     /*
@@ -88,7 +97,7 @@ public class ReservationServiceTests {
     @MethodSource("cnr_invalidInputs")
     public void cnr_invalidInputs_nullBlank_400null(String username, Reservation resData, String token) {
         // Running test
-        Pair<Reservation, Integer> actualRes = resService.createNewReservation(username, resData, token);
+        Pair<Reservation, Integer> actualRes = resService.createReservation(username, resData, token);
         Object[] expectedResults = {null, 400};
         Object[] actualResults = {actualRes.getFirst(), actualRes.getSecond()};
         
@@ -108,7 +117,7 @@ public class ReservationServiceTests {
     @Test
     public void cnr_invalidInputs_noResData_400null() {
         // Running test
-        Pair<Reservation, Integer> actualRes = resService.createNewReservation("a", new Reservation(), "a");
+        Pair<Reservation, Integer> actualRes = resService.createReservation("a", new Reservation(), "a");
         Object[] expectedResults = {null, 400};
         Object[] actualResults = {actualRes.getFirst(), actualRes.getSecond()};
         
@@ -119,7 +128,7 @@ public class ReservationServiceTests {
     @Test
     public void cnr_invalidInputs_resDataIsInvalid_400null() {
         // Running test
-        Pair<Reservation, Integer> actualRes = resService.createNewReservation("a", MockDataSet.getDefaultNewReservationData().setDogId(-1), "a");
+        Pair<Reservation, Integer> actualRes = resService.createReservation("a", MockDataSet.getDefaultNewReservationData().setDogId(-1), "a");
         Object[] expectedResults = {null, 400};
         Object[] actualResults = {actualRes.getFirst(), actualRes.getSecond()};
         
@@ -130,18 +139,20 @@ public class ReservationServiceTests {
     @Test
     public void cnr_userDoesNotExist_404null() {
         // Running test
-        Pair<Reservation, Integer> actualRes = resService.createNewReservation("ghostUser", MockDataSet.getDefaultNewReservationData(), "a");
+        Pair<Reservation, Integer> actualRes = resService.createReservation("ghostUser", MockDataSet.getDefaultNewReservationData(), "a");
         Object[] expectedResults = {null, 404};
         Object[] actualResults = {actualRes.getFirst(), actualRes.getSecond()};
+
         
         // Assertions
         assertArrayEquals(expectedResults, actualResults);
+      
     }
     
     @Test
     public void cnr_dogDoesNotExist_404null() {
         // Running test
-        Pair<Reservation, Integer> actualRes = resService.createNewReservation("owner", MockDataSet.getDefaultNewReservationData().setDogId(100), "a");
+        Pair<Reservation, Integer> actualRes = resService.createReservation("owner", MockDataSet.getDefaultNewReservationData().setDogId(100), "a");
         Object[] expectedResults = {null, 404};
         Object[] actualResults = {actualRes.getFirst(), actualRes.getSecond()};
         
@@ -152,7 +163,7 @@ public class ReservationServiceTests {
     @Test
     public void cnr_userNotInActiveSession_401null() {
         // Running test
-        Pair<Reservation, Integer> actualRes = resService.createNewReservation("owner", MockDataSet.getDefaultNewReservationData(), "notActiveToken");
+        Pair<Reservation, Integer> actualRes = resService.createReservation("owner", MockDataSet.getDefaultNewReservationData(), "notActiveToken");
         Object[] expectedResults = {null, 401};
         Object[] actualResults = {actualRes.getFirst(), actualRes.getSecond()};
         
@@ -166,7 +177,7 @@ public class ReservationServiceTests {
         String token = ActiveUserSessions.addActiveUser("email1");
         
         // Running test
-        Pair<Reservation, Integer> actualRes = resService.createNewReservation("email2", MockDataSet.getDefaultNewReservationData(), token);
+        Pair<Reservation, Integer> actualRes = resService.createReservation("email2", MockDataSet.getDefaultNewReservationData(), token);
         Object[] expectedResults = {null, 403};
         Object[] actualResults = {actualRes.getFirst(), actualRes.getSecond()};
         
@@ -181,7 +192,7 @@ public class ReservationServiceTests {
         Reservation resData = MockDataSet.getDefaultNewReservationData();
         
         // Running test
-        Pair<Reservation, Integer> actualRes = resService.createNewReservation("email1", resData, token);
+        Pair<Reservation, Integer> actualRes = resService.createReservation("email1", resData, token);
         Object[] expectedResults = {resData, 200};
         Object[] actualResults = {actualRes.getFirst(), actualRes.getSecond()};
         
@@ -195,29 +206,42 @@ public class ReservationServiceTests {
     @NullAndEmptySource
     public void gar_invalidInputs_nullBlank_400null(String token) {
         // Running test
-        Pair<List<Reservation>, Integer> actualRes = resService.getAllReservations(token);
-        Object[] expectedResults = {null, 400};
-        Object[] actualResults = {actualRes.getFirst(), actualRes.getSecond()};
-        
-        // Assertions
-        assertArrayEquals(expectedResults, actualResults); 
+    	   when(mockResDAO.getAllReservations()).thenReturn(null);
+           
+    	   Object[] expectedResults = {null, 400};
+           Pair<List<Reservation>, Integer> actualRes = resService.getAllReservations("");
+           Object[] actualResults = {actualRes.getFirst(), actualRes.getSecond()};
+           
+           
+           // Assertions.
+           assertArrayEquals(expectedResults, actualResults);
+
     }
     
     @Test
     public void gar_userNotInActiveSession_401null() {
-        // Running test
-        Pair<List<Reservation>, Integer> actualRes = resService.getAllReservations("NotActive");
+        // Running test       
+        when(mockResDAO.getAllReservations()).thenReturn(null);
+        
         Object[] expectedResults = {null, 401};
+        Pair<List<Reservation>, Integer> testStuff = new Pair<List<Reservation>, Integer>(null,401);
+        Pair<List<Reservation>, Integer> actualRes = resService.getAllReservations("NotActive");
         Object[] actualResults = {actualRes.getFirst(), actualRes.getSecond()};
         
-        // Assertions
-        assertArrayEquals(expectedResults, actualResults); 
+        
+        // Assertions.
+        assertArrayEquals(expectedResults, actualResults);
+        
     }
     
-    @Test
+	@Test
     public void gar_userNotAuthorized_403null() {
         // Init mock data set
         String token = ActiveUserSessions.addActiveUser("email1");
+        User user = new User("email1",      "pass1",    UserType.CUSTOMER,  "Alice",    "Apple",    "1234567890",   1000.00);
+        when(mockResDAO.getAllReservations()).thenReturn(null);
+        
+        when(mockUserDAO.getUserByUsername(user.getEmail())).thenReturn(user);
         
         // Running test
         Pair<List<Reservation>, Integer> actualRes = resService.getAllReservations(token);
@@ -232,14 +256,22 @@ public class ReservationServiceTests {
     public void gar_userAuthorized_200Requests() {
         // Init mock data set
         String token = ActiveUserSessions.addActiveUser("owner");
+        User user = new User("owner",       "secret",   UserType.OWNER,     "Wolf",     "Flow",     "5555555555",   100.00);
         
+        List<Reservation> listRes = new ArrayList<Reservation>(MockDataSet.getReservationTestSet());
+
+        when(mockUserDAO.getUserByUsername(user.getEmail())).thenReturn(user);
+        when(mockResDAO.getAllReservations()).thenReturn(listRes);
+
         // Running test
         Pair<List<Reservation>, Integer> actualRes = resService.getAllReservations(token);
-        Object[] expectedResults = {mockReses, 200};
+
+
+        Object[] expectedResults = {listRes,200};
         Object[] actualResults = {actualRes.getFirst(), actualRes.getSecond()};
         
         // Assertions
-        assertArrayEquals(expectedResults, actualResults); 
+        assertArrayEquals(expectedResults, actualResults);
     }
     
     // === getAllReservationsByUsername TESTS ===
@@ -371,7 +403,7 @@ public class ReservationServiceTests {
         
         // Running test
         Pair<Reservation, Integer> actualRes = resService.getReservationById(username, rid, token);
-        Object[] expectedResults = {mockReses.get(resIndex), 200};
+        Object[] expectedResults = {mockReses, 200};
         Object[] actualResults = {actualRes.getFirst(), actualRes.getSecond()};
         
         // Assertions

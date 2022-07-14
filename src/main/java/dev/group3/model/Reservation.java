@@ -57,8 +57,8 @@ public class Reservation {
         return status;
     }
 
-    public Reservation setStatus(ResStatusType status) {
-        this.status = status;
+    public Reservation setStatus(ResStatusType checkedin) {
+        this.status = checkedin;
         return this;
     }
 

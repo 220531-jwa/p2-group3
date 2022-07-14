@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration Page</title>
+    <!-- CSS only -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+</head>
+<body>
+    <div class="container bg-light">
+        <h1 class="mb-4 bg-dark">#</h1>
+        <h1 id="title" class="mb-4">New User:</h1>
+        <div id="error" style="Color: red"></div>
+        <form id="form">
+            <hr>
+            <p><b>User Information</b></p>
+            <div class="form-group row mb-4">
+                <div class="col">
+                    <div id="inputEmailError" style="color: red"></div>
+                    <lable style="display: block" for="inputEmail">Email:</lable>
+                    <input id="inputEmail" class="input readOnly" type="text">
+                </div>
+                <div class="col user">
+                    <div id="inputPasswordError" style="color: red"></div>
+                    <lable id="inputPasswordLabel" style="display: block" for="inputPassword">Password:</lable>
+                    <input id="inputPassword" class="input update" type="password">
+                </div>
+            </div>
+            <div class="form-group row mb-4">
+                <div class="col">
+                    <div id="inputFirstNameError" style="color: red"></div>
+                    <lable style="display: block" for="inputFirstName">First Name:</lable>
+                    <input id="inputFirstName" class="input update" type="text">
+                </div>
+                <div class="col">
+                    <div id="inputLastNameError" style="color: red"></div>
+                    <lable style="display: block" for="inputLastName">Last Name:</lable>
+                    <input id="inputLastName" class="input update" type="text">
+                </div>
+            </div>
+            <div class="form-group row mb-4">
+                <div class="col">
+                    <div id="inputPhoneNumberError" style="color: red"></div>
+                    <lable style="display: block" for="inputFirstName">Phone Number:</lable>
+                    <input id="inputPhoneNumber" class="input update" type="text">
+                </div>
+                <div class="col user">
+                    <div id="inputFundsError" style="color: red"></div>
+                    <lable style="display: block" for="inputFunds">Funds:</lable>
+                    <input id="inputFunds" type="number" class="input readOnly" min="0" max="9999.99" step="any" placeholder="$0.00">
+                </div>
+            </div>
+        </form>
+        <div class="row">
+            <div class="col">
+                <button class="btn btn-primary mb-4" type="button" onclick="back()">Back</button>
+            </div>
+            <div class="col text-end">
+                <button id="submitButton" class="btn btn-primary mb-4" type="button">Submit</button>
+            </div>
+        </div>
+        <h1 class="mb-4 bg-dark">#</h1>
+    </div>
+
+    <!-- JavaScript Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
+    <script src="../scripts/Apis/UserApi.js"></script>
+    <script src="../scripts/util.js"></script>
+    <script src="../scripts/userProfile.js"></script>
+    
+</body>
+</html>
