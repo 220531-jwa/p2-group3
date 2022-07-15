@@ -135,22 +135,24 @@ public class DogDAO {
 	}
 	
 	public Dog getDogByID(int dogId) {
-		String sql = "select from dogs where id = ?";
+		String sql = "select * from dogs where id = ?";
 		
 		try(Connection conn = cu.getConnection()) {
 			PreparedStatement ps = conn.prepareStatement(sql);
 			ps.setInt(1, dogId);
 			ResultSet rs = ps.executeQuery();
 			
-			return new Dog(
-					rs.getInt("id"),
-					rs.getString("user_email"),
-					rs.getBoolean("status"),
-					rs.getString("dog_name"),
-					rs.getString("breed"),
-					rs.getInt("dog_age"),
-					rs.getBoolean("vaccinated")
-					);
+			if (rs.next()) {
+			    return new Dog(
+	                    rs.getInt("id"),
+	                    rs.getString("user_email"),
+	                    rs.getBoolean("status"),
+	                    rs.getString("dog_name"),
+	                    rs.getString("breed"),
+	                    rs.getInt("dog_age"),
+	                    rs.getBoolean("vaccinated")
+	                    );
+			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
