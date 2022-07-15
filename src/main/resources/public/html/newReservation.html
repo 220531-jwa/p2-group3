@@ -17,24 +17,10 @@
             <hr>
             <p><b>New Reservation Information</b></p>
             <div class="form-group row mb-4">
-                <div class="dropdown">
-                    <div id="inputDogIdError" style="color: red"></div>
-                    <label style="display: block" for="inputDogId">Select the dog for your reservation:</label>
-                    <select name="inputDogId" id="inputDogId" onchange="getAllDogsByUsername()">
-                        <option>Select your dog</option>
-                        <option dogId="dog1" value="10">Basquiat</option>
-                        <option dogId="dog2" value="11">Caramel</option>
-                        <option dogId="dog3" value="12">Pimms</option>
-                        <option dogId="dog4" value="13">Arrow</option>
-                        <option dogId="dog5" value="14">Ash</option>
-                        <option dogId="dog6" value="15">Cinder</option>
-                        <option dogId="dog7" value="16">Harper</option>
-                        <option dogId="dog8" value="17">Kane</option>
-                        <option dogId="dog9" value="18">Ursa</option>
-                        <option dogId="dog10" value="19">Pip</option>
-                        <option dogId="dog11" value="20">Mixie</option>
-
-                    </select>
+                <div class="col">
+                    <div id="inputDogNameError" style="color: red"></div>
+                    <label style="display: block" for="inputDogName">Enter your dog's name for the Reservation:</label>
+                    <input id="inputDogName" type="inputDogName"></input>
                 </div>
             </div>
             <div class="form-group row mb-4">
@@ -55,9 +41,10 @@
                     <label style="display: block" for="inputServiceId">Additional Service (optional)</label>
                     <select name="inputServiceId" id="inputServiceId">
                         <option>Select an Option</option>>
-                        <option id="bellyrub3" value="2">Belly Rub - $0.99</option>
-                        <option id="dogwalk4" value="3">Walk - $15.00</option>
-                        <option id="nailtrim5" value="4">Nail Trimming - $19.99</option>
+                        <option id="groomingInput" value="2">Grooming - $25.00</option>
+                        <option id="bellyrubInput" value="3">Belly Rub - $0.99</option>
+                        <option id="dogwalkInput" value="4">Walk - $15.00</option>
+                        <option id="nailtrimInput" value="5">Nail Trimming - $19.99</option>
                     </select>
                 </div>
             </div>

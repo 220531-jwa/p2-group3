@@ -7,8 +7,6 @@ import java.sql.SQLException;
 
 //import java.sql.Timestamp;
 import java.util.ArrayList;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import java.util.List;
 
@@ -29,8 +27,6 @@ public class ReservationDAO {
      */
     
     public Reservation createReservation(Reservation resData) {
-    	log.debug("Attempting to add new reservation to database with resData: " + resData);
-    	
     	String sql = "insert into reservations values(default, ?, ?, ?, ?, ?)";
     	//need to update SQL statement to also add serviceId (if selected)
     	
@@ -41,8 +37,6 @@ public class ReservationDAO {
 			ps.setString(3, resData.getStatus().name());
 			ps.setTimestamp(4, resData.getStartDateTime());
 			ps.setTimestamp(5, resData.getEndDateTime());
-			//add 'set' serviceId (if selected)
-			
 			
 			ResultSet rs = ps.executeQuery();
 			
