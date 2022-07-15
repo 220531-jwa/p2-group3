@@ -324,7 +324,7 @@ public class ReservationService {
         	// Checking if reservation was updated successfully
         	if(resp != null) {
         	    // Successfully updated reservation
-        		return new Pair<Reservation, Integer>(resp ,200);
+        		return new Pair<Reservation, Integer>(resp, 200);
         	}
         	else {
         	    log.error("Failed to update reservation. Possible: Reservation does not exist");
