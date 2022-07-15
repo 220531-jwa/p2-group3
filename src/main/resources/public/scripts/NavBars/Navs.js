@@ -49,6 +49,7 @@ const CustomerTopNav =` <nav class="navbar navbar-expand-lg bg-dark fixed-top">
     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
       <li class="nav-item">
         <a class="nav-link active" aria-current="page" href="#" style="color:seagreen">Customer Home</a>
+        
       </li>
       <li class="nav-item">
         <a class="nav-link active" aria-current="page" href="#" style="color:seagreen">Option 1</a>
@@ -66,21 +67,43 @@ const CustomerTopNav =` <nav class="navbar navbar-expand-lg bg-dark fixed-top">
     </div>
     </nav>`
 
+    
 
+{/* <a href="#" onclick="openUserPanel(event.target)">Update Profile</a> */}
+{/* <a href="#" id="reservationPanel_tag" onclick="openUserPanel(event.target)">Reservations</a> */}
+        // <a href="#" id="dogsPanel_tag" onclick="openUserPanel(event.target)">Dogs</a>
 //   <!-- Side navigation -->
     const customerSideNavdos =`<div class="sidenav">
+      <div class="container">
         <h6>customer</h6>
-    <a href="#">Update Profile</a>
-    <a href="/html/ReservationsPage.html">Reservations</a>
-    <a href="#">Dogs</a>
+      </div>
+      <div class="container">
+        <div  class="row"  >
+          
+          <button id="userPanel_tag" class="sideOpt" onclick="openPanel(event.target)">Update Profile</button>
+          <button id="reservationPanel_tag" class="sideOpt" onclick="openPanel(event.target)">Reservations</button>
+          <button id="dogsPanel_tag" class="sideOpt" onclick="openPanel(event.target)">Dogs</button>
+        
+        </div
+        
+      </div>
     </div>`
 
     const ownerSideNavdos =`<div class="sidenav">
-    <h6>Owner</h6>
-    <a href="#">Update Profile</a>
-    <a href=""/html/ReservationsPage.html"">Reservations</a>
-    <a href="#">other</a>
-    </div>`
+    <div class="container">
+      <h6>Owner</h6>
+    </div>
+    <div class="container">
+      <div  class="row"  >
+        
+        <button id="userPanel_tag" class="sideOpt" onclick="openPanel(event.target)">Update Profile</button>
+        <button id="reservationPanel_tag" class="sideOpt" onclick="openPanel(event.target)">Reservations</button>
+        <button id="dogsPanel_tag" class="sideOpt" onclick="openPanel(event.target)">Dogs</button>
+      
+      </div
+      
+    </div>
+  </div>`
 
 
 
@@ -91,7 +114,6 @@ function setupTopNav(divToAttachTo,userRole){
   let navCont = document.createElement("div");
   navCont.id="navCont";
 
-  console.log(userRole)
 
 
   if(userRole == "CUSTOMER"){

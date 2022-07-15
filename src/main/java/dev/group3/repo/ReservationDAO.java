@@ -104,7 +104,7 @@ public class ReservationDAO {
     		
     	}catch(SQLException e) {
     		e.printStackTrace();
-    		Pair<List<Reservation>,Integer> respPairDos = new Pair<List<Reservation>,Integer>(null,e.getErrorCode());
+//    		Pair<List<Reservation>,Integer> respPairDos = new Pair<List<Reservation>,Integer>(null,e.getErrorCode());
     	}
     			
         return null;
@@ -201,7 +201,43 @@ public class ReservationDAO {
      * === UPDATE ===
      */
     
-    public Reservation updateReservationById(int id) {
-        return null;
+    public Reservation updateReservationById(Reservation res) {
+    	
+    	String sql = "Update reservations SET "
+    			+ "user_email= ?,"
+    			+ "dog_id= ?,"
+    			+ "status= ?,"
+    			+ "start_datetime= ?,"
+    			+ "end_datetime= ?"
+    			+ "WHERE id = ?;";
+    	
+    	try(Connection conn = cu.getConnection()){
+    		PreparedStatement ps = conn.prepareStatement(sql);
+    		ps.setString(1, res.getUserEmail());
+    		ps.setInt(2, res.getDogId());
+    		ps.setString(3, res.getStatus().toString());
+    		ps.setTimestamp(4, res.getStartDateTime());
+    		ps.setTimestamp(5, res.getEndDateTime());
+    		ps.setInt(6, res.getId());
+    		
+    		
+    		boolean didEx = ps.execute();
+//    		ps.getUpdateCount();
+    		
+    		if(didEx) {
+    			return res;
+    			
+    		}else {
+    			return null;
+    		}
+    		
+    		
+    		
+    		
+    	}catch(SQLException e) {
+    		e.printStackTrace();
+    		return null;
+    	}
+//        return null;
     }
 }

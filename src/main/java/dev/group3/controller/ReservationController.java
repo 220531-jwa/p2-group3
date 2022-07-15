@@ -37,12 +37,23 @@ public class ReservationController {
     public void getAllReservations(Context ctx) {
         
     	String token = ctx.header("Token");
+    	System.out.println(token);
     	Pair<List<Reservation>, Integer> respPair = rs.getAllReservations(token);
+    	
+    	
     	
     	ArrayList<Reservation> resArray = (ArrayList<Reservation>) respPair.getFirst();
     	int stat = (Integer) respPair.getSecond();
-    	ctx.json(resArray);
-    	ctx.status(stat);
+    	
+    	if(stat==200) {
+    		
+    		ctx.json(resArray);
+    		ctx.status(stat);
+    	}else {
+    		ctx.status(stat);
+    	}
+    	
+    	
     }
     
     public void getAllRservationsByUsername(Context ctx) {
@@ -68,8 +79,8 @@ public class ReservationController {
     }
     
     public void getReservationById(Context ctx) {
-//    	 String token = ctx.header("Toke");
-    	String token = "hi";
+    	 String token = ctx.header("Token");
+//    	String token = "hi";
          String userName = ctx.pathParam("username");
          Integer res_id = Integer.parseInt(ctx.pathParam("res_id"));
     	Pair<Reservation,Integer> resPair = rs.getReservationById(userName, res_id, token);
@@ -91,6 +102,23 @@ public class ReservationController {
     // owner - Checkin/out
     // dogowner - cancel
     public void updateReservationById(Context ctx) {
+    	
+    	String token = ctx.header("Token");
+    	Integer reserv_id = Integer.parseInt(ctx.pathParam("res_id"));
+    	Reservation res = ctx.bodyAsClass(Reservation.class);
+    	
+    	Pair<Reservation,Integer>respPair = rs.updateReservationById(res, token);
+    	Integer stat = respPair.getSecond();
+    	
+    	if(stat==200) {
+    		Reservation reserv= respPair.getFirst();
+    		ctx.json(reserv);
+    		ctx.status(stat);
+    	}else {
+    		ctx.status();
+    	}
+    	
+    	
         
     }
 }

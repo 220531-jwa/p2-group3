@@ -428,7 +428,8 @@ public class ReservationServiceTests {
     @MethodSource("urbi_invalidInputs")
     public void urbi_invalidInputs_nullBlank_400null(String username, Integer rid, Reservation resData, String token) {
         // Running test
-        Pair<Reservation, Integer> actualRes = resService.updateReservationById(username, rid, resData, token);
+//        Pair<Reservation, Integer> actualRes = resService.updateReservationById(username, rid, resData, token);
+        Pair<Reservation, Integer> actualRes = resService.updateReservationById(resData, token);
         Object[] expectedResults = {null, 400};
         Object[] actualResults = {actualRes.getFirst(), actualRes.getSecond()};
         
@@ -450,7 +451,8 @@ public class ReservationServiceTests {
     @Test
     public void urbi_invalidInputs_resDataIsNull_400null() {
         // Running test
-        Pair<Reservation, Integer> actualRes = resService.updateReservationById("a", 1, new Reservation(), "a");
+//        Pair<Reservation, Integer> actualRes = resService.updateReservationById("a", 1, new Reservation(), "a");
+        Pair<Reservation, Integer> actualRes = resService.updateReservationById( new Reservation(), "a");
         Object[] expectedResults = {null, 400};
         Object[] actualResults = {actualRes.getFirst(), actualRes.getSecond()};
         
@@ -461,7 +463,8 @@ public class ReservationServiceTests {
     @Test
     public void urbi_userNotInActiveSession_401null() {
         // Running test
-        Pair<Reservation, Integer> actualRes = resService.updateReservationById("email1", 1, new Reservation().setStatus(ResStatusType.CHECKEDIN), "notActiveToken");
+//        Pair<Reservation, Integer> actualRes = resService.updateReservationById("email1", 1, new Reservation().setStatus(ResStatusType.CHECKEDIN), "notActiveToken");
+        Pair<Reservation, Integer> actualRes = resService.updateReservationById(new Reservation().setStatus(ResStatusType.CHECKEDIN), "notActiveToken");
         Object[] expectedResults = {null, 401};
         Object[] actualResults = {actualRes.getFirst(), actualRes.getSecond()};
         
@@ -475,7 +478,8 @@ public class ReservationServiceTests {
         String token = ActiveUserSessions.addActiveUser("email1");
         
         // Running test
-        Pair<Reservation, Integer> actualRes = resService.updateReservationById("email2", 3, new Reservation().setStatus(ResStatusType.CHECKEDIN), token);
+//        Pair<Reservation, Integer> actualRes = resService.updateReservationById("email2", 3, new Reservation().setStatus(ResStatusType.CHECKEDIN), token);
+        Pair<Reservation, Integer> actualRes = resService.updateReservationById(new Reservation().setStatus(ResStatusType.CHECKEDIN), token);
         Object[] expectedResults = {null, 403};
         Object[] actualResults = {actualRes.getFirst(), actualRes.getSecond()};
         
@@ -489,7 +493,8 @@ public class ReservationServiceTests {
         String token = ActiveUserSessions.addActiveUser("ghostUser");
         
         // Running test
-        Pair<Reservation, Integer> actualRes = resService.updateReservationById("ghostUser", 1, new Reservation().setStatus(ResStatusType.CHECKEDIN), token);
+//        Pair<Reservation, Integer> actualRes = resService.updateReservationById("ghostUser", 1, new Reservation().setStatus(ResStatusType.CHECKEDIN), token);
+        Pair<Reservation, Integer> actualRes = resService.updateReservationById(new Reservation().setStatus(ResStatusType.CHECKEDIN), token);
         Object[] expectedResults = {null, 404};
         Object[] actualResults = {actualRes.getFirst(), actualRes.getSecond()};
         
@@ -503,7 +508,8 @@ public class ReservationServiceTests {
         String token = ActiveUserSessions.addActiveUser("email1");
         
         // Running test
-        Pair<Reservation, Integer> actualRes = resService.updateReservationById("email1", 100, new Reservation().setStatus(ResStatusType.CHECKEDIN), token);
+//        Pair<Reservation, Integer> actualRes = resService.updateReservationById("email1", 100, new Reservation().setStatus(ResStatusType.CHECKEDIN), token);
+        Pair<Reservation, Integer> actualRes = resService.updateReservationById(new Reservation().setStatus(ResStatusType.CHECKEDIN), token);
         Object[] expectedResults = {null, 404};
         Object[] actualResults = {actualRes.getFirst(), actualRes.getSecond()};
         
@@ -518,7 +524,8 @@ public class ReservationServiceTests {
         String token = ActiveUserSessions.addActiveUser(userusername);
         
         // Running test
-        Pair<Reservation, Integer> actualRes = resService.updateReservationById("email1", 1, new Reservation().setStatus(newStatus), token);
+//        Pair<Reservation, Integer> actualRes = resService.updateReservationById("email1", 1, new Reservation().setStatus(newStatus), token);
+        Pair<Reservation, Integer> actualRes = resService.updateReservationById(new Reservation().setStatus(newStatus), token);
         Object[] expectedResults = {null, 404};
         Object[] actualResults = {actualRes.getFirst(), actualRes.getSecond()};
         
@@ -542,7 +549,8 @@ public class ReservationServiceTests {
         String token = ActiveUserSessions.addActiveUser(userusername);
         
         // Running test
-        Pair<Reservation, Integer> actualRes = resService.updateReservationById("email1", 1, new Reservation().setStatus(newStatus), token);
+//        Pair<Reservation, Integer> actualRes = resService.updateReservationById("email1", 1, new Reservation().setStatus(newStatus), token);
+        Pair<Reservation, Integer> actualRes = resService.updateReservationById(new Reservation().setStatus(newStatus), token);
         Object[] expectedResults = {null, 404};
         Object[] actualResults = {actualRes.getFirst(), actualRes.getSecond()};
         

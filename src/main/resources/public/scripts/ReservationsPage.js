@@ -1,12 +1,17 @@
-const user = getSessionUserData();
-const token = sessionStorage.getItem("token");
+
+/**
+ * VARIABLES
+ */
+
+
+const userRes = getSessionUserData();
+const seshToken = "";
 
 
 var allReservations = [];
 var allSessionCustomerResVations = [];
 var openEL = "allReservationsTableRow";
 var openTopEl = "viewReservationsDiv"
-
 
 var reservation = {
     id:null,
@@ -17,13 +22,14 @@ var reservation = {
     endDateTime:null
 }
 
+// THIS UPDATED THE ABOVE OBJECT LITERAL
 async function updateIncomingReservationPage(incomingReservation){
 
     if(incomingReservation){
         Object.keys(incomingReservation).forEach((key, index) => {
     
             if(key == "startDateTime" ){
-                console.log("here")
+                
                 let incomingDate = incomingReservation[key];
                 let newDate = new Date(incomingDate);
                 let day = newDate.getDate();
@@ -38,10 +44,10 @@ async function updateIncomingReservationPage(incomingReservation){
                 }
 
 
-                console.log(seconds.length)
+                
                 if(seconds.length==1){
                     seconds = seconds + "0"
-                    console.log(seconds)
+                    
                 }
     
                 let theDate = month + "/" + day + "/" + year
@@ -49,7 +55,7 @@ async function updateIncomingReservationPage(incomingReservation){
 
                 let fullDate = theDate + " " + theTime
     
-                console.log(theDate);
+                
     
                 reservation.startDateTime = fullDate;
     
@@ -70,7 +76,7 @@ async function updateIncomingReservationPage(incomingReservation){
                 }
 
 
-                console.log(seconds.length)
+                
                 if(seconds.length==1){
                     seconds = seconds + "0"
                    
@@ -94,6 +100,273 @@ async function updateIncomingReservationPage(incomingReservation){
 }
 
 
+
+
+/**
+ *  HTML PAGES TURNED INTO JAVASCRIPT
+ */
+
+ // THIS IS WHERE WE ARE GOING TO "RENDER" OUR HTML AFTER FIGURING OUT USERTYPE LOGGED IN
+ const ownerReservationsPage = `<div id="main">
+
+ <div id="topLvlButtsCont" class="container">
+     <div class="row">
+         <div class="col-6 col-sm-6">
+             <butoon id="viewReservationsDiv_butt" type="button" class="btn btn-primary" onclick="topLvlButtonsHandler(event.target)">View All Your Reservations</butoon>
+         </div>
+         <div class="col-6 col-sm-6">
+             <butoon id="createNewReservationDiv_butt" type="button" class="btn btn-primary" onclick="topLvlButtonsHandler(event.target)">Book New Reservation</butoon>
+         </div>
+     </div>
+
+ </div>
+ <div id="testLvlButtsCont" class="container" >
+     <div class="row">
+         <div class="col-4 col-sm-4">
+             <button id="allReservationsTableRow_butt" type="button" class="btn btn-primary" onclick="testLvlButtonsHandler(event.target)">test get all reservations</button>
+         </div>
+         <div class="col-4 col-sm-4">
+             <button id="allReservationsByUserNameTableRow_butt" type="button" class="btn btn-primary" onclick="testLvlButtonsHandler(event.target)">test get reservation by username</button>
+         </div>
+         <div class="col-4 col-sm-4">
+             <button id="getReservationByIdRow_butt" type="button" class="btn btn-primary" onclick="testLvlButtonsHandler(event.target)">test get reservation by id</button>
+         </div>
+     </div>
+ </div>
+
+ <div id="viewReservationsDiv" class="container">
+
+     <div id="allReservationsTableRow" class="row tableHolder">
+         <div class="row">
+             <div class="col-12 col-sm-12" style="margin-bottom: 3vh;">
+                 <h4 style="text-align:center; width: 100%;">All Reservations</h4>
+             </div>
+         </div>
+         
+         <div id="allReservationsTableCol" class="col-12 col-sm-12">
+         </div>
+     </div>
+
+     <div id="allReservationsByUserNameTableRow" class="row tableHolder off">
+         <div class="row">
+             <div class="col-12 col-sm-12" >
+                 <h4 style="text-align:center; width: 100%;">All By User Name</h4>
+
+             </div>
+         </div>
+         <div id="allReservationsByUserNameTableCol" class="col-12 col-sm-12">
+         </div>
+     </div>
+
+     <div id="getReservationByIdRow" class="row tableHolder off">
+         <div id="getReservationByIdTop" class="col-12 col-sm-12">
+             <div class="row">
+                 <div class="col-12 col-sm-12" >
+                     <h4 style="text-align:center; width: 100%;">Get Reservation By ID</h4>
+
+                 </div>
+             </div>
+
+             <div class="row">
+                 <div class="col-2 col-sm-2" style="padding:4vh">
+                     <label for="req_id_box" style="float:right">Enter the Id of your request</label>
+                 </div>
+                 <div class="col-2 col-sm-2" style="padding:4vh">
+                     <input id="req_id_box" type="number">
+                 </div>
+                 <div class="col-2 col-sm-2" style="padding:4vh">
+                     <button id="getreqbutt" class="btn btn-primary" type="button" style="float:left" onclick="setUpReservationById()">Get Request</button>
+                 </div>
+                 <div class="col-6 col-sm-6" style="padding:4vh">
+                     <!-- <button id="getreqbutt" class="btn btn-primary" type="button" style="float:left">Get Request</button> -->
+                 </div>
+
+             </div>
+             <hr>
+
+             <div class="row">
+                 <div id="getReservationByIdTableCol" class="col-12 col-sm-12">
+                     <table class="table">
+                         <tr>
+                             <thead>
+                                 <th scope="col">Hi there</th>
+                                 <th scope="col">yello</th>
+                             </thead>
+                         </tr>
+                     </table>
+                     
+                 </div>
+             </div>
+         </div>
+     </div>
+
+
+ </div>
+
+ <div id="createNewReservationDiv" class="container off">
+     <div class="row">
+         <div class="col-12 col-sm-12">
+             <h5>Create Reservation</h5>
+         </div>
+     </div>
+
+     
+ </div>
+ 
+</div>`
+
+
+const customerReservationsPage = `<div id="main">
+
+<div id="topLvlButtsCont" class="container">
+ <div class="row">
+     <div class="col-6 col-sm-6">
+         <butoon id="viewReservationsDiv_butt" type="button" class="btn btn-primary" onclick="topLvlButtonsHandler(event.target)">View All Your Reservations</butoon>
+     </div>
+     <div class="col-6 col-sm-6">
+         <butoon id="createNewReservationDiv_butt" type="button" class="btn btn-primary" onclick="topLvlButtonsHandler(event.target)">Book New Reservation</butoon>
+     </div>
+ </div>
+
+</div>
+<div id="testLvlButtsCont" class="container" >
+ <div class="row">
+     <div class="col-6 col-sm-6">
+         <button id="allReservationsByUserNameTableRow_butt" type="button" class="btn btn-primary" onclick="testLvlButtonsHandler(event.target)">Get My Reservations</button>
+     </div>
+     <div class="col-6 col-sm-6">
+         <button id="getReservationByIdRow_butt" type="button" class="btn btn-primary" onclick="testLvlButtonsHandler(event.target)">test get reservation by id</button>
+     </div>
+ </div>
+</div>
+
+<div id="viewReservationsDiv" class="container">
+
+ <div id="allReservationsTableRow" class="row tableHolder">
+     <div class="row">
+         <div class="col-12 col-sm-12" style="margin-bottom: 3vh;">
+             <h4 style="text-align:center; width: 100%;">All Reservations</h4>
+         </div>
+     </div>
+     
+     <div id="allReservationsTableCol" class="col-12 col-sm-12">
+     </div>
+ </div>
+
+ <div id="allReservationsByUserNameTableRow" class="row tableHolder off">
+     <div class="row">
+         <div class="col-12 col-sm-12" >
+             <h4 style="text-align:center; width: 100%;">All By User Name</h4>
+
+         </div>
+     </div>
+     <div id="allReservationsByUserNameTableCol" class="col-12 col-sm-12">
+     </div>
+ </div>
+
+ <div id="getReservationByIdRow" class="row tableHolder off">
+     <div id="getReservationByIdTop" class="col-12 col-sm-12">
+         <div class="row">
+             <div class="col-12 col-sm-12" >
+                 <h4 style="text-align:center; width: 100%;">Get Reservation By ID</h4>
+
+             </div>
+         </div>
+
+         <div class="row">
+             <div class="col-2 col-sm-2" style="padding:4vh">
+                 <label for="req_id_box" style="float:right">Enter the Id of your request</label>
+             </div>
+             <div class="col-2 col-sm-2" style="padding:4vh">
+                 <input id="req_id_box" type="number">
+             </div>
+             <div class="col-2 col-sm-2" style="padding:4vh">
+                 <button id="getreqbutt" class="btn btn-primary" type="button" style="float:left" onclick="setUpReservationById()">Get Request</button>
+             </div>
+             <div class="col-6 col-sm-6" style="padding:4vh">
+                 <!-- <button id="getreqbutt" class="btn btn-primary" type="button" style="float:left">Get Request</button> -->
+             </div>
+
+         </div>
+         <hr>
+
+         <div class="row">
+             <div id="getReservationByIdTableCol" class="col-12 col-sm-12">
+                 <table class="table">
+                     <tr>
+                         <thead>
+                             <th scope="col">Hi there</th>
+                             <th scope="col">yello</th>
+                         </thead>
+                     </tr>
+                 </table>
+                 
+             </div>
+         </div>
+     </div>
+ </div>
+
+
+</div>
+
+<div id="createNewReservationDiv" class="container off">
+ <div class="row">
+     <div class="col-12 col-sm-12">
+         <h5>Create Reservation</h5>
+     </div>
+ </div>
+
+ 
+</div>
+
+</div>`
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+ async function setupReservations(seshToken,userType){
+
+    // let userType = userRes.userType;
+    // let seshToken = userRes.pswrd;
+
+    const indexReservationDiv = document.getElementById("updateResCont");
+
+    if(userType === "CUSTOMER"){
+        
+        indexReservationDiv.innerHTML = customerReservationsPage;
+        setUpAllCustomerReservations(seshToken,userType);
+
+
+    }else if(userType==="OWNER"){
+        indexReservationDiv.innerHTML =ownerReservationsPage;
+        setUpAllReservations(seshToken,userType);
+    }
+
+    // setupTopNav("forTheTopDiv",userType);
+    // setupSideNav("forTheSideDiv",userType);
+
+    // CUSTOMER SIDE
+    
+    
+    // OWNER SIDE
+
+}
+
+  
+
 // async function updateIncomingReservation(incomingReservation){
 
 //     Object.keys(incomingReservation).forEach((key, index) => {
@@ -102,22 +375,9 @@ async function updateIncomingReservationPage(incomingReservation){
 
 // }
 
-async function setup(){
-
-    let userType = user.userType;
+// const indexReservationDiv = document.getElementById("updateResCont");
 
 
-    setupTopNav("forTheTopDiv",userType);
-    setupSideNav("forTheSideDiv",userType);
-
-    // CUSTOMER SIDE
-    setUpAllCustomerReservations();
-    
-    
-    // OWNER SIDE
-    setUpAllReservations();
-
-}
 
 
 function topLvlButtonsHandler(e){
@@ -179,12 +439,14 @@ function testLvlButtonsHandler(e){
 
 
 
-async function setUpAllReservations(){
+async function setUpAllReservations(seshToken){
 
     let allReservationsTableCol = document.getElementById("allReservationsTableCol");
     
-    let seshToken = user.pswrd;
-    let username = user.email;
+    // let seshToken = userRes.pswrd
+    
+    
+    // let username = userRes.email;
 
     // PULL IN ALL RESERVATIONS
     let reservations = await getAllReservations(seshToken);
@@ -198,12 +460,12 @@ async function setUpAllReservations(){
 }
 
 
-async function setUpAllCustomerReservations(){
+async function setUpAllCustomerReservations(seshToken,username){
 
     let allReservationsByUserNameTableCol = document.getElementById("allReservationsByUserNameTableCol");
     
-    let seshToken = user.pswrd;
-    let username = user.email;
+    // let seshToken = userRes.pswrd;
+    // let username = userRes.email;
 
 
     // PULL IN ALL RESERVATIONS
@@ -221,20 +483,16 @@ async function setUpAllCustomerReservations(){
 
 
 
-async function setUpReservationById(){
+async function setUpReservationById(seshToken,username){
 
     let allReservationsByUserNameTableCol = document.getElementById("getReservationByIdTableCol");
     let res_id = document.getElementById("req_id_box").value
     
-    let seshToken = user.pswrd;
-    let username = user.email;
-
-
     // PULL IN ALL RESERVATIONS
     let requestedReservation = await getReservationById(username,res_id, seshToken);
 
     await updateIncomingReservationPage(requestedReservation);
-    console.log(reservation)
+    
 
     let tbl = document.createElement("table");
     let tblHead = document.createElement("thead");
@@ -320,7 +578,7 @@ async function setUpReservationById(){
 
 
 
-function createTableData(divToAppendTo, singleOrMultiple){
+async function createTableData(divToAppendTo, singleOrMultiple){
     
     let tbl = document.createElement("table");
     let tblHead = document.createElement("thead");
@@ -331,9 +589,9 @@ function createTableData(divToAppendTo, singleOrMultiple){
 
     let newHdr = ""
 
-
-
-    if(allReservations.length > 0){
+    let allResLength = await allReservations.length;
+    
+    if(allResLength > 0){
 
         let r = 0;
          //  Appending Table Headers to Table.
@@ -369,7 +627,7 @@ function createTableData(divToAppendTo, singleOrMultiple){
         w = 0;
         
         
-        updateIncomingReservationPage(allReservations[x]);
+        await updateIncomingReservationPage(allReservations[x]);
 
         // for (key in allSessionCustomerResVations[x]) {
         
@@ -387,6 +645,7 @@ function createTableData(divToAppendTo, singleOrMultiple){
                 let buttn = document.createElement("button");
                 buttn.type="button";
                 buttn.className="btn editButt"
+                
                 // buttnTD.className="btn btn-primary editButt"
                 buttn.innerText="Edit"
                 buttTd.append(buttn);
