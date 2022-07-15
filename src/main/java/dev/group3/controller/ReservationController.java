@@ -127,7 +127,11 @@ public class ReservationController {
     	Reservation res = resPair.getFirst();
     	Integer responseCode = resPair.getSecond();
     	
-    	ctx.json(res);
+    	if(responseCode == 200) {
+    		
+    		ctx.json(res);
+    	}
+    	
     	ctx.status(responseCode);
     	
     	

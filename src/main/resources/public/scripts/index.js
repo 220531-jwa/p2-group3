@@ -67,7 +67,7 @@
         setupTopNav("forTheTopDiv",userType);
         setupSideNav("forTheSideDiv",userType);
 
-
+        console.log(user.email)
         // SET UP 
 
         if(userType == "OWNER"){
@@ -76,11 +76,11 @@
             // const frag = document.createRange().createContextualFragment("../html/userProfile.html");
             // idexUpdateUserDiv.innerHTML = userProfileElements;
             
+            setupUserProfile(user.email);
             setupReservations(seshToken,userType);
-            setupUserProfile();
         }else if(userType=="CUSTOMER"){
+            setupUserProfile(user.email);
             setupReservations(seshToken,userType);
-            setupUserProfile();
         }
 
     }
@@ -101,5 +101,10 @@
         }
     }
 
+
+
+    function navigatetoDogs(){
+        location.href="../html/DogsPage.html"
+    }
 
    

@@ -100,8 +100,8 @@ async function getAllRservationsByUsername(username,token){
  */
 async function fetchGetReservationById(username, res_id, token) {
     // Init
-    const url = `${baseURL}/${username}/${res_id}`
-
+    const url = `${baseURLReservations}/${username}/${res_id}`
+    console.log(url)
     // Sending response
     let response = await fetch(url, {
         method: 'GET',

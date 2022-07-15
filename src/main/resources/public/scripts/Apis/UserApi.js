@@ -105,7 +105,7 @@ async function fetchCreateNewUser(userData) {
 async function fetchGetUserByUsername(username, token) {
     // Init
     const url = `${baseUserURL}/users/${username}`;
-
+    
     // Sending response
     let response = await fetch(url, {
         method: 'GET',
