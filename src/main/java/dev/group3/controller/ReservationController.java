@@ -144,6 +144,7 @@ public class ReservationController {
         // Attempting to get request DTO
         Pair<ReservationDTO, Integer> result = rs.getReservationDTOById(id, token);
 
+
         // Checking if request was successful
         if (result.getFirst() != null) {
             log.info("Successfully got reservationDTO");
@@ -152,6 +153,29 @@ public class ReservationController {
 
         ctx.status(result.getSecond());
     }
+    
+//    public void getReservationById(Context ctx) {
+//    	 String token = ctx.header("Token");
+////    	String token = "hi";
+//         String userName = ctx.pathParam("username");
+//         Integer res_id = Integer.parseInt(ctx.pathParam("res_id"));
+////    	Pair<Reservation,Integer> resPair = rs.getReservationById(userName, res_id, token);
+//    	Pair<Reservation,Integer> resPair = rs.getReservationById(res_id, token);
+//    	
+//    	Reservation res = resPair.getFirst();
+//    	Integer responseCode = resPair.getSecond();
+//    	
+//    	if(responseCode == 200) {
+//    		
+//    		ctx.json(res);
+//    	}
+//    	
+//    	ctx.status(responseCode);
+//    	
+//    	
+//    	
+//>>>>>>> jfriesner_reservations
+//    }
 
     /*
      * === PATCH ===
