@@ -62,7 +62,6 @@ public class ReservationService {
     	
     	// Successfully created new reservation
 		return new Pair<Reservation, Integer>(createdReservation, 200);
-       
     }
     
     /*
@@ -123,7 +122,7 @@ public class ReservationService {
             log.error("User is not authorized to view all reservations");
         	return new Pair<List<Reservation>, Integer>(null, 403);
         }
-}
+    }
     	
     
     /**
