@@ -5,20 +5,29 @@
 The Doggy Daycare System (DDS) manages the process of customers booking and tracking reservations and services for their furry friends at the Doggy Daycare. Once a customer has created their account they have the ability to login, update their personal information, register their dog(s), update their dog information, book a new reservation and services for a dog, view all past/current reservations and services, as well as cancel a reservation if needed. The owner has the ability to login and view all customers, dogs, reservations and check-in/check-out the dogs upon arrival/departure. 
 
 ## Technologies Used
-
-* Java - version 8.0
+#Front-End
 * HTML 
 * JavaScript 
-* AWS RDS
 * CSS
-* Maven
-* Mockito
 * Bootstrap
 * PostgreSQL
+* AWS RDS
+* SQL
+* REST
+
+#Back-End
+* Java - version 8.0
+* Mockito
 * Selenium
 * Javalin
 * JUnit
 * JDBC
+
+#Project Management
+* Maven
+* Agile-Scrum
+* Eclipse
+
 
 
 ## Features
