@@ -222,11 +222,11 @@ public class ReservationService {
      * @param token The associated active user session of the requester
      * @return 200 with reservation if successful, and 400 null series otherwise
      */
-    public Pair<ReservationDTO, Integer> getReservationDTOById(String username, Integer rid, String token) {
-        log.debug("Attempting to get reservationDTO with username: " + username + " rid: " + rid + " token: " + token);
+    public Pair<ReservationDTO, Integer> getReservationDTOById(Integer rid, String token) {
+        log.debug("Attempting to get reservationDTO with rid: " + rid + " token: " + token);
         
         // Validating input
-        if (username == null || rid == null || token == null || username.isBlank() || rid < 0 || token.isBlank()) {
+        if (rid == null || token == null || rid < 0 || token.isBlank()) {
             log.error("Invalid username and/or rid and/or token input(s)");
             return new Pair<ReservationDTO, Integer>(null, 400);
         }
@@ -255,9 +255,6 @@ public class ReservationService {
             log.error("Reservation does not exist");
             return new Pair<ReservationDTO, Integer>(null, 404);
         }
-        
-        System.out.println("Got DTO:");
-        System.out.println(reservationDTO);
         
         // Checking if user is authorized to retrieve reservation information
         if (!requesterUsername.contentEquals(reservationDTO.getReservation().getUserEmail()) && user.getUserType() != UserType.OWNER) {

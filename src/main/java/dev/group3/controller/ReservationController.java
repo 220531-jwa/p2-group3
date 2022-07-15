@@ -140,7 +140,6 @@ public class ReservationController {
     
     /**
      * Handles a get request for getting a reservation by id.
-     * Takes the username from the path
      * Takes the id from the path
      * Takes the token from the header
      * @return 200 with reservationDTO if successful and 400 series error otherwise.
@@ -149,13 +148,12 @@ public class ReservationController {
         log.debug("Recieved HTTP GET request at endpoint /reservations/{username}/{res_id}/dto");
         
         // Getting user input
-        String username = ctx.pathParam("username");
         String token = ctx.header("Token");
         Validator<Integer> vid = ctx.pathParamAsClass("res_id", Integer.class);
         Integer id = vid.getOrDefault(null);
         
         // Attempting to get request DTO
-        Pair<ReservationDTO, Integer> result = rs.getReservationDTOById(username, id, token);
+        Pair<ReservationDTO, Integer> result = rs.getReservationDTOById(id, token);
         
         // Checking if request was successful
         if (result.getFirst() != null) {
