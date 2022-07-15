@@ -2,8 +2,6 @@ package dev.group3.service;
 
 import java.util.List;
 
-//import org.eclipse.jetty.util.log.Log;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
