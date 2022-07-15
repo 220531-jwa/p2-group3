@@ -231,7 +231,7 @@ async function setUpReservationById(){
 
 
     // PULL IN ALL RESERVATIONS
-    let requestedReservation = await getReservationById(username,res_id, seshToken);
+    let requestedReservation = await fetchGetReservationById(username,res_id, seshToken);
 
     await updateIncomingReservationPage(requestedReservation);
     console.log(reservation)

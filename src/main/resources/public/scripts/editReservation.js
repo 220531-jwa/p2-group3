@@ -203,7 +203,7 @@ async function save() {
 
     // Sending response
     const userData = getSessionUserData();
-    const result = await fetchUpdateReservationById(id, updatedReservationDataJsonString, userData.pswd);
+    const result = await fetchUpdateReservationById('None', id, updatedReservationDataJsonString, userData.pswd);
 
     // Processing response
     if (result[0] === 200) {
