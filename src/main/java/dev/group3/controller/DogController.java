@@ -22,7 +22,8 @@ public class DogController {
     
     public void createNewDog(Context ctx) {
     	Dog dg = ctx.bodyAsClass(Dog.class);
-    	Dog newDog = ds.postCreateNewDog(dg);
+    	String token = ctx.header("Token");
+    	Dog newDog = ds.postCreateNewDog(dg, token);
     	
     	if(newDog != null) {
     		ctx.status(201);
@@ -38,7 +39,8 @@ public class DogController {
      */
     
     public void getAllDogs(Context ctx) {
-        List<Dog> dogList = ds.getAllDogs();
+    	String token = ctx.header("Token");
+        List<Dog> dogList = ds.getAllDogs(token);
     	
     	if(dogList != null) {
     		ctx.status(200);
@@ -51,7 +53,8 @@ public class DogController {
     
     public void getAllDogsByUsername(Context ctx) {
     	String userName = ctx.pathParam("username");
-    	List<Dog> dogList = ds.getAllDogsByUserId(userName);
+    	String token = ctx.header("Token");
+    	List<Dog> dogList = ds.getAllDogsByUserId(userName, token);
     	
     	if(dogList != null) {
     		ctx.status(200);
@@ -64,7 +67,8 @@ public class DogController {
     
     public void getDogById(Context ctx) {
         int id = Integer.parseInt(ctx.pathParam("did"));
-        Dog dg = ds.getDogById(id);
+        String token = ctx.header("Token");
+        Dog dg = ds.getDogById(id, token);
         
         if(dg != null) {
     		ctx.status(200);
@@ -78,9 +82,10 @@ public class DogController {
     public void getAllDogsByStatus(Context ctx) {
     	String paramCheck = ctx.pathParam("status");
     	String userName = ctx.pathParam("username");
+    	String token = ctx.header("Token");
     	
 		boolean status = Boolean.parseBoolean(paramCheck);
-    	List<Dog> dogList = ds.getAllDogsByStatus(userName, status);
+    	List<Dog> dogList = ds.getAllDogsByStatus(userName, token, status);
     	//Checking if parameter is null before trying to parse
     	if(dogList != null) {
 
@@ -98,7 +103,8 @@ public class DogController {
     
     public void updateDogById(Context ctx) {
         Dog dgUpdate = ctx.bodyAsClass(Dog.class);
-        Dog dg = ds.patchUpdateDog(dgUpdate);
+        String token = ctx.header("Token");
+        Dog dg = ds.patchUpdateDog(dgUpdate, token);
         
         if(dg != null) {
         	ctx.status(200);
@@ -115,9 +121,10 @@ public class DogController {
     
     public void deleteDogById(Context ctx) {
     	int id = Integer.parseInt(ctx.pathParam("did"));
-        boolean dg = ds.deleteDog(id);
+    	String token = ctx.header("Token");
+        boolean dg = ds.deleteDog(id, token);
         
-        if(dg = true) {
+        if(dg) {
     		ctx.status(204);
         	ctx.json(dg);
     	} else {

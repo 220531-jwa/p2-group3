@@ -56,13 +56,13 @@ public class Driver {
                 path("/{username}", () -> {
                     post(dc::createNewDog);
                     get(dc::getAllDogsByUsername);
-//                    	path("/{status}",() -> {
-//                    		get(dc::getAllDogsByStatus);
-//                    	});
                     path("/{did}", () -> {
-                        get(dc::getDogById);
-                        patch(dc::updateDogById);
-                        delete(dc::deleteDogById);
+                    	get(dc::getDogById);
+                    	patch(dc::updateDogById);
+                    	delete(dc::deleteDogById);
+                       	path("/{status}",() -> {
+                   			get(dc::getAllDogsByStatus);
+                    	});
                     });
                 });
             });
