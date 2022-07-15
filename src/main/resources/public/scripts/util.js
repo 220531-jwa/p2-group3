@@ -108,7 +108,7 @@ function getTimeFromTimestamp(timestamp) {
     let dateStamp = new Date(timestamp);
 
     // Converting to date
-    let time = `${pad(dateStamp.getHours())}:${pad(dateStamp.getMinutes())}-${pad(dateStamp.getSeconds())}`;
+    let time = `${pad(dateStamp.getHours())}:${pad(dateStamp.getMinutes())}:${pad(dateStamp.getSeconds())}`;
 
     return time;
 }
@@ -121,23 +121,3 @@ function getTimeFromTimestamp(timestamp) {
 function getDateTimeFromTimestamp(timestamp) {
     return `${getDateFromTimestamp(timestamp)} ${getTimeFromTimestamp(timestamp)}`
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/**
- * Common Elements
- */
-
-
-

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Registration</title>
+    <!-- CSS only -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+</head>
+<body>
+    <div class="container bg-light">
+        <h1 class="mb-4 bg-dark">#</h1>
+        <h1 id="title" class="mb-4">Edit Reservation:</h1>
+        <div id="error" style="Color: red"></div>
+        <form id="form">
+            <hr>
+            <p><b>User Information</b></p>
+            <div class="form-group row mb-4">
+                <div id="emailField" class="col">
+                    <lable for="email">Email:</lable>
+                    <a id="email" href="#"></a>
+                </div>
+                <div class="col">
+                    <lable for="dog">Dog:</lable>
+                    <a id="dog" href="#"></a>
+                </div>
+            </div>
+            <hr>
+            <p><b>Registration Information</b></p>
+            <div class="form-group row mb-4">
+                <div class="col">
+                    <label style="display: block" for="updateStatus">Status:</label>
+                    <select id="updateStatus"></select>
+                </div>
+                <div class="col">
+                    <label style="display: block" for="service">Service:</label>
+                    <select id="service" disabled></select>
+                </div>
+            </div>
+            <div class="form-group row mb-4 readOnly">
+                <div class="col">
+                    <label style="display: block" for="startDate">Start Date</label>
+                    <input id="startDate" type="date" disabled>
+                </div>
+                <div class="col">
+                    <label style="display: block" for="startTime">Start Time</label>
+                    <input id="startTime" type="time" disabled>
+                </div>
+            </div>
+            <div class="form-group row mb-4 readOnly">
+                <div class="col">
+                    <label style="display: block" for="endDate">End Date</label>
+                    <input id="endDate" type="date" disabled>
+                </div>
+                <div class="col">
+                    <label style="display: block" for="endTime">End Time</label>
+                    <input id="endTime" type="time" disabled>
+                </div>
+            </div>
+        </form>
+        <div class="row">
+            <div class="col">
+                <button class="btn btn-primary mb-4" type="button" onclick="back()">Back</button>
+            </div>
+            <div class="col text-end">
+                <button id="saveBtn" class="btn btn-primary mb-4" type="button" onclick="save()">Save</button>
+            </div>
+        </div>
+        <h1 class="mb-4 bg-dark">#</h1>
+    </div>
+
+    <!-- JavaScript Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
+    <script src="../scripts/Apis/ReservationsAPI.js"></script>
+    <script src="../scripts/Apis/MetaAPI.js"></script>
+    <script src="../scripts/Apis/DogAPI.js"></script>
+    <script src="../scripts/util.js"></script>
+    <script src="../scripts/editReservation.js"></script>
+    
+</body>
+</html>

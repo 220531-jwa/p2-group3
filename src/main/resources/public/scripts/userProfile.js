@@ -21,8 +21,8 @@ function initalizePage() {
     }
 }
 
-/**
- * === HTML UPDATES ===
+/*
+ * === HTML VIEW UPDATES ===
  */
 
 async function updateViewExistingUser() {
@@ -40,7 +40,7 @@ async function updateViewExistingUser() {
         submitBtn.innerHTML = 'Save';
         submitBtn.addEventListener('click', save);
     }
-    else if (userData.userType === 'OWNER'){
+    else if (userData.userType === 'OWNER') {
         // User is owner and viewing user information
         // Hiding save button
         document.getElementById('submitButton').hidden = true;
@@ -84,7 +84,7 @@ async function updateViewExistingUser() {
         document.getElementById('inputPhoneNumber').value = formatPhoneNumber(userDataJson.phoneNumber);
         document.getElementById('inputFunds').value = userDataJson.funds;
     }
-    else if (result[1] === 401) {
+    else if (result[0] === 401) {
         // User not in active session
         notInActiveSession();
     }
@@ -111,7 +111,7 @@ function back() {
     // TODO: Be useful for index.html
     // Currently just 'checks' if user is in an active session or not
     // If they are, moved to index page
-    getSessionUserData();
+    getSessionUserData(); // Delete this later when finished being useful
     location.href = "../html/index.html";
 }
 
@@ -186,7 +186,7 @@ async function save() {
         inActiveSession(result[1]);
     }
     else {
-        document.getElementById("error").innerHTML = "Invalid User Input";
+        document.getElementById("error").innerHTML = "Failed to update user. Try again later.";
     }
 }
 

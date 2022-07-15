@@ -2,8 +2,8 @@
  * === INITIAL DATA ===
  */
 
-const baseURL = 'http://localhost:8080';
-const baseHeaders = {
+const baseUserURL = 'http://localhost:8080';
+const baseUserHeaders = {
     'Content-Type': 'application/json'
 };
 
@@ -23,7 +23,7 @@ const baseHeaders = {
  */
 async function fetchLoginUser(username, password) {
     // Init
-    const url = `${baseURL}/login`;
+    const url = `${baseUserURL}/login`;
 
     // Converting credentials into json string
     const credentials = {
@@ -35,7 +35,7 @@ async function fetchLoginUser(username, password) {
     // Sending response
     let response = await fetch(url, {
         method: 'POST',
-        headers: baseHeaders,
+        headers: baseUserHeaders,
         body: credentialsJson
     });
 
@@ -55,12 +55,12 @@ async function fetchLoginUser(username, password) {
  */
 async function fetchLogoutUser(token) {
     // Init
-    const url = `${baseURL}/logout`;
+    const url = `${baseUserURL}/logout`;
 
     // Sending reponse
     let response = await fetch(url, {
         method: 'POST',
-        headers: addTokenHeader(baseHeaders, token)
+        headers: addTokenHeader(baseUserHeaders, token)
     });
 
     return response.status;
@@ -73,12 +73,12 @@ async function fetchLogoutUser(token) {
  */
 async function fetchCreateNewUser(userData) {
     // Init
-    const url = `${baseURL}/users`;
+    const url = `${baseUserURL}/users`;
 
     // Sending response
     let response = await fetch(url, {
         method: 'POST',
-        headers: baseHeaders,
+        headers: baseUserHeaders,
         body: userData
     });
 
@@ -104,12 +104,12 @@ async function fetchCreateNewUser(userData) {
  */
 async function fetchGetUserByUsername(username, token) {
     // Init
-    const url = `${baseURL}/users/${username}`;
+    const url = `${baseUserURL}/users/${username}`;
 
     // Sending response
     let response = await fetch(url, {
         method: 'GET',
-        headers: addTokenHeader(baseHeaders, token)
+        headers: addTokenHeader(baseUserHeaders, token)
     });
 
     // Getting data if status is ok
@@ -135,12 +135,12 @@ async function fetchGetUserByUsername(username, token) {
  */
 async function fetchUpdateUserByUsername(username, userData, token) {
     // Init
-    const url = `${baseURL}/users/${username}`;
+    const url = `${baseUserURL}/users/${username}`;
 
     // Sending response
     let response = await fetch(url, {
         method: 'PATCH',
-        headers: addTokenHeader(baseHeaders, token),
+        headers: addTokenHeader(baseUserHeaders, token),
         body: userData
     });
 
