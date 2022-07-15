@@ -150,8 +150,13 @@ insert into transactions values
 --select * from users;
 --select * from dogs;
 --select * from services;
---select * from reservations;
+select * from reservations;
 --select * from transactions;
+--
+----Select all dog names of a specific user
+--select dog_name
+--from users, dogs d
+--where users.email = d.user_email;
 --
 ---- All dogs of user (gives back all dog infromation related to user)
 --select d.*

@@ -29,7 +29,6 @@ public class ReservationDAO {
      */
     
     public Reservation createReservation(Reservation resData) {
-       
     	String sql = "insert into reservations values(default, ?, ?, ?, ?, ?)";
     	//need to update SQL statement to also add serviceId (if selected)
     	
@@ -40,8 +39,6 @@ public class ReservationDAO {
 			ps.setString(3, resData.getStatus().name());
 			ps.setTimestamp(4, resData.getStartDateTime());
 			ps.setTimestamp(5, resData.getEndDateTime());
-			//add 'set' serviceId (if selected)
-			
 			
 			ResultSet rs = ps.executeQuery();
 			

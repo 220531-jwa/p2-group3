@@ -1,6 +1,47 @@
 /*
  * === EVENT LISTENERS ===
  */
+//window.onload = initalizePage();
+//function initalizePage() {
+    // Getting query params
+  //  let query = window.location.search;
+    //const params = new URLSearchParams(query);
+
+    
+    // Checking if new page
+    //if (params.has('username')) {
+        // Loading existing user
+        // Getting params - global
+      //  username = params.get('username')
+        //dogName = params.get('dogName');
+        //updateViewExistingUser();
+    //}
+    //else {
+        // New user
+      //  updateViewNewUser();
+    //}
+//}
+/**
+ * Handles when the dog dropdown is clicked
+ */
+//sending get request to API and waiting for response to be returned and printing response to dropdown list
+async function getAllDogsByUsername(){
+    
+    let allDogsByUsername
+    //Init
+    console.log(inputDogId)
+    let res = await fetch(`http://localhost:8080/html/dogs/{username}/`);
+
+    if(res.status == 200){
+        let data = await res.json();
+        console.log(data);
+        populateData(data);
+    } else {
+        console.log("Dogs are on the loose!")
+    }
+    
+}
+
 /**
  * Handles when the submit button is clicked
  */
@@ -16,7 +57,7 @@ async function submitReservation() {
 
     // Getting Reservation input
     const resData = {
-        dogId: document.getElementById("inputDogId").value,
+        dogName: document.getElementById("inputDogName").value,
         startDateTime: document.getElementById("inputStartDateTime").value,
         endDateTime: document.getElementById("inputEndDateTime").value,
         serviceId: document.getElementById("inputServiceId").value

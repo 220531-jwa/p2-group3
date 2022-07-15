@@ -24,16 +24,18 @@ public class ReservationController {
 
     // Creating a new Reservation
     public void createReservation(Context ctx) {
+
+    	//Getting user input
+    	String username = ctx.pathParam("username");
+    	String token = ctx.header("Token");   	
+		Reservation reservationFromUserBody = ctx.bodyAsClass(Reservation.class);
+		//Attempting to get user
+		Pair<Reservation, Integer> r = rs.createReservation(username, reservationFromUserBody, token); 
+		ctx.json(r);
+		ctx.status(201);
+
         log.debug("Recieved HTTP POST request at endpoint /reservations/{username}");
         
-        // Getting user input
-        String username = ctx.pathParam("username");
-        String token = ctx.header("Token");
-        ctx.status(201);
-        Reservation reservationFromUserBody = ctx.bodyAsClass(Reservation.class);
-        // Attempting to get user
-        Pair<Reservation, Integer> r = rs.createReservation(username, reservationFromUserBody, token);
-        ctx.json(r);
     }
 
     /*
@@ -42,7 +44,7 @@ public class ReservationController {
 
     // TODO / REVIEW: filter (for the day OR all of them ever)
     public void getAllReservations(Context ctx) {
-//<<<<<<< HEAD
+
 //        log.debug("Recieved HTTP GET request at endpoint /reservations");
 //
 //        String token = ctx.header("Token");
@@ -52,7 +54,7 @@ public class ReservationController {
 //        int stat = (Integer) respPair.getSecond();
 //        ctx.json(resArray);
 //        ctx.status(stat);
-//=======
+
         
     	String token = ctx.header("Token");
     	System.out.println(token);
