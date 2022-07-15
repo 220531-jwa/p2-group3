@@ -1,6 +1,5 @@
 package dev.group3.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
@@ -22,187 +21,190 @@ public class ReservationController {
      * === POST ===
      */
 
-    // Creating a new Reservation
+    /**
+     * Handles a post request for creating a new reservation
+     * Takes the username from the path
+     * Takes the token from the header
+     * Takes the reservation data form the body
+     * @return 200 with new reservation, and 400 series error otherwise
+     */
     public void createReservation(Context ctx) {
-
-    	//Getting user input
-    	String username = ctx.pathParam("username");
-    	String token = ctx.header("Token");   	
-		Reservation reservationFromUserBody = ctx.bodyAsClass(Reservation.class);
-		//Attempting to get user
-		Pair<Reservation, Integer> r = rs.createReservation(username, reservationFromUserBody, token); 
-		ctx.json(r);
-		ctx.status(201);
-
         log.debug("Recieved HTTP POST request at endpoint /reservations/{username}");
+
+        // Getting user input
+        String username = ctx.pathParam("username");
+        String token = ctx.header("Token");
+        Reservation reservationData = ctx.bodyAsClass(Reservation.class);
         
+        // Attempting to create reservation
+        Pair<Reservation, Integer> result = rs.createReservation(username, reservationData, token);
+        
+        // Checking if reservation was created successfully
+        if (result.getFirst() != null) {
+            log.info("Successfully created new reservation");
+            ctx.json(result.getFirst());
+        }
+        
+        ctx.status(result.getSecond());
     }
 
     /*
      * === GET ===
      */
 
-    // TODO / REVIEW: filter (for the day OR all of them ever)
-    public void getAllReservations(Context ctx) {
-
-//        log.debug("Recieved HTTP GET request at endpoint /reservations");
-//
-//        String token = ctx.header("Token");
-//        Pair<List<Reservation>, Integer> respPair = rs.getAllReservations(token);
-//
-//        ArrayList<Reservation> resArray = (ArrayList<Reservation>) respPair.getFirst();
-//        int stat = (Integer) respPair.getSecond();
-//        ctx.json(resArray);
-//        ctx.status(stat);
-
-        
-    	String token = ctx.header("Token");
-    	System.out.println(token);
-    	Pair<List<Reservation>, Integer> respPair = rs.getAllReservations(token);
-    	
-    	
-    	
-    	ArrayList<Reservation> resArray = (ArrayList<Reservation>) respPair.getFirst();
-    	int stat = (Integer) respPair.getSecond();
-    	
-    	if(stat==200) {
-    		
-    		ctx.json(resArray);
-    		ctx.status(stat);
-    	}else {
-    		ctx.status(stat);
-    	}
-    	
-    	
-
-    }
-
-    public void getAllRservationsByUsername(Context ctx) {
-        log.debug("Recieved HTTP GET request at endpoint /reservations/{username}");
-        
-        String token = ctx.header("Token");
-        String userName = ctx.pathParam("username");
-
-        Pair<List<Reservation>, Integer> resPair = rs.getAllReservationsByUsername(userName, token);
-
-        ArrayList<Reservation> reservList = (ArrayList<Reservation>) resPair.getFirst();
-        int resStatus = resPair.getSecond();
-
-        if (reservList != null) {
-            ctx.json(reservList);
-            ctx.status(resStatus);
-
-        } else {
-            ctx.status(resStatus);
-        }
-
-    }
-
-//    public void getReservationById(Context ctx) {
-//        log.debug("Recieved HTTP GET request at endpoint /reservations/{username}/{res_id}");
-//        
-//        // Getting user input
-//        String token = ctx.header("Token");
-//        Integer res_id = Integer.parseInt(ctx.pathParam("res_id"));
-//        
-//        // Attempting to get reservation
-//        Pair<Reservation, Integer> resPair = rs.getReservationById(res_id, token);
-//        Reservation res = resPair.getFirst();
-//        Integer responseCode = resPair.getSecond();
-//        
-//        if (res != null) {
-//            ctx.json(res);
-//        }
-//        
-//        ctx.status(responseCode);
-//    }
-
-
-
-    
-    public void getReservationById(Context ctx) {
-    	 String token = ctx.header("Token");
-//    	String token = "hi";
-         String userName = ctx.pathParam("username");
-         Integer res_id = Integer.parseInt(ctx.pathParam("res_id"));
-//    	Pair<Reservation,Integer> resPair = rs.getReservationById(userName, res_id, token);
-    	Pair<Reservation,Integer> resPair = rs.getReservationById(res_id, token);
-    	
-    	Reservation res = resPair.getFirst();
-    	Integer responseCode = resPair.getSecond();
-    	
-    	ctx.json(res);
-    	ctx.status(responseCode);
-    	
-    	
-    	
-    }
-    
     /**
-     * Handles a get request for getting a reservation by id.
-     * Takes the username from the path
-     * Takes the id from the path
+     * Handles a get request for getting all reservations
      * Takes the token from the header
-     * @return 200 with reservationDTO if successful and 400 series error otherwise.
+     * @return 200 with the reservation list, and 400 series error otherwise
      */
-    public void getReservationDTOById(Context ctx) {
-        log.debug("Recieved HTTP GET request at endpoint /reservations/{username}/{res_id}/dto");
+    public void getAllReservations(Context ctx) {
+        log.debug("Recieved HTTP GET request at endpoint /reservations");
         
         // Getting user input
-        String username = ctx.pathParam("username");
         String token = ctx.header("Token");
-        Validator<Integer> vid = ctx.pathParamAsClass("res_id", Integer.class);
-        Integer id = vid.getOrDefault(null);
         
-        // Attempting to get request DTO
-        Pair<ReservationDTO, Integer> result = rs.getReservationDTOById(username, id, token);
-        
-        // Checking if request was successful
+        // Attempting to get all reservations
+        Pair<List<Reservation>, Integer> result = rs.getAllReservations(token);
+
+        // Checking if data was retrieved
         if (result.getFirst() != null) {
+            log.info("Successfully got all reservations");
             ctx.json(result.getFirst());
         }
         
         ctx.status(result.getSecond());
     }
+
+    /**
+     * Handles a get request for getting a reservation by username
+     * Takes the username from the path
+     * Takes the token from the header
+     * @return 200 with the reservations list, and 400 series error otherwise
+     */
+    public void getAllRservationsByUsername(Context ctx) {
+        log.debug("Recieved HTTP GET request at endpoint /reservations/{username}");
+
+        // Getting user input
+        String userName = ctx.pathParam("username");
+        String token = ctx.header("Token");
+
+        // Attempting to get reservations associated with the given username
+        Pair<List<Reservation>, Integer> result = rs.getAllReservationsByUsername(userName, token);
+
+        // Checking if data was retrieved
+        if (result.getFirst() != null) {
+            log.info("Successfully got all reservations associated with username");
+            ctx.json(result.getFirst());
+        }
+        
+        ctx.status(result.getSecond());
+    }
+
+    /**
+     * Handles a get request for getting a reservation by id
+     * Takes the id from the path
+     * Takes the token from the header
+     * @return 200 with reservation if successful, and 400 series error otherwise.
+     */
+    public void getReservationById(Context ctx) {
+        log.debug("Reieved HTTP GET request at endpoint /reservations/{username}/{res_id}");
+
+        // Getting user input
+        String token = ctx.header("Token");
+        Integer res_id = Integer.parseInt(ctx.pathParam("res_id"));
+        
+        // Attempting to get reservation
+        Pair<Reservation, Integer> result = rs.getReservationById(res_id, token);
+        
+        // Checking if reservation was returned
+        if (result.getFirst() != null) {
+            log.info("Successfully got reservation");
+            ctx.json(result.getFirst());
+        }
+
+        ctx.status(result.getSecond());
+
+    }
+
+    /**
+     * Handles a get request for getting a reservation by id.
+     * Takes the id from the path
+     * Takes the token from the header
+     * Returns reservation as a DTO
+     * @return 200 with reservationDTO if successful and 400 series error otherwise.
+     */
+    public void getReservationDTOById(Context ctx) {
+        log.debug("Recieved HTTP GET request at endpoint /reservations/{username}/{res_id}/dto");
+
+        // Getting user input
+        String token = ctx.header("Token");
+        Validator<Integer> vid = ctx.pathParamAsClass("res_id", Integer.class);
+        Integer id = vid.getOrDefault(null);
+
+        // Attempting to get request DTO
+        Pair<ReservationDTO, Integer> result = rs.getReservationDTOById(id, token);
+
+
+        // Checking if request was successful
+        if (result.getFirst() != null) {
+            log.info("Successfully got reservationDTO");
+            ctx.json(result.getFirst());
+        }
+
+        ctx.status(result.getSecond());
+    }
     
+//    public void getReservationById(Context ctx) {
+//    	 String token = ctx.header("Token");
+////    	String token = "hi";
+//         String userName = ctx.pathParam("username");
+//         Integer res_id = Integer.parseInt(ctx.pathParam("res_id"));
+////    	Pair<Reservation,Integer> resPair = rs.getReservationById(userName, res_id, token);
+//    	Pair<Reservation,Integer> resPair = rs.getReservationById(res_id, token);
+//    	
+//    	Reservation res = resPair.getFirst();
+//    	Integer responseCode = resPair.getSecond();
+//    	
+//    	if(responseCode == 200) {
+//    		
+//    		ctx.json(res);
+//    	}
+//    	
+//    	ctx.status(responseCode);
+//    	
+//    	
+//    	
+//>>>>>>> jfriesner_reservations
+//    }
 
     /*
      * === PATCH ===
      */
 
-    // owner - Checkin/out
-    // dogowner - cancel
+    /**
+     * Handles an update request for updating a reservation by id
+     * Takes the id from the path
+     * Takes the token from the header
+     * @return 200 with updated reservation if successful, and 400 series error otherwise.
+     */
     public void updateReservationById(Context ctx) {
+        log.debug("Recieved HTTP PATCH request at endpoint /reservations//{username}/{res_id}");
 
-//        log.debug("Recieved HTTP PATCH request at endpoint /reservations//{username}/{res_id}");
-    	
-    	String token = ctx.header("Token");
-    	Integer reserv_id = Integer.parseInt(ctx.pathParam("res_id"));
-    	Reservation res = ctx.bodyAsClass(Reservation.class);
-    	
-    	Pair<Reservation,Integer>respPair = rs.updateReservationById(reserv_id,res, token);
-    	Integer stat = respPair.getSecond();
-    	
-    	if(stat==200) {
-    		Reservation reserv= respPair.getFirst();
-    		ctx.json(reserv);
-    		ctx.status(stat);
-    	}else {
-    		ctx.status();
-    	}
-    	
-    	
-
-        
         // Getting user input
-//        String token = ctx.header("Token");
-//        Integer res_id = Integer.parseInt(ctx.pathParam("res_id"));
-//        Reservation resData = ctx.bodyAsClass(Reservation.class);
-//        
-//        System.out.println("Got token: " + token);
-//        System.out.println("Got res_id: " + res_id);
-//        System.out.println("Got resData: " + resData);
-//        
-//        ctx.status(200);
+        String token = ctx.header("Token");
+        Validator<Integer> vid = ctx.pathParamAsClass("res_id", Integer.class);
+        Integer id = vid.getOrDefault(null);
+        Reservation resData = ctx.bodyAsClass(Reservation.class);
+
+        // Attempting to update reservaiton
+        Pair<Reservation, Integer> result = rs.updateReservationById(id, resData, token);
+
+        // Checking if reservation was returned
+        if (result.getFirst() != null) {
+            log.info("Successfully updated reservation");
+            ctx.json(result.getFirst());
+        }
+
+        ctx.status(result.getSecond());
     }
 }

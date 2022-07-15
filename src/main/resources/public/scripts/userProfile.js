@@ -2,25 +2,25 @@
  * === INITIALIZATION ===
  */
 
-window.onload = initalizePage();
-function initalizePage() {
-    // Getting query params
-    let query = window.location.search;
-    const params = new URLSearchParams(query);
+// window.onload = initalizePage();
+// function initalizePage() {
+//     // Getting query params
+//     let query = window.location.search;
+//     const params = new URLSearchParams(query);
 
-    // Checking if new page
-    if (params.has('username')) {
-        // Loading existing user
-        // Getting params - global
-        username = params.get('username');
-        updateViewExistingUser();
-    }
-    else {
-        // New user
-        updateViewNewUser();
-    }
+//     // Checking if new page
+//     if (params.has('username')) {
+//         // Loading existing user
+//         // Getting params - global
+//         username = params.get('username');
+//         updateViewExistingUser();
+//     }
+//     else {
+//         // New user
+//         updateViewNewUser();
+//     }
 
-}
+// }
 
 
 ////TODO:might need to delete below
@@ -30,85 +30,96 @@ function initalizePage() {
  */
 
  const idexUpdateUserDiv = document.getElementById("updateUserCont");
+ const userProfileElements = `
+ <div class="container bg-light" style="margin-top:3vh;">
+    <div class="row"> 
+        <div class="col-12">
+            <h1 id="title" class="mb-4">New User:</h1>
+        </div>
+    </div>
 
- function setupUserProfile(divToAppendTo){
+ <div id="error" style="Color: red"></div>
+ <form id="form">
+     <hr>
+     <p><b>User Information</b></p>
+     <div class="form-group row mb-4">
+         <div class="col">
+             <div id="inputEmailError" style="color: red"></div>
+             <lable style="display: block" for="inputEmail">Email:</lable>
+             <input id="inputEmail" class="input readOnly" type="text">
+         </div>
+         <div class="col user">
+             <div id="inputPasswordError" style="color: red"></div>
+             <lable id="inputPasswordLabel" style="display: block" for="inputPassword">Password:</lable>
+             <input id="inputPassword" class="input update" type="password">
+         </div>
+     </div>
+     <div class="form-group row mb-4">
+         <div class="col">
+             <div id="inputFirstNameError" style="color: red"></div>
+             <lable style="display: block" for="inputFirstName">First Name:</lable>
+             <input id="inputFirstName" class="input update" type="text">
+         </div>
+         <div class="col">
+             <div id="inputLastNameError" style="color: red"></div>
+             <lable style="display: block" for="inputLastName">Last Name:</lable>
+             <input id="inputLastName" class="input update" type="text">
+         </div>
+     </div>
+     <div class="form-group row mb-4">
+         <div class="col">
+             <div id="inputPhoneNumberError" style="color: red"></div>
+             <lable style="display: block" for="inputFirstName">Phone Number:</lable>
+             <input id="inputPhoneNumber" class="input update" type="text">
+         </div>
+         <div class="col user">
+             <div id="inputFundsError" style="color: red"></div>
+             <lable style="display: block" for="inputFunds">Funds:</lable>
+             <input id="inputFunds" type="number" class="input readOnly" min="0" max="9999.99" step="any" placeholder="$0.00">
+         </div>
+     </div>
+ </form>
+ <div class="row">
+     <div class="col">
+         <button class="btn btn-primary mb-4" type="button" onclick="back()">Back</button>
+     </div>
+     <div class="col text-end">
+         <button id="submitButton" class="btn btn-primary mb-4" type="button">Submit</button>
+     </div>
+ </div>
+ <h1 class="mb-4 bg-dark">#</h1>
+ </div>`
 
-   
-    
 
-    let query = window.location.search;
-    const params = new URLSearchParams(query);
+ async function setupUserProfile(userName){
 
-    // Checking if new page
-    if (params.has('username')) {
-        // Loading existing user
-        // Getting params - global
-        username = params.get('username');
-        updateViewExistingUser();
-    }
-    else {
-        // New user
-        updateViewNewUser();
-    }
-    
+    let user= getSessionUserData();
+    console.log(user.email)
     idexUpdateUserDiv.innerHTML = userProfileElements
+    // username = params.get('username');
+    updateViewExistingUserTryTwo(user.email);
+    
+
+    // let query = window.location.search;
+    // const params = new URLSearchParams(query);
+
+    // // Checking if new page
+    // if (params.has('username')) {
+    //     // Loading existing user
+    //     // Getting params - global
+    //     username = params.get('username');
+    //     updateViewExistingUser();
+    // }
+    // else {
+    //     // New user
+    //     updateViewNewUser();
+    // }
+    
+    
 
 }
 
-const userProfileElements = `<div class="container bg-light">
-<h1 class="mb-4 bg-dark">#</h1>
-<h1 id="title" class="mb-4">New User:</h1>
-<div id="error" style="Color: red"></div>
-<form id="form">
-    <hr>
-    <p><b>User Information</b></p>
-    <div class="form-group row mb-4">
-        <div class="col">
-            <div id="inputEmailError" style="color: red"></div>
-            <lable style="display: block" for="inputEmail">Email:</lable>
-            <input id="inputEmail" class="input readOnly" type="text">
-        </div>
-        <div class="col user">
-            <div id="inputPasswordError" style="color: red"></div>
-            <lable id="inputPasswordLabel" style="display: block" for="inputPassword">Password:</lable>
-            <input id="inputPassword" class="input update" type="password">
-        </div>
-    </div>
-    <div class="form-group row mb-4">
-        <div class="col">
-            <div id="inputFirstNameError" style="color: red"></div>
-            <lable style="display: block" for="inputFirstName">First Name:</lable>
-            <input id="inputFirstName" class="input update" type="text">
-        </div>
-        <div class="col">
-            <div id="inputLastNameError" style="color: red"></div>
-            <lable style="display: block" for="inputLastName">Last Name:</lable>
-            <input id="inputLastName" class="input update" type="text">
-        </div>
-    </div>
-    <div class="form-group row mb-4">
-        <div class="col">
-            <div id="inputPhoneNumberError" style="color: red"></div>
-            <lable style="display: block" for="inputFirstName">Phone Number:</lable>
-            <input id="inputPhoneNumber" class="input update" type="text">
-        </div>
-        <div class="col user">
-            <div id="inputFundsError" style="color: red"></div>
-            <lable style="display: block" for="inputFunds">Funds:</lable>
-            <input id="inputFunds" type="number" class="input readOnly" min="0" max="9999.99" step="any" placeholder="$0.00">
-        </div>
-    </div>
-</form>
-<div class="row">
-    <div class="col">
-        <button class="btn btn-primary mb-4" type="button" onclick="back()">Back</button>
-    </div>
-    <div class="col text-end">
-        <button id="submitButton" class="btn btn-primary mb-4" type="button">Submit</button>
-    </div>
-</div>
-<h1 class="mb-4 bg-dark">#</h1>
-</div>`
+
 
 
 
@@ -119,6 +130,76 @@ const userProfileElements = `<div class="container bg-light">
  * === HTML UPDATES ===
  */
 
+
+ async function updateViewExistingUserTryTwo(username) {
+    // Getting user data
+    const userData = getSessionUserData();
+    console.log(username)
+
+    // Updating title
+    document.getElementById('title').innerHTML = "Welcome: " + username.toUpperCase();
+
+    // Checking who is attempting to view user information
+    if (userData.email === username) {
+        // User is viewing their own information
+        // Updating button listener
+        let submitBtn = document.getElementById('submitButton');
+        submitBtn.innerHTML = 'Save';
+        submitBtn.addEventListener('click', save);
+    }
+    else if (userData.userType === 'OWNER') {
+        // User is owner and viewing user information
+        // Hiding save button
+        document.getElementById('submitButton').hidden = true;
+
+        // Hiding user only elements
+        let userElements = document.getElementsByClassName('user');
+        for (elem of userElements) {
+            elem.hidden = true;
+        }
+
+        // Disabling update elements
+        let updateElements = document.getElementsByClassName('update');
+        for (elem of updateElements) {
+            elem.disabled = true;
+        }
+    }
+    // else user not allowed -> fetch will cause 404
+
+    // Getting input elements to disable
+    let readOnlyElements = document.getElementsByClassName('readOnly');
+    for (elem of readOnlyElements) {
+        elem.disabled = true;
+    }
+
+    // Updating Labels
+    document.getElementById('inputPasswordLabel').innerHTML = "New Password:"
+
+    // Attempting to get user information associated with username
+    const result = await fetchGetUserByUsername(userData.email, userData.pswd);
+
+    // Processing response
+    if (result[0] === 200) {
+        // Was able to get user information associated with username
+        // Storing user information - global
+        userDataJson = result[1];
+
+        // Populating user information
+        document.getElementById('inputEmail').value = userDataJson.email;
+        document.getElementById('inputFirstName').value = userDataJson.firstName;
+        document.getElementById('inputLastName').value = userDataJson.lastName;
+        document.getElementById('inputPhoneNumber').value = formatPhoneNumber(userDataJson.phoneNumber);
+        document.getElementById('inputFunds').value = userDataJson.funds;
+    }
+    else if (result[0] === 401) {
+        // User not in active session
+        notInActiveSession();
+    }
+    else {
+        // User not found / or user isn't authorized to view information
+        notFound404();
+    }
+}
 async function updateViewExistingUser() {
     // Getting user data
     const userData = getSessionUserData();
