@@ -115,12 +115,9 @@ function register() {
     location.href = "../html/userProfile.html";
 }
 
-
 function setuplg(){
-    // createUserDiv.style.display="none"
     setupTopNav("forTheTopDiv",userType);
     setupSideNav("forTheSideDiv",userType);
-
 }
 
 function newRegister(){
@@ -130,16 +127,12 @@ function newRegister(){
     loginform.classList.toggle("off");
     // undhide the createUser form
     createUserDiv.classList.toggle("off");
-
-    
 }
 
-
 function backtolg(){
-
     // unhide the login form
     loginform.classList.toggle("off");
+
     // hide the createUser form
-   
     createUserDiv.classList.toggle("off");
 }

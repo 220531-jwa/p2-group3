@@ -90,122 +90,44 @@
  <h1 class="mb-4 bg-dark">#</h1>
  </div>`
 
-
- async function setupUserProfile(userName){
-
-    let user= getSessionUserData();
-    console.log(user.email)
+ /**
+  * Setups the userProfile.html when it is loaded
+  * Called by index when editing it (with a nonnull username)
+  * Called by login when creating a new user
+  * @param {string} userName The username to load onto the edit user
+  */
+async function setupUserProfile(userName){
+    // Changing page
     idexUpdateUserDiv.innerHTML = userProfileElements
-    // username = params.get('username');
-    updateViewExistingUserTryTwo(user.email);
-    
+    console.log(`Got username: ${userName}`);
 
-    // let query = window.location.search;
-    // const params = new URLSearchParams(query);
+    // Temporary - Waiting when userName is actually passed with something
+    let user = getSessionUserData();
+    userName = user.email;
+    console.log(`Got user.email username: ${userName}`);
 
-    // // Checking if new page
-    // if (params.has('username')) {
-    //     // Loading existing user
-    //     // Getting params - global
-    //     username = params.get('username');
-    //     updateViewExistingUser();
-    // }
-    // else {
-    //     // New user
-    //     updateViewNewUser();
-    // }
-    
-    
-
+    // Checking if new page
+    if (userName !== null) {
+        // Loading exisitng user
+        username = userName;    // global
+        updateViewExistingUser();
+    }
+    else {
+        // New User
+        updateViewNewUser();
+    }
 }
-
-
-
-
-
-
-
 
 /**
  * === HTML UPDATES ===
  */
 
-
- async function updateViewExistingUserTryTwo(username) {
-    // Getting user data
-    const userData = getSessionUserData();
-    console.log(username)
-
-    // Updating title
-    document.getElementById('title').innerHTML = "Welcome: " + username.toUpperCase();
-
-    // Checking who is attempting to view user information
-    if (userData.email === username) {
-        // User is viewing their own information
-        // Updating button listener
-        let submitBtn = document.getElementById('submitButton');
-        submitBtn.innerHTML = 'Save';
-        submitBtn.addEventListener('click', save);
-    }
-    else if (userData.userType === 'OWNER') {
-        // User is owner and viewing user information
-        // Hiding save button
-        document.getElementById('submitButton').hidden = true;
-
-        // Hiding user only elements
-        let userElements = document.getElementsByClassName('user');
-        for (elem of userElements) {
-            elem.hidden = true;
-        }
-
-        // Disabling update elements
-        let updateElements = document.getElementsByClassName('update');
-        for (elem of updateElements) {
-            elem.disabled = true;
-        }
-    }
-    // else user not allowed -> fetch will cause 404
-
-    // Getting input elements to disable
-    let readOnlyElements = document.getElementsByClassName('readOnly');
-    for (elem of readOnlyElements) {
-        elem.disabled = true;
-    }
-
-    // Updating Labels
-    document.getElementById('inputPasswordLabel').innerHTML = "New Password:"
-
-    // Attempting to get user information associated with username
-    const result = await fetchGetUserByUsername(userData.email, userData.pswd);
-
-    // Processing response
-    if (result[0] === 200) {
-        // Was able to get user information associated with username
-        // Storing user information - global
-        userDataJson = result[1];
-
-        // Populating user information
-        document.getElementById('inputEmail').value = userDataJson.email;
-        document.getElementById('inputFirstName').value = userDataJson.firstName;
-        document.getElementById('inputLastName').value = userDataJson.lastName;
-        document.getElementById('inputPhoneNumber').value = formatPhoneNumber(userDataJson.phoneNumber);
-        document.getElementById('inputFunds').value = userDataJson.funds;
-    }
-    else if (result[0] === 401) {
-        // User not in active session
-        notInActiveSession();
-    }
-    else {
-        // User not found / or user isn't authorized to view information
-        notFound404();
-    }
-}
 async function updateViewExistingUser() {
     // Getting user data
     const userData = getSessionUserData();
 
     // Updating title
-    document.getElementById('title').innerHTML = "View User:"
+    document.getElementById('title').innerHTML = "Edit User:"
 
     // Checking who is attempting to view user information
     if (userData.email === username) {
