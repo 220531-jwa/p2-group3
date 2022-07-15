@@ -147,7 +147,7 @@ public class ReservationService {
      * @param token The associated active user session of the requester
      * @return 200 with reservation if successful, and 400 null series otherwise
      */
-    public Pair<Reservation, Integer> getReservationById(String username, Integer rid, String token) {
+    public Pair<Reservation, Integer> getReservationById(Integer rid, String token) {
     	
     	System.out.println(1);
     	System.out.println(resDAO == null);
@@ -181,7 +181,7 @@ public class ReservationService {
      * @param token The associated active user session of the requester
      * @return 200 with updated reservation if successful, and 400 null series otherwise
      */
-    public Pair<Reservation, Integer> updateReservationById(String username, Integer rid, Reservation resData, String token) {
+    public Pair<Reservation, Integer> updateReservationById(Integer rid, Reservation resData, String token) {
         return new Pair<Reservation, Integer>(null, 500);
     }
 

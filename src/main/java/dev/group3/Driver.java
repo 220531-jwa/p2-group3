@@ -8,7 +8,7 @@ import static io.javalin.apibuilder.ApiBuilder.post;
 
 
 import dev.group3.controller.DogController;
-
+import dev.group3.controller.MetaController;
 import dev.group3.controller.ReservationController;
 import dev.group3.controller.ResourcesController;
 import dev.group3.controller.UserController;
@@ -30,6 +30,7 @@ public class Driver {
         DogController dc = new DogController(new DogService(new DogDAO()));
         ReservationController rc = new ReservationController();
         ResourcesController resourceC = new ResourcesController();
+        MetaController mc = new MetaController();
 
         // Starting server
         app.start(8080);
@@ -55,14 +56,14 @@ public class Driver {
                 path("/{username}", () -> {
                     post(dc::createNewDog);
                     get(dc::getAllDogsByUsername);
-                    	path("/{status}",() -> {
-                    		get(dc::getAllDogsByStatus);
-                    	});
-                });
-                path("/{did}", () -> {
-                    get(dc::getDogById);
-                    patch(dc::updateDogById);
-                    delete(dc::deleteDogById);
+//                    	path("/{status}",() -> {
+//                    		get(dc::getAllDogsByStatus);
+//                    	});
+                    path("/{did}", () -> {
+                        get(dc::getDogById);
+                        patch(dc::updateDogById);
+                        delete(dc::deleteDogById);
+                    });
                 });
             });
             path("/reservations", () -> {
@@ -70,14 +71,17 @@ public class Driver {
                 path("/{username}", () -> {
                     post(rc::createReservation);
                     get(rc::getAllRservationsByUsername);
-                });
-                path("/{res_id}", () -> {
-                    get(rc::getReservationById);
-                    patch(rc::updateReservationById);
+                    path("/{res_id}", () -> {
+                        get(rc::getReservationById);
+                        patch(rc::updateReservationById);
+                    });
                 });
             });
             path("/services", () -> {
                 get(resourceC::getAllServices);
+            });
+            path("/meta", () -> {
+                get(mc::getMetaData);
             });
         });
 

@@ -6,16 +6,16 @@ import dev.group3.model.enums.ResStatusType;
 
 public class Reservation {
 
-    private int id;
+    private Integer id;
     private String userEmail;
-    private int dogId;
+    private Integer dogId;
     private ResStatusType status;
     private Timestamp startDateTime;
     private Timestamp endDateTime;
     
     public Reservation() {}
 
-    public Reservation(int id, String userEmail, int dogId, ResStatusType status, Timestamp startDateTime,
+    public Reservation(Integer id, String userEmail, Integer dogId, ResStatusType status, Timestamp startDateTime,
             Timestamp endDateTime) {
         super();
         this.id = id;
@@ -26,11 +26,11 @@ public class Reservation {
         this.endDateTime = endDateTime;
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public Reservation setId(int id) {
+    public Reservation setId(Integer id) {
         this.id = id;
         return this;
     }
@@ -44,11 +44,11 @@ public class Reservation {
         return this;
     }
 
-    public int getDogId() {
+    public Integer getDogId() {
         return dogId;
     }
 
-    public Reservation setDogId(int dogId) {
+    public Reservation setDogId(Integer dogId) {
         this.dogId = dogId;
         return this;
     }
@@ -57,8 +57,8 @@ public class Reservation {
         return status;
     }
 
-    public Reservation setStatus(ResStatusType checkedin) {
-        this.status = checkedin;
+    public Reservation setStatus(ResStatusType status) {
+        this.status = status;
         return this;
     }
 
