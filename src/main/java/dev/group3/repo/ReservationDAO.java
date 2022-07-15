@@ -8,14 +8,20 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import dev.group3.model.Reservation;
+import dev.group3.model.DTO.ReservationDTO;
 import dev.group3.model.enums.ResStatusType;
+import dev.group3.model.enums.ServiceType;
 import dev.group3.util.ConnectionUtil;
 
 
 public class ReservationDAO {
 	
 	private static ConnectionUtil cu = ConnectionUtil.getConnectionUtil();
+	private static Logger log = LogManager.getLogger(ReservationDAO.class);
 	
 
     /*
@@ -48,7 +54,6 @@ public class ReservationDAO {
 						ResStatusType.valueOf(rs.getString("status")),
 						rs.getTimestamp("start_datetime"),
 						rs.getTimestamp("end_datetime")
-						//add 'get' serviceId (if selected)
 						);
 			}
     	}catch (SQLException q) {
@@ -161,7 +166,7 @@ public class ReservationDAO {
     }
     
     public Reservation getReservationById(int id) {
-    	
+        
     	String sql = "Select * from reservations where id = ?";
     	
     	try(Connection conn = cu.getConnection()){
@@ -195,6 +200,52 @@ public class ReservationDAO {
     		e.printStackTrace();
     		return null;
     	}
+    }
+    
+    /**
+     * Attempts to get all the information related to the resevation of the given id
+     * @param id The reservation id to find
+     * @return A reserationDTO if successful, and null otherwise
+     */
+    public ReservationDTO getReservationDTOById(int id) {
+        log.debug("Attempting to get reservationDTO with id: " + id);
+        
+        // Init
+        String sql = "select u.first_name, u.last_name, r.*, d.dog_name, s.service_type"
+                + " from users u, dogs d, reservations r"
+                + " left join services s on s.id = r.service_id"
+                + " where u.email = r.user_email and d.id = r.dog_id and r.id = ?";
+        ReservationDTO reservationDTO = null;
+        
+        // Attempting to execute query
+        try (Connection conn = cu.getConnection()) {
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setInt(1, id);
+            ResultSet rs = ps.executeQuery();
+            
+            if (rs.next()) {
+                String temp = rs.getString("service_type");
+                ServiceType serviceType = temp == null ? null : ServiceType.valueOf(temp);
+                reservationDTO = new ReservationDTO(
+                        rs.getString("first_name"),
+                        rs.getString("last_name"),
+                        new Reservation(
+                                rs.getInt("id"),
+                                rs.getString("user_email"),
+                                rs.getInt("dog_id"),
+                                rs.getInt("service_id"),
+                                ResStatusType.valueOf(rs.getString("status")),
+                                rs.getTimestamp("start_datetime"),
+                                rs.getTimestamp("end_datetime")),
+                        rs.getString("dog_name"),
+                        serviceType);
+            }
+        } catch (SQLException e) {
+            log.error("Failed to execute query: " + sql);
+            e.printStackTrace();
+        }
+        
+        return reservationDTO;
     }
     
     /*

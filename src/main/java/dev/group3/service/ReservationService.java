@@ -9,6 +9,8 @@ import org.apache.logging.log4j.Logger;
 
 import dev.group3.model.Reservation;
 import dev.group3.model.User;
+import dev.group3.model.DTO.ReservationDTO;
+import dev.group3.model.enums.UserType;
 import dev.group3.repo.ReservationDAO;
 import dev.group3.repo.UserDAO;
 import dev.group3.util.ActiveUserSessions;
@@ -207,6 +209,64 @@ public class ReservationService {
     		return resPair;
     	}
     	
+    }
+    
+    /**
+     * Retrieves a specific reservation associated with the given username.
+     * Requires a token associated with an active user session to access this service.
+     * Authorization:
+     * - Customer can get their own reservation
+     * - Owner can get any reservation
+     * @param username The user to find the reservation of
+     * @param rid The specific reservation id
+     * @param token The associated active user session of the requester
+     * @return 200 with reservation if successful, and 400 null series otherwise
+     */
+    public Pair<ReservationDTO, Integer> getReservationDTOById(String username, Integer rid, String token) {
+        log.debug("Attempting to get reservationDTO with username: " + username + " rid: " + rid + " token: " + token);
+        
+        // Validating input
+        if (username == null || rid == null || token == null || username.isBlank() || rid < 0 || token.isBlank()) {
+            log.error("Invalid username and/or rid and/or token input(s)");
+            return new Pair<ReservationDTO, Integer>(null, 400);
+        }
+        
+        // Checking if user is in an active session
+        if (!ActiveUserSessions.isActiveUser(token)) {
+            log.error("User is not in an active session");
+            return new Pair<ReservationDTO, Integer>(null, 401);
+        }
+        
+        // Getting user information
+        String requesterUsername = ActiveUserSessions.getActiveUserUsername(token);
+        User user = userDAO.getUserByUsername(requesterUsername);
+        
+        // Checking if user exists - Should never happen (logged in users exist)
+        if (user == null) {
+            log.fatal("User does not exist");
+            return new Pair<ReservationDTO, Integer>(null, 503);
+        }
+        
+        // Attempting to get reservation
+        ReservationDTO reservationDTO = resDAO.getReservationDTOById(rid);
+        
+        // Checking if reservation exists
+        if (reservationDTO == null) {
+            log.error("Reservation does not exist");
+            return new Pair<ReservationDTO, Integer>(null, 404);
+        }
+        
+        System.out.println("Got DTO:");
+        System.out.println(reservationDTO);
+        
+        // Checking if user is authorized to retrieve reservation information
+        if (!requesterUsername.contentEquals(reservationDTO.getReservation().getUserEmail()) && user.getUserType() != UserType.OWNER) {
+            log.error("User is not authorized to know about reservation");
+            return new Pair<ReservationDTO, Integer>(null, 403);
+        }
+        
+        // Successfully got reservation
+        return new Pair<ReservationDTO, Integer>(reservationDTO, 200);
     }
     
     /*

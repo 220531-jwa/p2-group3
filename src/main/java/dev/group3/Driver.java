@@ -74,6 +74,9 @@ public class Driver {
                     path("/{res_id}", () -> {
                         get(rc::getReservationById);
                         patch(rc::updateReservationById);
+                        path("/dto", () -> {
+                            get(rc::getReservationDTOById);
+                        });
                     });
                 });
             });

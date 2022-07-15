@@ -100,7 +100,37 @@ async function getAllRservationsByUsername(username,token){
  */
 async function fetchGetReservationById(username, res_id, token) {
     // Init
-    const url = `${baseURL}/${username}/${res_id}`
+    const url = `${baseURLReservations}/${username}/${res_id}`;
+
+    // Sending response
+    let response = await fetch(url, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'Token': token
+        }
+    });
+
+    // Getting data if status is ok
+    let data = null;
+    if (response.ok) {
+        data = await response.json();
+    }
+
+    return [response.status, data];
+}
+
+/**
+ * Attempts to get the reservation information associated with the given id
+ * Requires a token to access server service
+ * @param {string} username The username associated with the reservation
+ * @param {string} res_id The id of the request to find
+ * @param {string} token The token of the current active session
+ * @returns OK status with reservation information, and 400 series status with null otherwise.
+ */
+ async function fetchGetReservationDTOById(username, res_id, token) {
+    // Init
+    const url = `${baseURLReservations}/${username}/${res_id}/dto`;
 
     // Sending response
     let response = await fetch(url, {
@@ -130,7 +160,7 @@ async function fetchGetReservationById(username, res_id, token) {
  */
 async function fetchUpdateReservationById(res_id, resData, token) {
         // Init
-        const url = `${baseURL}/NULL/${res_id}`
+        const url = `${baseURLReservations}/NULL/${res_id}`
     
         // Sending response
         let response = await fetch(url, {

@@ -12,6 +12,7 @@ function initalizePage() {
     if (params.has('id')) {
         // Loading existing user
         // Getting params - global
+        username = params.get('username');
         id = params.get('id');
         updateViewExistingReservation();
     }
@@ -53,8 +54,16 @@ async function updateViewExistingReservation() {
     console.log('got meta data');;
     console.log(metaData);
 
+    console.log(`username: ${username}`);
+
+    if (username === null) {
+        username = userData.email;
+    }
+
+    console.log(`username: ${username}`);
+
     // Attempting to get reservation data
-    const resResult = await fetchGetReservationById(id, userData.pswd);
+    const resResult = await fetchGetReservationDTOById(username, id, userData.pswd);
 
     console.log('got resResult');
     console.log(resResult);
@@ -71,34 +80,15 @@ async function updateViewExistingReservation() {
     }
 
     // Was able to get reservation information associated with id
-    resDataJson = resResult[1];    // global
-
-    // Attempting to get dog related to reservation
-    const dogResult = await fetchGetDogById(resDataJson.userEmail, resDataJson.dogId, userData.pswd);
-
-    console.log('got dogResult');
-    console.log(dogResult);
-
-    // Processing response
-    if (dogResult[0] === 401) {
-        // User not in active session
-        notInActiveSession();
-    }
-    else if (dogResult[0] !== 200) {
-        // Dog not found / or user isn't authorized to see information
-        notFound404();
-        return;
-    }
-
-    // Was able to get dog information associated with id
-    dogDataJson = dogResult[1]; // global
+    resDtoDataJson = resResult[1];  // global
+    let resDataJson = resDtoDataJson.reservation;
 
     // =======================
     // === PROCESSING DATA ===
     // =======================
 
     // Hiding email if not owner
-    if (userData.userType !== 'OWNER') {document.getElementById('emailField').hidden = true;}
+    if (userData.userType !== 'OWNER') {document.getElementById('reserveeField').hidden = true;}
 
     // Checking if reservation is finished -> disabling status if finished
     let finished = metaData.resStatuses.FINISHED.includes(resDataJson.status);
@@ -109,12 +99,12 @@ async function updateViewExistingReservation() {
 
     // === Populating fields ===
 
-    let emailElement = document.getElementById('email');
-    emailElement.innerHTML = resDataJson.userEmail;
-    emailElement.addEventListener('click', moveToEmailPage);
+    let reserveeElement = document.getElementById('reservee');
+    reserveeElement.innerHTML = `${resDtoDataJson.userFirstName} ${resDtoDataJson.userLastName}`;
+    reserveeElement.addEventListener('click', () => moveToUserPage(resDataJson.userEmail));
     let dogElement = document.getElementById('dog')
-    dogElement.innerHTML = dogDataJson.dog_name;
-    dogElement.addEventListener('click', moveToDogPage);
+    dogElement.innerHTML = resDtoDataJson.dogName;
+    dogElement.addEventListener('click', () => moveToDogPage(resDataJson.dogId));
 
     // Status - Adding current status
     let statusElement = document.getElementById('updateStatus');
@@ -152,8 +142,8 @@ async function updateViewExistingReservation() {
 
     let serviceElement = document.getElementById('service');
     optionElement = document.createElement('option');
-    optionElement.value = "get this" // resDataJson.service;
-    optionElement.innerHTML = "get this" // resDataJson.service;
+    optionElement.value = resDtoDataJson.service;
+    optionElement.innerHTML = resDtoDataJson.service;
     serviceElement.append(optionElement);
 
     document.getElementById('startDate').value = getDateFromTimestamp(resDataJson.startDateTime);
@@ -217,17 +207,19 @@ async function save() {
 /**
  * Handles when the dogs name is clicked
  * Redirects the user to the dogs information
+ * @param {string} id The id of the dog
  */
-function moveToDogPage() {
-    console.log("dog link was clicked");
+function moveToDogPage(id) {
+    console.log(`dog link was clicked wtih ${id}`);
 }
 
 /**
  * Handles when the email associated with the reservation is clicked
  * Redirects the usr to the users page (should only be clicked by the owner)
+ * @param {string} email The email of the user
  */
-function moveToEmailPage() {
-    console.log("email link was clicked");
+function moveToUserPage(email) {
+    console.log(`User link was clicked with ${email}`);
 }
 
 /*

@@ -7,7 +7,9 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import dev.group3.model.Reservation;
+import dev.group3.model.DTO.ReservationDTO;
 import dev.group3.service.ReservationService;
+import io.javalin.core.validation.Validator;
 import io.javalin.http.Context;
 import kotlin.Pair;
 
@@ -132,6 +134,33 @@ public class ReservationController {
     	
     	
     	
+    }
+    
+    /**
+     * Handles a get request for getting a reservation by id.
+     * Takes the username from the path
+     * Takes the id from the path
+     * Takes the token from the header
+     * @return 200 with reservationDTO if successful and 400 series error otherwise.
+     */
+    public void getReservationDTOById(Context ctx) {
+        log.debug("Recieved HTTP GET request at endpoint /reservations/{username}/{res_id}/dto");
+        
+        // Getting user input
+        String username = ctx.pathParam("username");
+        String token = ctx.header("Token");
+        Validator<Integer> vid = ctx.pathParamAsClass("res_id", Integer.class);
+        Integer id = vid.getOrDefault(null);
+        
+        // Attempting to get request DTO
+        Pair<ReservationDTO, Integer> result = rs.getReservationDTOById(username, id, token);
+        
+        // Checking if request was successful
+        if (result.getFirst() != null) {
+            ctx.json(result.getFirst());
+        }
+        
+        ctx.status(result.getSecond());
     }
     
 
