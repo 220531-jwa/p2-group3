@@ -19,7 +19,101 @@ function initalizePage() {
         // New user
         updateViewNewUser();
     }
+
 }
+
+
+////TODO:might need to delete below
+
+/**
+ * === HTML PAGE ===
+ */
+
+ const idexUpdateUserDiv = document.getElementById("updateUserCont");
+
+ function setupUserProfile(divToAppendTo){
+
+   
+    
+
+    let query = window.location.search;
+    const params = new URLSearchParams(query);
+
+    // Checking if new page
+    if (params.has('username')) {
+        // Loading existing user
+        // Getting params - global
+        username = params.get('username');
+        updateViewExistingUser();
+    }
+    else {
+        // New user
+        updateViewNewUser();
+    }
+    
+    idexUpdateUserDiv.innerHTML = userProfileElements
+
+}
+
+const userProfileElements = `<div class="container bg-light">
+<h1 class="mb-4 bg-dark">#</h1>
+<h1 id="title" class="mb-4">New User:</h1>
+<div id="error" style="Color: red"></div>
+<form id="form">
+    <hr>
+    <p><b>User Information</b></p>
+    <div class="form-group row mb-4">
+        <div class="col">
+            <div id="inputEmailError" style="color: red"></div>
+            <lable style="display: block" for="inputEmail">Email:</lable>
+            <input id="inputEmail" class="input readOnly" type="text">
+        </div>
+        <div class="col user">
+            <div id="inputPasswordError" style="color: red"></div>
+            <lable id="inputPasswordLabel" style="display: block" for="inputPassword">Password:</lable>
+            <input id="inputPassword" class="input update" type="password">
+        </div>
+    </div>
+    <div class="form-group row mb-4">
+        <div class="col">
+            <div id="inputFirstNameError" style="color: red"></div>
+            <lable style="display: block" for="inputFirstName">First Name:</lable>
+            <input id="inputFirstName" class="input update" type="text">
+        </div>
+        <div class="col">
+            <div id="inputLastNameError" style="color: red"></div>
+            <lable style="display: block" for="inputLastName">Last Name:</lable>
+            <input id="inputLastName" class="input update" type="text">
+        </div>
+    </div>
+    <div class="form-group row mb-4">
+        <div class="col">
+            <div id="inputPhoneNumberError" style="color: red"></div>
+            <lable style="display: block" for="inputFirstName">Phone Number:</lable>
+            <input id="inputPhoneNumber" class="input update" type="text">
+        </div>
+        <div class="col user">
+            <div id="inputFundsError" style="color: red"></div>
+            <lable style="display: block" for="inputFunds">Funds:</lable>
+            <input id="inputFunds" type="number" class="input readOnly" min="0" max="9999.99" step="any" placeholder="$0.00">
+        </div>
+    </div>
+</form>
+<div class="row">
+    <div class="col">
+        <button class="btn btn-primary mb-4" type="button" onclick="back()">Back</button>
+    </div>
+    <div class="col text-end">
+        <button id="submitButton" class="btn btn-primary mb-4" type="button">Submit</button>
+    </div>
+</div>
+<h1 class="mb-4 bg-dark">#</h1>
+</div>`
+
+
+
+
+
 
 /**
  * === HTML UPDATES ===
@@ -40,7 +134,7 @@ async function updateViewExistingUser() {
         submitBtn.innerHTML = 'Save';
         submitBtn.addEventListener('click', save);
     }
-    else if (userData.userType === 'OWNER'){
+    else if (userData.userType === 'OWNER') {
         // User is owner and viewing user information
         // Hiding save button
         document.getElementById('submitButton').hidden = true;
@@ -84,7 +178,7 @@ async function updateViewExistingUser() {
         document.getElementById('inputPhoneNumber').value = formatPhoneNumber(userDataJson.phoneNumber);
         document.getElementById('inputFunds').value = userDataJson.funds;
     }
-    else if (result[1] === 401) {
+    else if (result[0] === 401) {
         // User not in active session
         notInActiveSession();
     }
@@ -94,7 +188,7 @@ async function updateViewExistingUser() {
     }
 }
 
-function updateViewNewUser() {
+async function updateViewNewUser() {
     // Updating button listener
     let submitBtn = document.getElementById('submitButton');
     submitBtn.addEventListener('click', submit);
@@ -111,7 +205,7 @@ function back() {
     // TODO: Be useful for index.html
     // Currently just 'checks' if user is in an active session or not
     // If they are, moved to index page
-    getSessionUserData();
+    getSessionUserData(); // Delete this later when finished being useful
     location.href = "../html/index.html";
 }
 
@@ -186,7 +280,7 @@ async function save() {
         inActiveSession(result[1]);
     }
     else {
-        document.getElementById("error").innerHTML = "Invalid User Input";
+        document.getElementById("error").innerHTML = "Failed to update user. Try again later.";
     }
 }
 

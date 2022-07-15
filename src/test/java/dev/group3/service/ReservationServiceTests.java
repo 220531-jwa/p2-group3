@@ -320,9 +320,9 @@ public class ReservationServiceTests {
     
     @ParameterizedTest
     @MethodSource("grbi_invalidInputs")
-    public void grbi_invalidInputs_400null(String username, Integer rid, String token) {
+    public void grbi_invalidInputs_400null(Integer rid, String token) {
         // Running test
-        Pair<Reservation, Integer> actualRes = resService.getReservationById(username, rid, token);
+        Pair<Reservation, Integer> actualRes = resService.getReservationById(rid, token);
         Object[] expectedResults = {null, 400};
         Object[] actualResults = {actualRes.getFirst(), actualRes.getSecond()};
         
@@ -331,19 +331,17 @@ public class ReservationServiceTests {
     }
     private static Stream<Arguments> grbi_invalidInputs() {
         List<Arguments> arguments = new ArrayList<Arguments>();
-        arguments.add(Arguments.of(null, 1, "a"));      // invalid username
-        arguments.add(Arguments.of("a", null, "a"));    // invalid reservation id
-        arguments.add(Arguments.of("a", 1, null));      // invalid password
-        arguments.add(Arguments.of("", 1, "a"));        // invalid username
-        arguments.add(Arguments.of("a", -1, "a"));      // invalid reservation id
-        arguments.add(Arguments.of("a", 1, ""));        // invalid password
+        arguments.add(Arguments.of(null, "a"));    // invalid reservation id
+        arguments.add(Arguments.of(1, null));      // invalid password
+        arguments.add(Arguments.of(-1, "a"));      // invalid reservation id
+        arguments.add(Arguments.of(1, ""));        // invalid password
         return arguments.stream();
     }
     
     @Test
     public void grbi_userNotInActiveSession_401null() {
         // Running test
-        Pair<Reservation, Integer> actualRes = resService.getReservationById("a", 1, "notActive");
+        Pair<Reservation, Integer> actualRes = resService.getReservationById(1, "notActive");
         Object[] expectedResults = {null, 401};
         Object[] actualResults = {actualRes.getFirst(), actualRes.getSecond()};
         
@@ -357,7 +355,7 @@ public class ReservationServiceTests {
         String token = ActiveUserSessions.addActiveUser("email1");
         
         // Running test
-        Pair<Reservation, Integer> actualRes = resService.getReservationById("email2", 3, token);
+        Pair<Reservation, Integer> actualRes = resService.getReservationById(3, token);
         Object[] expectedResults = {null, 401};
         Object[] actualResults = {actualRes.getFirst(), actualRes.getSecond()};
         
@@ -367,12 +365,12 @@ public class ReservationServiceTests {
     
     @ParameterizedTest
     @MethodSource("gubu_validInputs")
-    public void grbi_userIsAuthorized_200Reseration(int resIndex, String username, Integer rid, String userUsername) {
+    public void grbi_userIsAuthorized_200Reseration(int resIndex, Integer rid, String userUsername) {
         // Init mock data set
         String token = ActiveUserSessions.addActiveUser(userUsername);
         
         // Running test
-        Pair<Reservation, Integer> actualRes = resService.getReservationById(username, rid, token);
+        Pair<Reservation, Integer> actualRes = resService.getReservationById(rid, token);
         Object[] expectedResults = {mockReses, 200};
         Object[] actualResults = {actualRes.getFirst(), actualRes.getSecond()};
         
@@ -384,9 +382,9 @@ public class ReservationServiceTests {
         int resIndex = 0;
         for (Reservation res: mockReses) {
             // Users can get their own
-            arguments.add(Arguments.of(resIndex, res.getUserEmail(), res.getId(), res.getUserEmail()));
+            arguments.add(Arguments.of(resIndex, res.getId(), res.getUserEmail()));
             // Owner can get anyone
-            arguments.add(Arguments.of(resIndex, res.getUserEmail(), res.getId(), mockUsers.get(0).getEmail()));
+            arguments.add(Arguments.of(resIndex, res.getId(), mockUsers.get(0).getEmail()));
             resIndex++;
         }
         return arguments.stream();
@@ -396,9 +394,14 @@ public class ReservationServiceTests {
     
     @ParameterizedTest
     @MethodSource("urbi_invalidInputs")
-    public void urbi_invalidInputs_nullBlank_400null(String username, Integer rid, Reservation resData, String token) {
+    public void urbi_invalidInputs_nullBlank_400null(Integer rid, Reservation resData, String token) {
         // Running test
-        Pair<Reservation, Integer> actualRes = resService.updateReservationById(username, rid, resData, token);
+
+        Pair<Reservation, Integer> actualRes = resService.updateReservationById(rid, resData, token);
+
+//        Pair<Reservation, Integer> actualRes = resService.updateReservationById(username, rid, resData, token);
+//        Pair<Reservation, Integer> actualRes = resService.updateReservationById(resData, token);
+
         Object[] expectedResults = {null, 400};
         Object[] actualResults = {actualRes.getFirst(), actualRes.getSecond()};
         
@@ -407,20 +410,23 @@ public class ReservationServiceTests {
     }
     private static Stream<Arguments> urbi_invalidInputs() {
         List<Arguments> arguments = new ArrayList<Arguments>();
-        arguments.add(Arguments.of(null, 1, new Reservation(), "a"));       // invalid username
-        arguments.add(Arguments.of("a", null, new Reservation(), "a"));     // invalid reservation id
-        arguments.add(Arguments.of("a", 1, null, "a"));                     // invalid resData
-        arguments.add(Arguments.of("a", 1, new Reservation(), null));       // invalid password
-        arguments.add(Arguments.of("", 1, new Reservation(), "a"));         // invalid username
-        arguments.add(Arguments.of("a", -1, new Reservation(), "a"));       // invalid reservation id
-        arguments.add(Arguments.of("a", 1, new Reservation(), ""));         // invalid password
+        arguments.add(Arguments.of(null, new Reservation(), "a"));     // invalid reservation id
+        arguments.add(Arguments.of(1, null, "a"));                     // invalid resData
+        arguments.add(Arguments.of(1, new Reservation(), null));       // invalid password
+        arguments.add(Arguments.of(-1, new Reservation(), "a"));       // invalid reservation id
+        arguments.add(Arguments.of(1, new Reservation(), ""));         // invalid password
         return arguments.stream();
     }
     
     @Test
     public void urbi_invalidInputs_resDataIsNull_400null() {
         // Running test
-        Pair<Reservation, Integer> actualRes = resService.updateReservationById("a", 1, new Reservation(), "a");
+
+        Pair<Reservation, Integer> actualRes = resService.updateReservationById(1, new Reservation(), "a");
+
+//        Pair<Reservation, Integer> actualRes = resService.updateReservationById("a", 1, new Reservation(), "a");
+//        Pair<Reservation, Integer> actualRes = resService.updateReservationById( new Reservation(), "a");
+
         Object[] expectedResults = {null, 400};
         Object[] actualResults = {actualRes.getFirst(), actualRes.getSecond()};
         
@@ -431,7 +437,12 @@ public class ReservationServiceTests {
     @Test
     public void urbi_userNotInActiveSession_401null() {
         // Running test
-        Pair<Reservation, Integer> actualRes = resService.updateReservationById("email1", 1, new Reservation().setStatus(ResStatusType.CHECKEDIN), "notActiveToken");
+
+        Pair<Reservation, Integer> actualRes = resService.updateReservationById(1, new Reservation().setStatus(ResStatusType.CHECKEDIN), "notActiveToken");
+
+//        Pair<Reservation, Integer> actualRes = resService.updateReservationById("email1", 1, new Reservation().setStatus(ResStatusType.CHECKEDIN), "notActiveToken");
+//        Pair<Reservation, Integer> actualRes = resService.updateReservationById(new Reservation().setStatus(ResStatusType.CHECKEDIN), "notActiveToken");
+
         Object[] expectedResults = {null, 401};
         Object[] actualResults = {actualRes.getFirst(), actualRes.getSecond()};
         
@@ -445,7 +456,12 @@ public class ReservationServiceTests {
         String token = ActiveUserSessions.addActiveUser("email1");
         
         // Running test
-        Pair<Reservation, Integer> actualRes = resService.updateReservationById("email2", 3, new Reservation().setStatus(ResStatusType.CHECKEDIN), token);
+
+        Pair<Reservation, Integer> actualRes = resService.updateReservationById(3, new Reservation().setStatus(ResStatusType.CHECKEDIN), token);
+
+//        Pair<Reservation, Integer> actualRes = resService.updateReservationById("email2", 3, new Reservation().setStatus(ResStatusType.CHECKEDIN), token);
+//        Pair<Reservation, Integer> actualRes = resService.updateReservationById(new Reservation().setStatus(ResStatusType.CHECKEDIN), token);
+
         Object[] expectedResults = {null, 403};
         Object[] actualResults = {actualRes.getFirst(), actualRes.getSecond()};
         
@@ -454,13 +470,17 @@ public class ReservationServiceTests {
     }
     
     @Test
-    public void urbi_userIsActive_userDoesNotExist_404null() {
+    public void urbi_userIsActive_userDoesNotExist_503null() {
         // Init mock data set
         String token = ActiveUserSessions.addActiveUser("ghostUser");
         
         // Running test
-        Pair<Reservation, Integer> actualRes = resService.updateReservationById("ghostUser", 1, new Reservation().setStatus(ResStatusType.CHECKEDIN), token);
-        Object[] expectedResults = {null, 404};
+        Pair<Reservation, Integer> actualRes = resService.updateReservationById(1, new Reservation().setStatus(ResStatusType.CHECKEDIN), token);
+
+//        Pair<Reservation, Integer> actualRes = resService.updateReservationById("ghostUser", 1, new Reservation().setStatus(ResStatusType.CHECKEDIN), token);
+//        Pair<Reservation, Integer> actualRes = resService.updateReservationById(new Reservation().setStatus(ResStatusType.CHECKEDIN), token);
+
+        Object[] expectedResults = {null, 503};
         Object[] actualResults = {actualRes.getFirst(), actualRes.getSecond()};
         
         // Assertions
@@ -473,7 +493,12 @@ public class ReservationServiceTests {
         String token = ActiveUserSessions.addActiveUser("email1");
         
         // Running test
-        Pair<Reservation, Integer> actualRes = resService.updateReservationById("email1", 100, new Reservation().setStatus(ResStatusType.CHECKEDIN), token);
+
+        Pair<Reservation, Integer> actualRes = resService.updateReservationById(100, new Reservation().setStatus(ResStatusType.CHECKEDIN), token);
+
+//        Pair<Reservation, Integer> actualRes = resService.updateReservationById("email1", 100, new Reservation().setStatus(ResStatusType.CHECKEDIN), token);
+//        Pair<Reservation, Integer> actualRes = resService.updateReservationById(new Reservation().setStatus(ResStatusType.CHECKEDIN), token);
+
         Object[] expectedResults = {null, 404};
         Object[] actualResults = {actualRes.getFirst(), actualRes.getSecond()};
         
@@ -481,6 +506,7 @@ public class ReservationServiceTests {
         assertArrayEquals(expectedResults, actualResults); 
     }
     
+    // TODO: This is probably no longer an accurate test -> needs updated to reflect proper changes
     @ParameterizedTest
     @MethodSource("urbi_invalidStatusInputs")
     public void urbi_usernotAuthorized_invalidStatus_403null(String userusername, ResStatusType newStatus) {
@@ -488,7 +514,12 @@ public class ReservationServiceTests {
         String token = ActiveUserSessions.addActiveUser(userusername);
         
         // Running test
-        Pair<Reservation, Integer> actualRes = resService.updateReservationById("email1", 1, new Reservation().setStatus(newStatus), token);
+
+        Pair<Reservation, Integer> actualRes = resService.updateReservationById(1, new Reservation().setStatus(newStatus), token);
+
+//        Pair<Reservation, Integer> actualRes = resService.updateReservationById("email1", 1, new Reservation().setStatus(newStatus), token);
+//        Pair<Reservation, Integer> actualRes = resService.updateReservationById(new Reservation().setStatus(newStatus), token);
+
         Object[] expectedResults = {null, 404};
         Object[] actualResults = {actualRes.getFirst(), actualRes.getSecond()};
         
@@ -505,6 +536,7 @@ public class ReservationServiceTests {
         return arguments.stream();
     }
     
+    // TODO: This is probably no longer an accurate test -> needs updated to reflect proper changes
     @ParameterizedTest
     @MethodSource("urbi_validInputs")
     public void urbi_isAuthorized_200Reservation(String userusername, ResStatusType newStatus) {
@@ -512,7 +544,12 @@ public class ReservationServiceTests {
         String token = ActiveUserSessions.addActiveUser(userusername);
         
         // Running test
-        Pair<Reservation, Integer> actualRes = resService.updateReservationById("email1", 1, new Reservation().setStatus(newStatus), token);
+
+        Pair<Reservation, Integer> actualRes = resService.updateReservationById(1, new Reservation().setStatus(newStatus), token);
+
+//        Pair<Reservation, Integer> actualRes = resService.updateReservationById("email1", 1, new Reservation().setStatus(newStatus), token);
+//        Pair<Reservation, Integer> actualRes = resService.updateReservationById(new Reservation().setStatus(newStatus), token);
+//>>>>>>> jfriesner_reservations
         Object[] expectedResults = {null, 404};
         Object[] actualResults = {actualRes.getFirst(), actualRes.getSecond()};
         

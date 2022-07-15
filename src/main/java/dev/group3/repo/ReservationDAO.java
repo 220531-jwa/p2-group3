@@ -4,17 +4,13 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-
 //import java.sql.Timestamp;
 import java.util.ArrayList;
-
 import java.util.List;
-
 
 import dev.group3.model.Reservation;
 import dev.group3.model.enums.ResStatusType;
 import dev.group3.util.ConnectionUtil;
-import kotlin.Pair;
 
 
 public class ReservationDAO {
@@ -45,6 +41,7 @@ public class ReservationDAO {
 						rs.getInt("id"),
 						rs.getString("user_email"),
 						rs.getInt("dog_id"),
+						rs.getInt("service_id"),
 						ResStatusType.valueOf(rs.getString("status")),
 						rs.getTimestamp("start_datetime"),
 						rs.getTimestamp("end_datetime")
@@ -80,6 +77,7 @@ public class ReservationDAO {
     			inComingReserv.setId(rs.getInt("id"));
     			inComingReserv.setUserEmail(rs.getString("user_email"));
     			inComingReserv.setDogId(rs.getInt("dog_id"));
+    			inComingReserv.setServiceId(rs.getInt("service_id"));
     			
     			ResStatusType stat = ResStatusType.valueOf(rs.getString("status"));
     			inComingReserv.setStatus(stat);
@@ -101,7 +99,7 @@ public class ReservationDAO {
     		
     	}catch(SQLException e) {
     		e.printStackTrace();
-    		Pair<List<Reservation>,Integer> respPairDos = new Pair<List<Reservation>,Integer>(null,e.getErrorCode());
+//    		Pair<List<Reservation>,Integer> respPairDos = new Pair<List<Reservation>,Integer>(null,e.getErrorCode());
     	}
     			
         return null;
@@ -133,6 +131,7 @@ public class ReservationDAO {
     			inComingReserv.setId(rs.getInt("id"));
     			inComingReserv.setUserEmail(rs.getString("user_email"));
     			inComingReserv.setDogId(rs.getInt("dog_id"));
+    			inComingReserv.setServiceId(rs.getInt("service_id"));
     			
     			ResStatusType stat = ResStatusType.valueOf(rs.getString("status"));
     			inComingReserv.setStatus(stat);
@@ -175,6 +174,7 @@ public class ReservationDAO {
     			inComingReserv.setId(rs.getInt("id"));
     			inComingReserv.setUserEmail(rs.getString("user_email"));
     			inComingReserv.setDogId(rs.getInt("dog_id"));
+    			inComingReserv.setServiceId(rs.getInt("service_id"));
     			
     			ResStatusType stat = ResStatusType.valueOf(rs.getString("status"));
     			inComingReserv.setStatus(stat);
@@ -198,7 +198,43 @@ public class ReservationDAO {
      * === UPDATE ===
      */
     
-    public Reservation updateReservationById(int id) {
-        return null;
+    public Reservation updateReservationById(Reservation res) {
+    	
+    	String sql = "Update reservations SET "
+    			+ "user_email= ?,"
+    			+ "dog_id= ?,"
+    			+ "status= ?,"
+    			+ "start_datetime= ?,"
+    			+ "end_datetime= ?"
+    			+ "WHERE id = ?;";
+    	
+    	try(Connection conn = cu.getConnection()){
+    		PreparedStatement ps = conn.prepareStatement(sql);
+    		ps.setString(1, res.getUserEmail());
+    		ps.setInt(2, res.getDogId());
+    		ps.setString(3, res.getStatus().toString());
+    		ps.setTimestamp(4, res.getStartDateTime());
+    		ps.setTimestamp(5, res.getEndDateTime());
+    		ps.setInt(6, res.getId());
+    		
+    		
+    		boolean didEx = ps.execute();
+//    		ps.getUpdateCount();
+    		
+    		if(didEx) {
+    			return res;
+    			
+    		}else {
+    			return null;
+    		}
+    		
+    		
+    		
+    		
+    	}catch(SQLException e) {
+    		e.printStackTrace();
+    		return null;
+    	}
+//        return null;
     }
 }

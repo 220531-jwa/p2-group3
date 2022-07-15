@@ -6,31 +6,33 @@ import dev.group3.model.enums.ResStatusType;
 
 public class Reservation {
 
-    private int id;
+    private Integer id;
     private String userEmail;
-    private int dogId;
+    private Integer dogId;
+    private Integer serviceId;
     private ResStatusType status;
     private Timestamp startDateTime;
     private Timestamp endDateTime;
     
     public Reservation() {}
 
-    public Reservation(int id, String userEmail, int dogId, ResStatusType status, Timestamp startDateTime,
-            Timestamp endDateTime) {
+    public Reservation(Integer id, String userEmail, Integer dogId, Integer serviceId, ResStatusType status,
+            Timestamp startDateTime, Timestamp endDateTime) {
         super();
         this.id = id;
         this.userEmail = userEmail;
         this.dogId = dogId;
+        this.serviceId = serviceId;
         this.status = status;
         this.startDateTime = startDateTime;
         this.endDateTime = endDateTime;
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public Reservation setId(int id) {
+    public Reservation setId(Integer id) {
         this.id = id;
         return this;
     }
@@ -44,12 +46,21 @@ public class Reservation {
         return this;
     }
 
-    public int getDogId() {
+    public Integer getDogId() {
         return dogId;
     }
 
-    public Reservation setDogId(int dogId) {
+    public Reservation setDogId(Integer dogId) {
         this.dogId = dogId;
+        return this;
+    }
+
+    public Integer getServiceId() {
+        return serviceId;
+    }
+
+    public Reservation setServiceId(Integer serviceId) {
+        this.serviceId = serviceId;
         return this;
     }
 
@@ -57,8 +68,8 @@ public class Reservation {
         return status;
     }
 
-    public Reservation setStatus(ResStatusType checkedin) {
-        this.status = checkedin;
+    public Reservation setStatus(ResStatusType status) {
+        this.status = status;
         return this;
     }
 
@@ -82,7 +93,7 @@ public class Reservation {
 
     @Override
     public String toString() {
-        return "Reservation [id=" + id + ", userEmail=" + userEmail + ", dogId=" + dogId + ", status=" + status
-                + ", startDateTime=" + startDateTime + ", endDateTime=" + endDateTime + "]";
+        return "Reservation [id=" + id + ", userEmail=" + userEmail + ", dogId=" + dogId + ", serviceId=" + serviceId
+                + ", status=" + status + ", startDateTime=" + startDateTime + ", endDateTime=" + endDateTime + "]";
     }
 }
