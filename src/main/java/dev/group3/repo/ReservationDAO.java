@@ -4,17 +4,13 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-
 //import java.sql.Timestamp;
 import java.util.ArrayList;
-
 import java.util.List;
-
 
 import dev.group3.model.Reservation;
 import dev.group3.model.enums.ResStatusType;
 import dev.group3.util.ConnectionUtil;
-import kotlin.Pair;
 
 
 public class ReservationDAO {
@@ -48,6 +44,7 @@ public class ReservationDAO {
 						rs.getInt("id"),
 						rs.getString("user_email"),
 						rs.getInt("dog_id"),
+						rs.getInt("service_id"),
 						ResStatusType.valueOf(rs.getString("status")),
 						rs.getTimestamp("start_datetime"),
 						rs.getTimestamp("end_datetime")
@@ -83,6 +80,7 @@ public class ReservationDAO {
     			inComingReserv.setId(rs.getInt("id"));
     			inComingReserv.setUserEmail(rs.getString("user_email"));
     			inComingReserv.setDogId(rs.getInt("dog_id"));
+    			inComingReserv.setServiceId(rs.getInt("service_id"));
     			
     			ResStatusType stat = ResStatusType.valueOf(rs.getString("status"));
     			inComingReserv.setStatus(stat);
@@ -136,6 +134,7 @@ public class ReservationDAO {
     			inComingReserv.setId(rs.getInt("id"));
     			inComingReserv.setUserEmail(rs.getString("user_email"));
     			inComingReserv.setDogId(rs.getInt("dog_id"));
+    			inComingReserv.setServiceId(rs.getInt("service_id"));
     			
     			ResStatusType stat = ResStatusType.valueOf(rs.getString("status"));
     			inComingReserv.setStatus(stat);
@@ -178,6 +177,7 @@ public class ReservationDAO {
     			inComingReserv.setId(rs.getInt("id"));
     			inComingReserv.setUserEmail(rs.getString("user_email"));
     			inComingReserv.setDogId(rs.getInt("dog_id"));
+    			inComingReserv.setServiceId(rs.getInt("service_id"));
     			
     			ResStatusType stat = ResStatusType.valueOf(rs.getString("status"));
     			inComingReserv.setStatus(stat);

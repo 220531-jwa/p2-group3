@@ -9,18 +9,20 @@ public class Reservation {
     private Integer id;
     private String userEmail;
     private Integer dogId;
+    private Integer serviceId;
     private ResStatusType status;
     private Timestamp startDateTime;
     private Timestamp endDateTime;
     
     public Reservation() {}
 
-    public Reservation(Integer id, String userEmail, Integer dogId, ResStatusType status, Timestamp startDateTime,
-            Timestamp endDateTime) {
+    public Reservation(Integer id, String userEmail, Integer dogId, Integer serviceId, ResStatusType status,
+            Timestamp startDateTime, Timestamp endDateTime) {
         super();
         this.id = id;
         this.userEmail = userEmail;
         this.dogId = dogId;
+        this.serviceId = serviceId;
         this.status = status;
         this.startDateTime = startDateTime;
         this.endDateTime = endDateTime;
@@ -53,6 +55,15 @@ public class Reservation {
         return this;
     }
 
+    public Integer getServiceId() {
+        return serviceId;
+    }
+
+    public Reservation setServiceId(Integer serviceId) {
+        this.serviceId = serviceId;
+        return this;
+    }
+
     public ResStatusType getStatus() {
         return status;
     }
@@ -82,7 +93,7 @@ public class Reservation {
 
     @Override
     public String toString() {
-        return "Reservation [id=" + id + ", userEmail=" + userEmail + ", dogId=" + dogId + ", status=" + status
-                + ", startDateTime=" + startDateTime + ", endDateTime=" + endDateTime + "]";
+        return "Reservation [id=" + id + ", userEmail=" + userEmail + ", dogId=" + dogId + ", serviceId=" + serviceId
+                + ", status=" + status + ", startDateTime=" + startDateTime + ", endDateTime=" + endDateTime + "]";
     }
 }

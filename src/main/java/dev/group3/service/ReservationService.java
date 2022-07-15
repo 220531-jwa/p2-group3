@@ -134,7 +134,7 @@ public class ReservationService {
 //    	Pair<List<Reservation>, Integer> newPair = new Pair<List<Reservation>, Integer>(resPair,200);
     	System.out.println(token);
     	
-    	if(token.isBlank() || token.isEmpty() ||token == null  ) {
+    	if(token == null || token.isEmpty()) {
 //    		Pair<List<Reservation>, Integer> newPair400 = 
     		log.error("incoming token was null or empty string");
     		return new Pair<List<Reservation>, Integer>(null,400);
@@ -191,11 +191,13 @@ public class ReservationService {
      */
 //    public Pair<Reservation, Integer> getReservationById(String username,Integer rid, String token) {
     public Pair<Reservation, Integer> getReservationById(Integer rid, String token) {
+        
+        if (rid == null || token == null || rid < 0 || token.isBlank()) {
+            log.error("Invalid rid and/or token input(s)");
+            return new Pair<Reservation, Integer>(null, 400);
+        }
     	
-    	System.out.println(1);
-    	System.out.println(resDAO == null);
     	Reservation res = resDAO.getReservationById(rid);
-    	System.out.println(2);
     	
     	if(res != null) {
     		Pair<Reservation, Integer> resPair = new Pair<Reservation, Integer>(res,200);
@@ -234,7 +236,6 @@ public class ReservationService {
     		Pair<Reservation, Integer> newPair400 = new Pair<Reservation, Integer>(null,400);
     		log.error("incoming token was null or empty string");
     		return newPair400;
-    		
     	}
     	
     	// Checking if user is in an active session
@@ -246,6 +247,10 @@ public class ReservationService {
         String userName = ActiveUserSessions.getActiveUserUsername(token);
         User user = userDAO.getUserByUsername(userName);
         
+        if (user == null) {
+            log.fatal("User does not exist");
+            return new Pair<Reservation, Integer>(null, 503);   // This should never happen (loggedin users can only login if the user exists)
+        }
         
         // CHECKING TO MAKE SURE THE USERTYPE IS AUTHORIZED TO VIEW ALL RESERVATIONS
         String userType = user.getUserType().toString();

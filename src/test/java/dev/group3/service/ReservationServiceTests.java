@@ -470,18 +470,17 @@ public class ReservationServiceTests {
     }
     
     @Test
-    public void urbi_userIsActive_userDoesNotExist_404null() {
+    public void urbi_userIsActive_userDoesNotExist_503null() {
         // Init mock data set
         String token = ActiveUserSessions.addActiveUser("ghostUser");
         
         // Running test
-
         Pair<Reservation, Integer> actualRes = resService.updateReservationById(1, new Reservation().setStatus(ResStatusType.CHECKEDIN), token);
 
 //        Pair<Reservation, Integer> actualRes = resService.updateReservationById("ghostUser", 1, new Reservation().setStatus(ResStatusType.CHECKEDIN), token);
 //        Pair<Reservation, Integer> actualRes = resService.updateReservationById(new Reservation().setStatus(ResStatusType.CHECKEDIN), token);
 
-        Object[] expectedResults = {null, 404};
+        Object[] expectedResults = {null, 503};
         Object[] actualResults = {actualRes.getFirst(), actualRes.getSecond()};
         
         // Assertions
