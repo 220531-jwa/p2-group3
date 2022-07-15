@@ -40,15 +40,37 @@ public class ReservationController {
 
     // TODO / REVIEW: filter (for the day OR all of them ever)
     public void getAllReservations(Context ctx) {
-        log.debug("Recieved HTTP GET request at endpoint /reservations");
+//<<<<<<< HEAD
+//        log.debug("Recieved HTTP GET request at endpoint /reservations");
+//
+//        String token = ctx.header("Token");
+//        Pair<List<Reservation>, Integer> respPair = rs.getAllReservations(token);
+//
+//        ArrayList<Reservation> resArray = (ArrayList<Reservation>) respPair.getFirst();
+//        int stat = (Integer) respPair.getSecond();
+//        ctx.json(resArray);
+//        ctx.status(stat);
+//=======
+        
+    	String token = ctx.header("Token");
+    	System.out.println(token);
+    	Pair<List<Reservation>, Integer> respPair = rs.getAllReservations(token);
+    	
+    	
+    	
+    	ArrayList<Reservation> resArray = (ArrayList<Reservation>) respPair.getFirst();
+    	int stat = (Integer) respPair.getSecond();
+    	
+    	if(stat==200) {
+    		
+    		ctx.json(resArray);
+    		ctx.status(stat);
+    	}else {
+    		ctx.status(stat);
+    	}
+    	
+    	
 
-        String token = ctx.header("Token");
-        Pair<List<Reservation>, Integer> respPair = rs.getAllReservations(token);
-
-        ArrayList<Reservation> resArray = (ArrayList<Reservation>) respPair.getFirst();
-        int stat = (Integer) respPair.getSecond();
-        ctx.json(resArray);
-        ctx.status(stat);
     }
 
     public void getAllRservationsByUsername(Context ctx) {
@@ -72,24 +94,46 @@ public class ReservationController {
 
     }
 
+//    public void getReservationById(Context ctx) {
+//        log.debug("Recieved HTTP GET request at endpoint /reservations/{username}/{res_id}");
+//        
+//        // Getting user input
+//        String token = ctx.header("Token");
+//        Integer res_id = Integer.parseInt(ctx.pathParam("res_id"));
+//        
+//        // Attempting to get reservation
+//        Pair<Reservation, Integer> resPair = rs.getReservationById(res_id, token);
+//        Reservation res = resPair.getFirst();
+//        Integer responseCode = resPair.getSecond();
+//        
+//        if (res != null) {
+//            ctx.json(res);
+//        }
+//        
+//        ctx.status(responseCode);
+//    }
+
+
+
+    
     public void getReservationById(Context ctx) {
-        log.debug("Recieved HTTP GET request at endpoint /reservations/{username}/{res_id}");
-        
-        // Getting user input
-        String token = ctx.header("Token");
-        Integer res_id = Integer.parseInt(ctx.pathParam("res_id"));
-        
-        // Attempting to get reservation
-        Pair<Reservation, Integer> resPair = rs.getReservationById(res_id, token);
-        Reservation res = resPair.getFirst();
-        Integer responseCode = resPair.getSecond();
-        
-        if (res != null) {
-            ctx.json(res);
-        }
-        
-        ctx.status(responseCode);
+    	 String token = ctx.header("Token");
+//    	String token = "hi";
+         String userName = ctx.pathParam("username");
+         Integer res_id = Integer.parseInt(ctx.pathParam("res_id"));
+//    	Pair<Reservation,Integer> resPair = rs.getReservationById(userName, res_id, token);
+    	Pair<Reservation,Integer> resPair = rs.getReservationById(res_id, token);
+    	
+    	Reservation res = resPair.getFirst();
+    	Integer responseCode = resPair.getSecond();
+    	
+    	ctx.json(res);
+    	ctx.status(responseCode);
+    	
+    	
+    	
     }
+    
 
     /*
      * === PATCH ===
@@ -98,17 +142,36 @@ public class ReservationController {
     // owner - Checkin/out
     // dogowner - cancel
     public void updateReservationById(Context ctx) {
-        log.debug("Recieved HTTP PATCH request at endpoint /reservations//{username}/{res_id}");
+
+//        log.debug("Recieved HTTP PATCH request at endpoint /reservations//{username}/{res_id}");
+    	
+    	String token = ctx.header("Token");
+    	Integer reserv_id = Integer.parseInt(ctx.pathParam("res_id"));
+    	Reservation res = ctx.bodyAsClass(Reservation.class);
+    	
+    	Pair<Reservation,Integer>respPair = rs.updateReservationById(reserv_id,res, token);
+    	Integer stat = respPair.getSecond();
+    	
+    	if(stat==200) {
+    		Reservation reserv= respPair.getFirst();
+    		ctx.json(reserv);
+    		ctx.status(stat);
+    	}else {
+    		ctx.status();
+    	}
+    	
+    	
+
         
         // Getting user input
-        String token = ctx.header("Token");
-        Integer res_id = Integer.parseInt(ctx.pathParam("res_id"));
-        Reservation resData = ctx.bodyAsClass(Reservation.class);
-        
-        System.out.println("Got token: " + token);
-        System.out.println("Got res_id: " + res_id);
-        System.out.println("Got resData: " + resData);
-        
-        ctx.status(200);
+//        String token = ctx.header("Token");
+//        Integer res_id = Integer.parseInt(ctx.pathParam("res_id"));
+//        Reservation resData = ctx.bodyAsClass(Reservation.class);
+//        
+//        System.out.println("Got token: " + token);
+//        System.out.println("Got res_id: " + res_id);
+//        System.out.println("Got resData: " + resData);
+//        
+//        ctx.status(200);
     }
 }

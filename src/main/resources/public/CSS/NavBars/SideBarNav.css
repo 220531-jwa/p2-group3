@@ -117,3 +117,19 @@
     .sidenav {padding-top: 15px;}
     .sidenav a {font-size: 18px;}
   }
+
+
+  .sideOpt{
+    border: none;
+    color:white;
+    margin-top:3vh;
+    background-color: #111;
+  }
+
+
+  .sideOpt:hover{
+    border: none;
+    color:white;
+    margin-top:3vh;
+    background-color: rgb(58, 57, 57);
+  }

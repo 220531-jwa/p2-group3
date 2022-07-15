@@ -118,6 +118,9 @@ function register() {
 
 function setuplg(){
     // createUserDiv.style.display="none"
+    setupTopNav("forTheTopDiv",userType);
+    setupSideNav("forTheSideDiv",userType);
+
 }
 
 function newRegister(){

@@ -74,7 +74,7 @@ public class ReservationService {
     	
     	
     	
-    	if(token == "" || token == null) {
+    	if(token == null || token.isBlank() || token.isEmpty()  ) {
     		Pair<List<Reservation>, Integer> newPair400 = new Pair<List<Reservation>, Integer>(null,400);
     		log.error("incoming token was null or empty string");
     		return newPair400;
@@ -104,8 +104,8 @@ public class ReservationService {
         		
         	}else {
         		
-        		Pair<List<Reservation>, Integer> newPair505 = new Pair<List<Reservation>, Integer>(null,505);
-        		return newPair505;
+        		Pair<List<Reservation>, Integer> newPair503 = new Pair<List<Reservation>, Integer>(null,503);
+        		return newPair503;
         	}
         	
         }else {
@@ -128,12 +128,54 @@ public class ReservationService {
      * @param token The associated active user session of the requester
      * @return 200 with reservations if successful, and 400 null series error otherwise
      */
-    public Pair<List<Reservation>, Integer> getAllReservationsByUsername(String username, String token) {
+    public Pair<List<Reservation>, Integer> getAllReservationsByUsername(String username,  String token) {
        
-    	List<Reservation> resPair = resDAO.getAllRservationsByUsername(username);
-    	Pair<List<Reservation>, Integer> newPair = new Pair<List<Reservation>, Integer>(resPair,200);
     	
-    	return newPair;
+//    	Pair<List<Reservation>, Integer> newPair = new Pair<List<Reservation>, Integer>(resPair,200);
+    	System.out.println(token);
+    	
+    	if(token.isBlank() || token.isEmpty() ||token == null  ) {
+//    		Pair<List<Reservation>, Integer> newPair400 = 
+    		log.error("incoming token was null or empty string");
+    		return new Pair<List<Reservation>, Integer>(null,400);
+    		
+    	}
+    	
+    	// Checking if user is in an active session
+        if (!ActiveUserSessions.isActiveUser(token)) {
+            log.error("User is not in an active session");
+    		return new Pair<List<Reservation>, Integer>(null,401);
+        }
+        
+        String userName = ActiveUserSessions.getActiveUserUsername(token);
+        User user = userDAO.getUserByUsername(userName);
+        
+        
+        // CHECKING TO MAKE SURE THE USERTYPE IS AUTHORIZED TO VIEW ALL RESERVATIONS
+        String userType = user.getUserType().toString();
+        
+        if(userType == "OWNER") {
+        	
+        	List<Reservation> respPair = resDAO.getAllRservationsByUsername(username);
+        	if(respPair != null) {
+        		
+        		Pair<List<Reservation>, Integer> newPair = new Pair<List<Reservation>, Integer>(respPair,200);
+        		return newPair;
+        		
+        	}else {
+        		
+        		Pair<List<Reservation>, Integer> newPair503 = new Pair<List<Reservation>, Integer>(null,503);
+        		return newPair503;
+        	}
+        	
+        }else {
+        	Pair<List<Reservation>, Integer> newPair403 = new Pair<List<Reservation>, Integer>(null,403);
+        	return newPair403;
+        }
+    	
+    	
+    	
+//    	return newPair;
     }
     
     /**
@@ -147,6 +189,7 @@ public class ReservationService {
      * @param token The associated active user session of the requester
      * @return 200 with reservation if successful, and 400 null series otherwise
      */
+//    public Pair<Reservation, Integer> getReservationById(String username,Integer rid, String token) {
     public Pair<Reservation, Integer> getReservationById(Integer rid, String token) {
     	
     	System.out.println(1);
@@ -181,8 +224,52 @@ public class ReservationService {
      * @param token The associated active user session of the requester
      * @return 200 with updated reservation if successful, and 400 null series otherwise
      */
-    public Pair<Reservation, Integer> updateReservationById(Integer rid, Reservation resData, String token) {
-        return new Pair<Reservation, Integer>(null, 500);
+
+//    public Pair<Reservation, Integer> updateReservationById(Integer rid, Reservation resData, String token) {
+//        return new Pair<Reservation, Integer>(null, 500);
+
+    public Pair<Reservation, Integer> updateReservationById(Integer res_id,Reservation resData, String token) {
+    	
+    	if(token == null || token.isBlank() || token.isEmpty()  ) {
+    		Pair<Reservation, Integer> newPair400 = new Pair<Reservation, Integer>(null,400);
+    		log.error("incoming token was null or empty string");
+    		return newPair400;
+    		
+    	}
+    	
+    	// Checking if user is in an active session
+        if (!ActiveUserSessions.isActiveUser(token)) {
+            log.error("User is not in an active session");
+    		return new Pair<Reservation, Integer>(null,401);
+        }
+        
+        String userName = ActiveUserSessions.getActiveUserUsername(token);
+        User user = userDAO.getUserByUsername(userName);
+        
+        
+        // CHECKING TO MAKE SURE THE USERTYPE IS AUTHORIZED TO VIEW ALL RESERVATIONS
+        String userType = user.getUserType().toString();
+        
+        if(userType == "OWNER") {
+        	
+        	Reservation resp = resDAO.updateReservationById(resData);
+        	
+        	if(resp != null) {
+        		
+//        		Pair<Reservation, Integer> newPair = new Pair<Reservation, Integer>(respPair,200);
+        		return new Pair<Reservation, Integer>(resp,200);
+        		
+        	}else {
+        		
+//        		Pair<List<Reservation>, Integer> newPair503 = new Pair<Reservation, Integer>(null,503);
+        		return new Pair<Reservation, Integer>(null,503);
+        	}
+        	
+        }else {
+//        	Pair<List<Reservation>, Integer> newPair403 = new Pair<Reservation, Integer>(null,403);
+        	return new Pair<Reservation, Integer>(null,403);
+        }
+
     }
 
 	

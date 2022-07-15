@@ -1,5 +1,5 @@
 
-const baseURL = "http://localhost:8080/reservations";
+const baseURLReservations = "http://localhost:8080/reservations";
 
 
 var allReservations = []
@@ -12,6 +12,7 @@ var reservation = {
     endDateTime:null
 }
 
+// This loops through incoming object and fills in the object literal above.
 async function updateIncomingReservation(incomingReservation){
 
     Object.keys(incomingReservation).forEach((key, index) => {
@@ -21,15 +22,16 @@ async function updateIncomingReservation(incomingReservation){
 }
 
 async function getAllReservations(token){
-
-
-    let response = await fetch(`${baseURL}`,{
+    // token = JSON.stringify(token);
+    let newtoken = getSessionUserData().pswd;
+    console.log(newtoken)
+    let response = await fetch(`${baseURLReservations}`,{
         method:'GET',
-        header:{
+        headers:{
             'Content-Type': 'application/json',
-            // 'Token':token
-        },
-        // header:{'cors':'no-cors'},
+            'Token':newtoken
+        }
+
         
     });
 
@@ -59,7 +61,7 @@ async function getAllReservations(token){
 async function getAllRservationsByUsername(username,token){
 
 
-    let response = await fetch(`${baseURL}/${username}`,{
+    let response = await fetch(`${baseURLReservations}/${username}`,{
         method:'GET',
         header:{
             'Content-Type': 'application/json',
