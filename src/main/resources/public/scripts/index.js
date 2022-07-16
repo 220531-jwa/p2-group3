@@ -78,9 +78,11 @@
             
             setupUserProfile(user.email);
             setupReservations(seshToken,userType);
+            setupDogs(seshToken,userType);
         }else if(userType=="CUSTOMER"){
             setupUserProfile(user.email);
             setupReservations(seshToken,userType);
+            setupDogs(seshToken,userType);
         }
 
     }
