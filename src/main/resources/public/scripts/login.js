@@ -121,8 +121,10 @@ function setuplg(){
 }
 
 function newRegister(){
+    
+    
     createUserDiv.innerHTML = createUserProfileElements
-
+    setupUserProfile(null);
     // hide the login form
     loginform.classList.toggle("off");
     // undhide the createUser form

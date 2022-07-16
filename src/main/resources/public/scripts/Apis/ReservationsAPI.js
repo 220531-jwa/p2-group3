@@ -158,9 +158,9 @@ async function fetchGetReservationById(username, res_id, token) {
  * @param {string} token The token of the current active session
  * @returns OK status with updated reservation information, and 400 series status with null otherwise.
  */
-async function fetchUpdateReservationById(res_id, resData, token) {
+async function fetchUpdateReservationById(username,res_id, resData, token) {
         // Init
-        const url = `${baseURLReservations}/NULL/${res_id}`
+        const url = `${baseURLReservations}/${username}/${res_id}`
     
         // Sending response
         let response = await fetch(url, {

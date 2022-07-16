@@ -10,7 +10,7 @@
 
 #topLvlButtsCont{
     background-color: aqua;
-    margin-top:20vh;
+    margin-top:5vh;
     /* margin-left:25vh; */
     /* margin-right:25vh; */
 }
@@ -41,4 +41,10 @@
 .editButt{
     color:white;
     background-color: lightblue;
+}
+
+
+
+.editResCol{
+    width:50%;
 }

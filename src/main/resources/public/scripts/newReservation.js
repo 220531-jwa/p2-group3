@@ -3,21 +3,22 @@
 window.onload = setUpNewReservationPage();
 function setUpNewReservationPage() {
     let user = getSessionUserData();
-    let dogName = getAllDogsByUsername(user)
+    getAllDogsByUsername(user.email, user.pswd)
     //now get users dogs
     //sending get request to API and waiting for response to be returned and printing response to dropdown list
-    async function getAllDogsByUsername(user) {
+    async function getAllDogsByUsername(user, token) {
         console.log(inputDogName)
+        let url = `http://localhost:8080/dogs/${user}`;
         let res = await fetch(url, {
             method: 'GET',
             headers: {
-                'Content-Type': 'application/json;charset=utf-8'
-            },
-            body: JSON.stringify(dogName)
+                'Content-Type': 'application/json', 
+                'Token': token
+            }
         });
-
+    
         let result = await Response.json();
-
+    
         if (res.status == 200) {
             let data = await res.json();
             console.log(data);
@@ -25,15 +26,30 @@ function setUpNewReservationPage() {
         } else {
             console.log("Dogs are on the loose!")
         }
-
+    
     }
 }
+function populateData(data){
+    
+    for(d of data){
+    // Status - Adding current status
+    let selectElement = document.getElementById('inputDogName');
+    let optionElement = document.createElement('option');
+    optionElement.value = d.id;
+    optionElement.innerHTML = d.dog_name;
+    selectElement.append(optionElement);
+    }
+}
+
 
 // Handles when the submit button is clicked
 async function submitReservation() {
     // Init
     console.log("Submit button clicked")
-    const url = "http://localhost:8080/index";
+    let user = getSessionUserData();
+    const url = `http://localhost:8080/reservations/${user.email}`
+
+
     // Validating reservation input
     if (!validateInput()) {
         // Not valid
@@ -42,16 +58,32 @@ async function submitReservation() {
 
     // Getting Reservation input
     const resData = {
-        dogName: document.getElementById("inputDogName").value,
+        userEmail: user.email,
+        dogId: document.getElementById("inputDogName").value,
         startDateTime: document.getElementById("inputStartDateTime").value,
         endDateTime: document.getElementById("inputEndDateTime").value,
         serviceId: document.getElementById("inputServiceId").value
-
     }
     const resDataJson = JSON.stringify(resData);
 
-    // Sending response
-    let result = await fetchPostRequest(url, resDataJson, true, true);
+    // Sending request
+        let res = await fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json', 
+                'Token': user.pswd
+            },
+            body: resDataJson
+        });
+    //Getting response
+        if (res.status == 200) {
+            let data = await res.json();
+            console.log(data)
+        } else {
+            console.log("Failed to create reservation, please try again")
+        }
+
+    
     console.log('got result');
     console.log(result);
 
@@ -91,4 +123,5 @@ function validateInput() {
             document.getElementById(`${elem.id}Error`).innerHTML = "";
         }
     }    
+    return success;
 }

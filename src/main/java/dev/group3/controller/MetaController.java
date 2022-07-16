@@ -12,6 +12,10 @@ public class MetaController {
     private MetaService metaService = new MetaService();
     private static Logger log = LogManager.getLogger(MetaController.class);
     
+    /**
+     * Handles the http get request for getting meta information from the server
+     * @param 200 with meta info, or 500 server error otherwise (like the server is off or something)
+     */
     public void getMetaData(Context ctx) {
         log.debug("Recieved HTTP GET request at endpoint /meta");
         

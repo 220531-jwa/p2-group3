@@ -9,6 +9,10 @@ public class MetaService {
     
     private static Logger log = LogManager.getLogger(MetaService.class);
     
+    /**
+     * Gets the meta data from the server
+     * @return The meta data
+     */
     public MetaDTO getMetaData() {
         log.debug("Getting Server Meta Data");
         

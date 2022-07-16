@@ -101,11 +101,6 @@ async function setupUserProfile(userName){
     idexUpdateUserDiv.innerHTML = userProfileElements
     console.log(`Got username: ${userName}`);
 
-    // Temporary - Waiting when userName is actually passed with something
-    let user = getSessionUserData();
-    userName = user.email;
-    console.log(`Got user.email username: ${userName}`);
-
     // Checking if new page
     if (userName !== null) {
         // Loading exisitng user
@@ -135,7 +130,7 @@ async function updateViewExistingUser() {
         // Updating button listener
         let submitBtn = document.getElementById('submitButton');
         submitBtn.innerHTML = 'Save';
-        submitBtn.addEventListener('click', save);
+        submitBtn.addEventListener('click', saveUserProfile);
     }
     else if (userData.userType === 'OWNER') {
         // User is owner and viewing user information
@@ -194,7 +189,7 @@ async function updateViewExistingUser() {
 async function updateViewNewUser() {
     // Updating button listener
     let submitBtn = document.getElementById('submitButton');
-    submitBtn.addEventListener('click', submit);
+    submitBtn.addEventListener('click', submitUserProfile);
 }
 
 /*
@@ -217,7 +212,7 @@ function back() {
  * Will send user data to server to create a new user
  * Validates user input before call
  */
-async function submit() {
+async function submitUserProfile() {
     // Validating user input
     if (!validateInput()) {
         // Not valid
@@ -253,7 +248,7 @@ async function submit() {
  * Will send user data to server to update the user
  * Validates user input before call
  */
-async function save() {
+async function saveUserProfile() {
     // Validating user inputs
     if (!validateUpdateInput()) {
         // Not valid

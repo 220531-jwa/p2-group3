@@ -150,7 +150,7 @@ insert into transactions values
 --select * from users;
 --select * from dogs;
 --select * from services;
-select * from reservations;
+--select * from reservations;
 --select * from transactions;
 --
 ----Select all dog names of a specific user
