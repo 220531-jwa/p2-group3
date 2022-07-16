@@ -8,6 +8,7 @@ import org.apache.logging.log4j.Logger;
 import dev.group3.model.Reservation;
 import dev.group3.model.User;
 import dev.group3.model.DTO.ReservationDTO;
+import dev.group3.model.enums.ResStatusType;
 import dev.group3.model.enums.UserType;
 import dev.group3.repo.ReservationDAO;
 import dev.group3.repo.UserDAO;
@@ -56,6 +57,7 @@ public class ReservationService {
         log.debug("Attempting to create new reservation with username: " + username + " resData: " + resData + " token: " + token);
         
         // Attempting to create a new reservation
+        resData.setStatus(ResStatusType.REGISTERED);
     	Reservation createdReservation = resDAO.createReservation(resData);
     	
     	// Successfully created new reservation

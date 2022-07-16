@@ -34,17 +34,18 @@ public class ReservationDAO {
         log.debug("Attempting to add reservation with resData: " + resData);
         
         // Init sql query
-        String sql = "insert into reservations values(default, ?, ?, ?, ?, ?)";
-        // need to update SQL statement to also add serviceId (if selected)
+        String sql = "insert into reservations values (default,	?,	?,	?,	?,	?,	?) returning *";
 
         // Attempting to execute query
         try (Connection conn = cu.getConnection()) {
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.setString(1, resData.getUserEmail());
             ps.setInt(2, resData.getDogId());
-            ps.setString(3, resData.getStatus().name());
-            ps.setTimestamp(4, resData.getStartDateTime());
-            ps.setTimestamp(5, resData.getEndDateTime());
+            ps.setInt(3, resData.getServiceId());
+            ps.setString(4, resData.getStatus().name());
+            ps.setTimestamp(5, resData.getStartDateTime());
+            ps.setTimestamp(6, resData.getEndDateTime());
+            
             ResultSet rs = ps.executeQuery();
 
             // Checking if reservation was added successfully
