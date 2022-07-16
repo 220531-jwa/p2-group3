@@ -15,9 +15,9 @@ function setUpNewReservationPage() {
             },
             body: JSON.stringify(dogName)
         });
-
+    
         let result = await Response.json();
-
+    
         if (res.status == 200) {
             let data = await res.json();
             console.log(data);
@@ -25,9 +25,10 @@ function setUpNewReservationPage() {
         } else {
             console.log("Dogs are on the loose!")
         }
-
+    
     }
 }
+
 
 // Handles when the submit button is clicked
 async function submitReservation() {
@@ -92,3 +93,9 @@ function validateInput() {
         }
     }    
 }
+
+function sarahisbeautiful(){
+
+}
+
+sarahisbeautiful=()=>{}
