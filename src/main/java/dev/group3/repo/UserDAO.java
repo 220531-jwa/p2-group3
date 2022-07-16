@@ -180,7 +180,7 @@ public class UserDAO {
      * Creates a user object from the given result set
      * Assumes result set is valid and contains necessary data
      * @param rs The result set to create the User from
-     * @return A new  user
+     * @return A new user
      * @throws SQLException
      */
     private User createUserFromResultSet(ResultSet rs) throws SQLException {
