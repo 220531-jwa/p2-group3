@@ -194,6 +194,8 @@ public class ReservationController {
         String token = ctx.header("Token");
         Validator<Integer> vid = ctx.pathParamAsClass("res_id", Integer.class);
         Integer id = vid.getOrDefault(null);
+        
+//        Integer res_id = Integer.parseInt(ctx.pathParam("res_id"));
         Reservation resData = ctx.bodyAsClass(Reservation.class);
 
         // Attempting to update reservaiton

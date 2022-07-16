@@ -251,33 +251,66 @@ public class ReservationDAO {
     
     public Reservation updateReservationById(Reservation res) {
     	
+    	System.out.println(res);
+    	
+    	int resDogId = (int) res.getDogId();
+    	
     	String sql = "Update reservations SET "
-    			+ "user_email= ?,"
-    			+ "dog_id= ?,"
-    			+ "status= ?,"
-    			+ "start_datetime= ?,"
-    			+ "end_datetime= ?"
-    			+ "WHERE id = ?;";
+    			+ "user_email = coalesce( ? , user_email),"
+    			+ "dog_id = coalesce(? , dog_id), " 
+    			+ "service_id = coalesce(?, service_id),"
+    			+ "status = coalesce(?, status),"
+    			+ "start_datetime = coalesce( ?, start_datetime),"
+    			+ "end_datetime = coalesce( ?, end_datetime)"
+    			+ "WHERE id = ? returning *;";
+    	
+//    	  String sql = "update users set"
+//                  + " pswd = coalesce(?, pswd),"
+//                  + " first_name = coalesce(?, first_name),"
+//                  + " last_name = coalesce(?, last_name),"
+//                  + " phone_number = coalesce(?, phone_number)"
+//                  + " where email = ?"
+//                  + " returning *";
     	
     	try(Connection conn = cu.getConnection()){
+    		
+    		
     		PreparedStatement ps = conn.prepareStatement(sql);
     		ps.setString(1, res.getUserEmail());
-    		ps.setInt(2, res.getDogId());
-    		ps.setString(3, res.getStatus().toString());
-    		ps.setTimestamp(4, res.getStartDateTime());
-    		ps.setTimestamp(5, res.getEndDateTime());
-    		ps.setInt(6, res.getId());
+    		ps.setInt(2, resDogId);
+    		ps.setInt(3, res.getServiceId());
+    		ps.setString(4, res.getStatus().toString());
+    		ps.setTimestamp(5, res.getStartDateTime());
+    		ps.setTimestamp(6, res.getEndDateTime());
+    		ps.setInt(7, res.getId());
     		
     		
-    		boolean didEx = ps.execute();
-//    		ps.getUpdateCount();
+//    		boolean didEx = ps.execute();
+    		ResultSet rs = ps.executeQuery();
     		
-    		if(didEx) {
-    			return res;
+    		if(rs.next()) {
     			
+    			Reservation inComingReserv = new Reservation();
+    			
+    			inComingReserv.setId(rs.getInt("id"));
+    			inComingReserv.setUserEmail(rs.getString("user_email"));
+    			inComingReserv.setDogId(rs.getInt("dog_id"));
+    			inComingReserv.setServiceId(rs.getInt("service_id"));
+    			
+    			ResStatusType stat = ResStatusType.valueOf(rs.getString("status"));
+    			inComingReserv.setStatus(stat);
+    			inComingReserv.setStartDateTime(rs.getTimestamp("start_datetime"));
+    			inComingReserv.setEndDateTime(rs.getTimestamp("end_datetime"));
+    			
+    			return inComingReserv;
     		}else {
+    			
     			return null;
     		}
+//    		ps.getUpdateCount();
+    		
+    		
+    		
     		
     		
     		

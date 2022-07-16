@@ -97,7 +97,13 @@
     console.log(user.email)
     idexUpdateUserDiv.innerHTML = userProfileElements
     // username = params.get('username');
-    updateViewExistingUserTryTwo(user.email);
+
+    if(userName === null){
+        updateViewExistingUserTryTwo(user.email);
+
+    }else{
+        updateViewNewUser();
+    }
     
 
     // let query = window.location.search;
