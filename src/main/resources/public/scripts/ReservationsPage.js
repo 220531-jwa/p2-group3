@@ -14,6 +14,7 @@ var allSessionCustomerResVations = [];
 var openEL = "allReservationsTableRow";
 var openTopEl = "viewReservationsDiv"
 var isEditOpen = "false"
+var allowEdit = false
 
 
 var reservation = {
@@ -110,7 +111,75 @@ async function updateIncomingReservationPage(incomingReservation){
  */
 
  // THIS IS WHERE WE ARE GOING TO "RENDER" OUR HTML AFTER FIGURING OUT USERTYPE LOGGED IN
- const ownerReservationsPage = `  <div id="main">
+
+ const ownerEditReservation =  `<div id="error" style="Color: red"></div>
+ <form id="form">
+     <hr>
+     <p><b>User Information</b></p>
+     <div class="form-group row mb-4">
+         <div id="reserveeField" class="col-6">
+             <lable for="reservee">Reservee:</lable>
+             <a id="reservee" href="#"></a>
+         </div>
+         <div class="col-6">
+             <lable for="dog">Dog:</lable>
+             <a id="dog" href="#"></a>
+         </div>
+     </div>
+     <hr>
+     <p><b>Registration Information</b></p>
+     <div class="form-group row mb-4">
+         <div class="col-6 col-sm-6">
+             <label for="updateStatus">Status:</label>
+             <select id="updateStatus">
+                 <option value="REGISTERED">REGISTERED</option>
+                 <option value="CHECKEDIN">CHECKEDIN</option>
+                 <option value="CHECKEDOUT">CHECKEDOUT</option>
+                 <option value="CANCELLED">CANCELLED</option>
+             </select>
+         </div>
+         <div class="col-6 col-sm-6">
+             <label style="display: block" for="service">Service:</label>
+             <select id="service" disabled></select>
+         </div>
+     </div>
+     <div class="form-group row mb-4 readOnly">
+         <div class="col-6 col-sm-6">
+             <span>
+                 <label style="display: block" for="startDate">Start Date</label>
+                 <input id="startDate" type="date" disabled>
+             </span>
+         </div>
+         <div class="col-6 col-sm-6">
+             <label style="display: block" for="startTime">Start Time</label>
+             <input id="startTime" type="time" disabled>
+         </div>
+     </div>
+     <div class="form-group row mb-4 readOnly">
+         <div class="col-6 col-sm-6">
+             <label style="display: block" for="endDate">End Date</label>
+             <input id="endDate" type="date" disabled>
+         </div>
+         <div class="col-6 col-sm-6">
+             <label for="endTime">End Time</label>
+             <input id="endTime" type="time" disabled>
+         </div>
+     </div>
+ </form>
+ <div class="row">
+     <div class="col-3 col-sm-3">
+         <button class="btn btn-primary mb-4" type="button" onclick="openEditReservation()">Back</button>
+     </div>
+     <div class="col-3 col-sm-3 text-end">
+         <button id="editBtn" class="btn btn-primary mb-4" type="button" onclick="allowEditHandler()">Edit</button>
+     </div>
+     <div class="col-3 col-sm-3 text-end">
+         <button id="saveBtn" class="btn btn-primary mb-4" type="button" onclick="save()">Save</button>
+     </div>
+ </div>`
+
+
+ const ownerReservationsPage = ` <div id="main">
 
  <div id="topLvlButtsCont" class="container">
      <div class="row">
@@ -206,67 +275,12 @@ async function updateIncomingReservationPage(incomingReservation){
 
      <div id="editReservationRow" class="row tableHolder off">
          <div id="editReservationCol" class="col-12 col-sm-12" style="margin-bottom: 3vh;">
+            <div class="editResCol">
+                ${ownerEditReservation}
 
-             <div class="container bg-light">
-                 <h1 id="title" class="mb-4">Edit Reservation:</h1>
-                 <div id="error" style="Color: red"></div>
-                 <form id="form">
-                     <hr>
-                     <p><b>User Information</b></p>
-                     <div class="form-group row mb-4">
-                         <div id="emailField" class="col">
-                             <lable for="email">Email:</lable>
-                             <a id="email" href="#"></a>
-                         </div>
-                         <div class="col">
-                             <lable for="dog">Dog:</lable>
-                             <a id="dog" href="#"></a>
-                         </div>
-                     </div>
-                     <hr>
-                     <p><b>Registration Information</b></p>
-                     <div class="form-group row mb-4">
-                         <div class="col">
-                             <label style="display: block" for="updateStatus">Status:</label>
-                             <select id="updateStatus"></select>
-                         </div>
-                         <div class="col">
-                             <label style="display: block" for="service">Service:</label>
-                             <select id="service" disabled></select>
-                         </div>
-                     </div>
-                     <div class="form-group row mb-4 readOnly">
-                         <div class="col">
-                             <label style="display: block" for="startDate">Start Date</label>
-                             <input id="startDate" type="date" disabled>
-                         </div>
-                         <div class="col">
-                             <label style="display: block" for="startTime">Start Time</label>
-                             <input id="startTime" type="time" disabled>
-                         </div>
-                     </div>
-                     <div class="form-group row mb-4 readOnly">
-                         <div class="col">
-                             <label style="display: block" for="endDate">End Date</label>
-                             <input id="endDate" type="date" disabled>
-                         </div>
-                         <div class="col">
-                             <label style="display: block" for="endTime">End Time</label>
-                             <input id="endTime" type="time" disabled>
-                         </div>
-                     </div>
-                 </form>
-                 <div class="row">
-                     <div class="col">
-                         <button class="btn btn-primary mb-4" type="button" onclick="openEditReservation()">Back</button>
-                     </div>
-                     <div class="col text-end">
-                         <button id="saveBtn" class="btn btn-primary mb-4" type="button" onclick="save()">Save</button>
-                     </div>
-                 </div>
-                 <h1 class="mb-4 bg-dark">#</h1>
-             </div>
-
+            </div>
+           
+                 
 
 
          </div>
@@ -275,22 +289,26 @@ async function updateIncomingReservationPage(incomingReservation){
 
  </div>
 
- <div id="createNewReservationDiv" class="container off">
+ <!-- <div id="createNewReservationDiv" class="container off">
      <div class="row">
          <div class="col-12 col-sm-12">
-             <h5>Create Reservation</h5>
+             <h5>Create Reservation</h5> -->
+             <!--delete this below paragraph before pushing!-->
+             <!-- <p>
+                 <a href="../html/newReservation.html">click here to go to new reservation</a>
+             </p>
          </div>
      </div>
 
      
- </div>
+ </div> -->
 
  
  
 </div>`
 
 
-const customerReservationsPage = ` <div id="main">
+const customerReservationsPage = `<div id="main">
 
 <div id="topLvlButtsCont" class="container">
     <div class="row">
@@ -387,10 +405,10 @@ const customerReservationsPage = ` <div id="main">
     <div id="editReservationRow" class="row tableHolder off">
         <div id="editReservationCol" class="col-12 col-sm-12" style="margin-bottom: 3vh;">
 
-            <div class="container bg-light">
+          
                 <h1 id="title" class="mb-4">Edit Reservation:</h1>
                 <div id="error" style="Color: red"></div>
-                <form id="form">
+                <!-- <form id="form">
                     <hr>
                     <p><b>User Information</b></p>
                     <div class="form-group row mb-4">
@@ -445,8 +463,67 @@ const customerReservationsPage = ` <div id="main">
                     </div>
                 </div>
                 <h1 class="mb-4 bg-dark">#</h1>
+            </div> --> -->
+            <div class="container bg-light">
+                <h1 class="mb-4 bg-dark">#</h1>
+                <h1 id="title" class="mb-4">Edit Reservation:</h1>
+                <div id="error" style="Color: red"></div>
+                <form id="form">
+                    <hr>
+                    <p><b>User Information</b></p>
+                    <div class="form-group row mb-4">
+                        <div id="reserveeField" class="col">
+                            <lable for="reservee">Reservee:</lable>
+                            <a id="reservee" href="#"></a>
+                        </div>
+                        <div class="col">
+                            <lable for="dog">Dog:</lable>
+                            <a id="dog" href="#"></a>
+                        </div>
+                    </div>
+                    <hr>
+                    <p><b>Registration Information</b></p>
+                    <div class="form-group row mb-4">
+                        <div class="col">
+                            <label style="display: block" for="updateStatus">Status:</label>
+                            <select id="updateStatus"></select>
+                        </div>
+                        <div class="col">
+                            <label style="display: block" for="service">Service:</label>
+                            <select id="service" disabled></select>
+                        </div>
+                    </div>
+                    <div class="form-group row mb-4 readOnly">
+                        <div class="col">
+                            <label style="display: block" for="startDate">Start Date</label>
+                            <input id="startDate" type="date" disabled>
+                        </div>
+                        <div class="col">
+                            <label style="display: block" for="startTime">Start Time</label>
+                            <input id="startTime" type="time" disabled>
+                        </div>
+                    </div>
+                    <div class="form-group row mb-4 readOnly">
+                        <div class="col">
+                            <label style="display: block" for="endDate">End Date</label>
+                            <input id="endDate" type="date" disabled>
+                        </div>
+                        <div class="col">
+                            <label style="display: block" for="endTime">End Time</label>
+                            <input id="endTime" type="time" disabled>
+                        </div>
+                    </div>
+                </form>
+                <div class="row">
+                    <div class="col">
+                        <button class="btn btn-primary mb-4" type="button" onclick="back()">Back</button>
+                    </div>
+                    <div class="col text-end">
+                        <button id="saveBtn" class="btn btn-primary mb-4" type="button" onclick="save()">Save</button>
+                    </div>
+                </div>
+                <h1 class="mb-4 bg-dark">#</h1>
             </div>
-
 
 
         </div>
@@ -455,15 +532,19 @@ const customerReservationsPage = ` <div id="main">
 
 </div>
 
-<div id="createNewReservationDiv" class="container off">
+<!-- <div id="createNewReservationDiv" class="container off">
     <div class="row">
         <div class="col-12 col-sm-12">
-            <h5>Create Reservation</h5>
+            <h5>Create Reservation</h5> -->
+            <!--delete this below paragraph before pushing!-->
+            <!-- <p>
+                <a href="../html/newReservation.html">click here to go to new reservation</a>
+            </p>
         </div>
     </div>
 
     
-</div>
+</div> -->
 
 
 
@@ -816,6 +897,27 @@ async function openEditReservation(reser){
         divToShowOrHide.classList.toggle("off");
     // }
 
+}
+
+allowEditHandler =()=>{
+
+    if(allowEdit){
+        document.getElementById('updateStatus').disabled = true;
+        document.getElementById('saveBtn').hidden = true;
+        document.getElementById('editBtn').hidden = false;
+
+        allowEdit=false
+    }else{
+        
+        document.getElementById('updateStatus').disabled = false;
+        document.getElementById('saveBtn').hidden = false;
+        document.getElementById('editBtn').hidden = true;
+        
+        allowEdit=true
+
+    }
+    
+    
 }
 
 

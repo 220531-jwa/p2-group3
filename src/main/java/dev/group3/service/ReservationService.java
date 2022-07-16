@@ -195,23 +195,61 @@ public class ReservationService {
     public Pair<Reservation, Integer> getReservationById(Integer rid, String token) {
         log.debug("Attempting to get reservation by id with rid: " + rid + " token: " + token);
         
+        
+        
         // Validating input
         if (rid == null || token == null || rid < 0 || token.isBlank()) {
             log.error("Invalid rid and/or token input(s)");
             return new Pair<Reservation, Integer>(null, 400);
         }
+        
     	
-        // Attempting to get reservations by id
-    	Reservation res = resDAO.getReservationById(rid);
-    	
-    	// Checking if reservations were retrieved
-    	if(res != null) {
-    	    // Successfully got reservations
-    		return new Pair<Reservation, Integer>(res, 200);
-    	}else {
-    	    log.error("Failed to get reservations. Possible: reservation does not exist");
-    		return new Pair<Reservation, Integer>(null, 404);
-    	}
+    	// Checking if user is in an active session
+        if (!ActiveUserSessions.isActiveUser(token)) {
+            log.error("User is not in an active session");
+    		return new Pair<Reservation, Integer>(null, 401);
+        }
+        
+        // Getting user information
+        String requesterUsername = ActiveUserSessions.getActiveUserUsername(token);
+        User requesterUser = userDAO.getUserByUsername(requesterUsername);
+        
+        // Checking if user exists
+        if (requesterUser == null) {
+            log.fatal("User does not exist");
+            return new Pair<Reservation, Integer>(null, 503);   // This should never happen (loggedin users can only login if the user exists)
+        }
+        
+       
+    	// Checking to make sure the user is authorized to update reservation
+        UserType userType = requesterUser.getUserType();
+        
+        
+        if(userType == UserType.OWNER) {
+        	
+        	
+        	 // Attempting to get reservations by id
+        	Reservation res = resDAO.getReservationById(rid);
+        	
+        	// Checking if reservation was updated successfully
+        	if(res != null) {
+        	    // Successfully updated reservation
+        		return new Pair<Reservation, Integer>(res, 200);
+        	}
+        	else {
+        	    log.error("Failed to update reservation. Possible: Reservation does not exist");
+        		return new Pair<Reservation, Integer>(null, 404);
+        	}
+        }
+        	 // Attempting to get reservations by id
+//        	Reservation res = resDAO.getReservationById(rid);
+        	
+        else {
+            log.error("User is not authorized to update reservation");
+        	return new Pair<Reservation, Integer>(null, 403);
+        }
+    
+        
     }
     
     /**
@@ -287,6 +325,7 @@ public class ReservationService {
      * @return 200 with updated reservation if successful, and 400 null series otherwise
      */
     public Pair<Reservation, Integer> updateReservationById(Integer res_id, Reservation resData, String token) {
+    	
         log.debug("Attempting to update reservation with res_id: " + res_id + " resData: " + resData + " token: " + token);
     	
         // Validating input

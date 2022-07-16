@@ -8,7 +8,7 @@ public class Reservation {
 
     private Integer id;
     private String userEmail;
-    private Integer dogId;
+    private int dogId;
     private Integer serviceId;
     private ResStatusType status;
     private Timestamp startDateTime;

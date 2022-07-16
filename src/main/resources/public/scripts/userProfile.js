@@ -100,6 +100,15 @@ async function setupUserProfile(userName){
     // Changing page
     idexUpdateUserDiv.innerHTML = userProfileElements
     console.log(`Got username: ${userName}`);
+    // username = params.get('username');
+
+    if(userName === null){
+        updateViewExistingUserTryTwo(user.email);
+
+    }else{
+        updateViewNewUser();
+    }
+    
 
     // Temporary - Waiting when userName is actually passed with something
     let user = getSessionUserData();

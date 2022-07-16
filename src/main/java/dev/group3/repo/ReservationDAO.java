@@ -206,42 +206,43 @@ public class ReservationDAO {
      * @param resData The reservation to update
      * @return The updated reservation if successful, and null otherwise
      */
-    public Reservation updateReservationById(Reservation resData) {
-        log.debug("Attempting to update the reservation data with resData: " + resData);
-        
-        // Init
-        String sql = "Update reservations SET " + "user_email= ?," + "dog_id= ?," + "status= ?," + "start_datetime= ?,"
-                + "end_datetime= ?" + "WHERE id = ?;";
-
-        // Attempting to execute update query
-        try (Connection conn = cu.getConnection()) {
-            PreparedStatement ps = conn.prepareStatement(sql);
-            ps.setString(1, resData.getUserEmail());
-            ps.setInt(2, resData.getDogId());
-            ps.setString(3, resData.getStatus().toString());
-            ps.setTimestamp(4, resData.getStartDateTime());
-            ps.setTimestamp(5, resData.getEndDateTime());
-            ps.setInt(6, resData.getId());
-            boolean didEx = ps.execute();
-
-            // Checking if update was successful
-            if (didEx) {
-                // Update successful
-                return resData;
-            }
-        } catch (SQLException e) {
-            log.error("Failed to execute query: " + sql);
-            e.printStackTrace();
-        }
-        
-        // Failed to update
-        return null;
-    }
+//    public Reservation updateReservationById(Reservation resData) {
+//        log.debug("Attempting to update the reservation data with resData: " + resData);
+//        
+//        // Init
+//        String sql = "Update reservations SET " + "user_email= ?," + "dog_id= ?," + "status= ?," + "start_datetime= ?,"
+//                + "end_datetime= ?" + "WHERE id = ?;";
+//
+//        // Attempting to execute update query
+//        try (Connection conn = cu.getConnection()) {
+//            PreparedStatement ps = conn.prepareStatement(sql);
+//            ps.setString(1, resData.getUserEmail());
+//            ps.setInt(2, resData.getDogId());
+//            ps.setString(3, resData.getStatus().toString());
+//            ps.setTimestamp(4, resData.getStartDateTime());
+//            ps.setTimestamp(5, resData.getEndDateTime());
+//            ps.setInt(6, resData.getId());
+//            boolean didEx = ps.execute();
+//
+//            // Checking if update was successful
+//            if (didEx) {
+//                // Update successful
+//                return resData;
+//            }
+//        } catch (SQLException e) {
+//            log.error("Failed to execute query: " + sql);
+//            e.printStackTrace();
+//        }
+//        
+//        // Failed to update
+//        return null;
+//    }
     
     /*
      * === UTILITY ===
      */
     
+
     /**
      * Creates a reservation from the given result set.
      * Assumes result set contains the necessary data.
@@ -258,5 +259,77 @@ public class ReservationDAO {
                 ResStatusType.valueOf(rs.getString("status")),
                 rs.getTimestamp("start_datetime"),
                 rs.getTimestamp("end_datetime"));
+    }
+
+    public Reservation updateReservationById(Reservation res) {
+    	
+    	log.debug("Attempting to update the reservation data with resData: " + res);
+    	
+    	int resDogId = (int) res.getDogId();
+    	
+    	String sql = "Update reservations SET "
+    			+ "user_email = coalesce( ? , user_email),"
+    			+ "dog_id = coalesce(? , dog_id), " 
+    			+ "service_id = coalesce(?, service_id),"
+    			+ "status = coalesce(?, status),"
+    			+ "start_datetime = coalesce( ?, start_datetime),"
+    			+ "end_datetime = coalesce( ?, end_datetime)"
+    			+ "WHERE id = ? returning *;";
+    	
+//    	  String sql = "update users set"
+//                  + " pswd = coalesce(?, pswd),"
+//                  + " first_name = coalesce(?, first_name),"
+//                  + " last_name = coalesce(?, last_name),"
+//                  + " phone_number = coalesce(?, phone_number)"
+//                  + " where email = ?"
+//                  + " returning *";
+    	
+    	try(Connection conn = cu.getConnection()){
+    		
+    		
+    		PreparedStatement ps = conn.prepareStatement(sql);
+    		ps.setString(1, res.getUserEmail());
+    		ps.setInt(2, resDogId);
+    		ps.setInt(3, res.getServiceId());
+    		ps.setString(4, res.getStatus().toString());
+    		ps.setTimestamp(5, res.getStartDateTime());
+    		ps.setTimestamp(6, res.getEndDateTime());
+    		ps.setInt(7, res.getId());
+    		
+    		
+//    		boolean didEx = ps.execute();
+    		ResultSet rs = ps.executeQuery();
+    		
+    		if(rs.next()) {
+    			
+    			Reservation inComingReserv = new Reservation();
+    			
+    			inComingReserv.setId(rs.getInt("id"));
+    			inComingReserv.setUserEmail(rs.getString("user_email"));
+    			inComingReserv.setDogId(rs.getInt("dog_id"));
+    			inComingReserv.setServiceId(rs.getInt("service_id"));
+    			
+    			ResStatusType stat = ResStatusType.valueOf(rs.getString("status"));
+    			inComingReserv.setStatus(stat);
+    			inComingReserv.setStartDateTime(rs.getTimestamp("start_datetime"));
+    			inComingReserv.setEndDateTime(rs.getTimestamp("end_datetime"));
+    			
+    			return inComingReserv;
+    		}else {
+    			
+    			return null;
+    		}
+//    		ps.getUpdateCount();
+    		
+    		
+    		
+    		
+    		
+    		
+    		
+    	}catch(SQLException e) {
+    		e.printStackTrace();
+    		return null;
+    	}
     }
 }

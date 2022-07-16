@@ -9,18 +9,113 @@ function initalizePage() {
     const params = new URLSearchParams(query);
 
     // Checking if 
-    if (params.has('id')) {
-        // Loading existing user
-        // Getting params - global
-        username = params.get('username');
-        id = params.get('id');
-        updateViewExistingReservation();
-    }
-    else {
-        // No reservation to find
-        notFound404();
-    }
+    // if (params.has('id')) {
+    //     // Loading existing user
+    //     // Getting params - global
+    //     username = params.get('username');
+    //     id = params.get('id');
+    //     updateViewExistingReservation();
+    // }
+    // else {
+    //     // No reservation to find
+    //     notFound404();
+    // }
 }
+
+var resDtoDataJson = ""
+var resDataJson = ""
+
+var editReservation = {
+    id:null,
+    userEmail:null,
+    dogId:null,
+    status:null,
+    startDateTime:null,
+    endDateTime:null
+}
+
+// THIS UPDATED THE ABOVE OBJECT LITERAL
+async function updateIncomingReservationEditReservation(incomingReservation){
+
+    if(incomingReservation){
+        Object.keys(incomingReservation).forEach((key, index) => {
+    
+            if(key == "startDateTime" ){
+                
+                
+                let incomingDate = incomingReservation[key];
+                let newDate = new Date(incomingDate);
+                let day = newDate.getDate();
+                let month = newDate.getMonth() + 1;
+                let year = newDate.getFullYear();
+                let hour = newDate.getHours();
+                let minutes = newDate.getMinutes().toString();
+                let seconds = newDate.getSeconds().toString();
+
+                if(minutes.length==1){
+                    minutes = minutes +"0"
+                }
+
+
+                
+                if(seconds.length==1){
+                    seconds = seconds + "0"
+                    
+                }
+    
+                let theDate = year + "-" + month + "-" + day
+                let theTime = hour + ":" + minutes + ":" + seconds
+
+                let fullDate = theDate + " " + theTime
+    
+                
+    
+                editReservation.startDateTime = fullDate;
+    
+    
+            }else if(key=="endDateTime"){
+    
+                let incomingDate = incomingReservation[key];
+                // let newDate = new Date(incomingDate);
+                // let day = newDate.getDate();
+                // let month = newDate.getMonth() + 1;
+                // let year = newDate.getFullYear();
+                // let hour = newDate.getHours();
+                // let minutes = newDate.getMinutes().toString();
+                // let seconds = newDate.getSeconds().toString();
+
+                // if(minutes.length==1){
+                //     minutes = minutes +"0"
+                // }
+
+
+                
+                // if(seconds.length==1){
+                //     seconds = seconds + "0"
+                   
+                // }
+                let newDate = new Date(incomingDate)
+                let newDatestrng = newDate.toLocaleDateString();
+                console.log(newDatestrng)
+
+                let theDate = getDateFromTimestamp(incomingDate)
+                let theTime = getTimeFromTimestamp(incomingDate)
+
+                let fullDate = theDate + " " + theTime
+    
+    
+                editReservation.endDateTime = newDatestrng;
+    
+            }else{
+                
+                editReservation[key] = incomingReservation[key];
+            }
+        });
+
+    }
+
+}
+
 
 /*
  * === HTML VIEW UPDATES ===
@@ -114,7 +209,7 @@ async function updateViewExistingReservation() {
     let finished = metaData.resStatuses.FINISHED.includes(resDataJson.status);
     if (finished) {
         document.getElementById('updateStatus').disabled = true;
-        document.getElementById('saveBtn').hidden = true;
+        // document.getElementById('saveBtn').hidden = true;
     }
 
     // === Populating fields ===
@@ -181,7 +276,7 @@ async function updateViewExistingReservationReTry(res_id) {
     // ====================
 
     // Getting user, meta, and service data
-    const userData = getSessionUserData();
+    const userData = await getSessionUserData();
     const metaDataResult = await fetchGetMetaData();
     const metaData = metaDataResult[1];
 
@@ -189,7 +284,8 @@ async function updateViewExistingReservationReTry(res_id) {
     // console.log(metaData);
 
     // Attempting to get reservation data
-    const resResult = await fetchGetReservationById(userData.userEmail, res_id, userData.pswd);
+    // const resResult = await fetchGetReservationById(userData.userEmail, res_id, userData.pswd);
+    const resResult = await fetchGetReservationDTOById(userData.userEmail, res_id, userData.pswd);
 
     console.log('got resResult');
     console.log(resResult);
@@ -207,7 +303,9 @@ async function updateViewExistingReservationReTry(res_id) {
 
     // Was able to get reservation information associated with id
     resDtoDataJson = resResult[1];  // global
-    let resDataJson = resDtoDataJson.reservation;
+    resDataJson = resDtoDataJson.reservation;
+
+    // console.log(JSON.parse(resDataJson));
 
     // =======================
     // === PROCESSING DATA ===
@@ -217,7 +315,8 @@ async function updateViewExistingReservationReTry(res_id) {
     if (userData.userType !== 'OWNER') {document.getElementById('reserveeField').hidden = true;}
 
     // Checking if reservation is finished -> disabling status if finished
-    let finished = metaData.resStatuses.FINISHED.includes(resDataJson.status);
+    // let finished = metaData.resStatuses.FINISHED.includes(resDataJson.status);
+    let finished = true
     if (finished) {
         document.getElementById('updateStatus').disabled = true;
         document.getElementById('saveBtn').hidden = true;
@@ -229,15 +328,29 @@ async function updateViewExistingReservationReTry(res_id) {
     reserveeElement.innerHTML = `${resDtoDataJson.userFirstName} ${resDtoDataJson.userLastName}`;
     reserveeElement.addEventListener('click', () => moveToUserPage(resDataJson.userEmail));
     let dogElement = document.getElementById('dog')
+    // let dgName =  resResult[1].dogName
     dogElement.innerHTML = resDtoDataJson.dogName;
+    // dogElement.innerHTML = dgName;
     dogElement.addEventListener('click', () => moveToDogPage(resDataJson.dogId));
 
     // Status - Adding current status
     let statusElement = document.getElementById('updateStatus');
-    let optionElement = document.createElement('option');
-    optionElement.value = resDataJson.status;
-    optionElement.innerHTML = resDataJson.status;
-    statusElement.append(optionElement);
+    // let optionElement = document.createElement('option');
+    let stat = resDataJson.status;
+
+    for(i=0; i<statusElement.options.length;i++){
+        let val = statusElement.options[i].value;
+        if(val === stat){
+            statusElement.setAttribute("selected",statusElement.options[i].innerText)
+        }
+               
+    }
+    
+    
+    
+    // optionElement.setAttribute("value",stat)
+    // optionElement.innerHTML = stat;
+    // statusElement.append(optionElement);
 
     // Adding next status to edit to if owner and isn't finished
     if (!finished && userData.userType === 'OWNER') {
@@ -268,14 +381,39 @@ async function updateViewExistingReservationReTry(res_id) {
 
     let serviceElement = document.getElementById('service');
     optionElement = document.createElement('option');
-    optionElement.value = resDtoDataJson.service;
-    optionElement.innerHTML = resDtoDataJson.service;
+
+    let service = resDtoDataJson.service;
+    optionElement.setAttribute("value",service);
+    // optionElement.value = resDtoDataJson.service;
+    // optionElement.innerHTML = resDtoDataJson.service;
+    optionElement.innerHTML = service;
     serviceElement.append(optionElement);
 
-    document.getElementById('startDate').value = getDateFromTimestamp(resDataJson.startDateTime);
-    document.getElementById('startTime').value = getTimeFromTimestamp(resDataJson.startDateTime);
-    document.getElementById('endDate').value = getDateFromTimestamp(resDataJson.endDateTime);
-    document.getElementById('endTime').value = getTimeFromTimestamp(resDataJson.endDateTime);
+    // let startDate = getDateFromTimestamp(resDataJson.startDateTime)
+    let startDate = getDateFromTimestamp(resDataJson.startDateTime)
+    let startTime = getTimeFromTimestamp(resDataJson.startDateTime)
+    console.log(startDate);
+
+    // let startTime = myTimefunction(resResult[1].startDateTime);
+    let endDate = getDateFromTimestamp(resDataJson.endDateTime);
+    let endTime = myTimefunction(resDataJson.endDateTime);
+    
+    // let endDate = getDateFromTimestamp(resResult[1].endDateTime).toString();
+    // let endTime = getTimeFromTimestamp(resResult[1].endDateTime).toString();
+
+    
+    document.getElementById('startDate').value=startDate
+    document.getElementById('startTime').value=startTime
+
+
+
+    document.getElementById('endDate').value =endDate
+    document.getElementById('endTime').value = endTime
+
+    // document.getElementById('startDate').value = getDateFromTimestamp(startDate);
+    // document.getElementById('startTime').value = getTimeFromTimestamp(startTime);
+    // document.getElementById('endDate').value = getDateFromTimestamp(endDate);
+    // document.getElementById('endTime').value = getTimeFromTimestamp(endTime);
 }
 
 /*
@@ -300,6 +438,8 @@ function back() {
  * - Otherwise will give an error saying no changes were made
  */
 async function save() {
+
+    console.log("i am here")
     // Checking if any changes were made
     if (resDataJson.status === document.getElementById('updateStatus').value) {
         // Wasn't changed
@@ -315,19 +455,40 @@ async function save() {
     const updatedReservationData = {
         status: document.getElementById('updateStatus').value
     };
-    const updatedReservationDataJsonString = JSON.stringify(updatedReservationData);
+
+    let newReservation = {
+            id: resDataJson.id,
+            userEmail:resDataJson.userEmail,
+            dogId:resDataJson.dogId,
+            serviceId: resDataJson.serviceId,
+            status:resDataJson.status,
+            startDateTime:resDataJson.startDateTime,
+            endDateTime:resDataJson.endDateTime
+        }
+        updateIncomingReservationEditReservation(newReservation)
+        console.log(editReservation)
+        
+    // const updatedReservationDataJsonString = JSON.stringify(updatedReservationData);
+    const updatedReservationDataJsonString = JSON.stringify(editReservation);
 
     // Sending response
     const userData = getSessionUserData();
-    const result = await fetchUpdateReservationById('None', id, updatedReservationDataJsonString, userData.pswd);
+    let res_id = resDtoDataJson.reservation.id
+    console.log(updatedReservationDataJsonString)
+    const result = await fetchUpdateReservationById(userData.email, res_id, updatedReservationDataJsonString, userData.pswd);
 
     // Processing response
     if (result[0] === 200) {
         // Reservation successfully updated
+        // console.log(result[0])
+        
     }
     else {
         document.getElementById('error').innerHTML = "Failed to update reservation. Try again later.";
     }
+
+
+
 }
 
 /**
@@ -359,4 +520,78 @@ function moveToUserPage(email) {
     // document.getElementById('title').innerHTML = "404 : Request Not Found";
     // document.getElementById('form').innerHTML = '';
     // document.getElementById('btnSubmit').hidden = true;
+}
+
+
+
+
+function mydatefunction(datenumber){
+    
+                
+        
+        let newDate = new Date(datenumber);
+        let day = newDate.getDate();
+        let month = newDate.getMonth() + 1;
+        let year = newDate.getFullYear();
+        let hour = newDate.getHours();
+        let minutes = newDate.getMinutes().toString();
+        let seconds = newDate.getSeconds().toString();
+
+        if(minutes.length==1){
+            minutes = minutes +"0"
+        }
+
+
+        
+        if(seconds.length==1){
+            seconds = seconds + "0"
+            
+        }
+
+        let theDate = month + "/" + day + "/" + year
+        let theTime = hour + ":" + minutes + ":" + seconds
+
+        let fullDate = theDate + " " + theTime
+
+        return theDate;
+
+    
+
+
+}
+function myTimefunction(datenumber){
+    
+                
+    
+    let newDate = new Date(datenumber);
+    let day = newDate.getDate();
+    let month = newDate.getMonth() + 1;
+    let year = newDate.getFullYear();
+    let hour = newDate.getHours();
+    let minutes = newDate.getMinutes().toString();
+    let seconds = newDate.getSeconds().toString();
+
+    if(minutes.length==1){
+        minutes = minutes +"0"
+    }
+
+
+    
+    if(seconds.length==1){
+        seconds = seconds + "0"
+        
+    }
+
+    let theDate = month + "/" + day + "/" + year
+    let theTime = hour + ":" + minutes + ":" + seconds
+
+    let fullDate = theDate + " " + theTime
+
+    console.log(theTime)
+
+    return theTime;
+
+    
+
+
 }
