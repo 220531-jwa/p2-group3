@@ -249,7 +249,7 @@ public class ReservationDAO {
      * @return A new reservation
      * @throws SQLException
      */
-    public Reservation createReservationFromResultSet(ResultSet rs) throws SQLException {
+    private Reservation createReservationFromResultSet(ResultSet rs) throws SQLException {
         return new Reservation(
                 rs.getInt("id"),
                 rs.getString("user_email"),

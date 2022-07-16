@@ -63,7 +63,7 @@ public class ReservationService {
     }
     
     /*
-     * === GET / READ
+     * === GET / READ ===
      */
     
     /**
@@ -270,7 +270,7 @@ public class ReservationService {
     }
     
     /*
-     * === PATHC / UPDATE ===
+     * === PATCH / UPDATE ===
      */
     
     /**
