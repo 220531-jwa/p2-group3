@@ -3,6 +3,13 @@
  */
 
 
+<<<<<<< HEAD
+=======
+//  const userRes = getSessionUserData();
+//  const seshToken = "";
+ 
+ 
+>>>>>>> jfriesner_reservations
  
  var alldogs = [];
  var allSessionCustomerResVations = [];

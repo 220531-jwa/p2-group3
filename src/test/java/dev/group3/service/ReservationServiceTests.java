@@ -283,8 +283,8 @@ public class ReservationServiceTests {
         String token = ActiveUserSessions.addActiveUser("email1");
         
         // Running test
-        Pair<List<Reservation>, Integer> actualRes = resService.getAllReservationsByUsername("email2", token);
-        Object[] expectedResults = {null, 401};
+        Pair<List<Reservation>, Integer> actualRes = resService.getAllReservationsByUsername("email1", token);
+        Object[] expectedResults = {null, 403};
         Object[] actualResults = {actualRes.getFirst(), actualRes.getSecond()};
         
         // Assertions
@@ -371,7 +371,14 @@ public class ReservationServiceTests {
         
         // Running test
         Pair<Reservation, Integer> actualRes = resService.getReservationById(rid, token);
-        Object[] expectedResults = {mockReses, 200};
+        System.out.println(mockReses);
+//        
+//        for(int x=0 ; x<mockReses.size(); x++) {
+//        	
+//        	Reservation resToCheck = mockReses.get(resIndex);
+//        }
+        
+        Object[] expectedResults = {mockReses.get(resIndex), 200};
         Object[] actualResults = {actualRes.getFirst(), actualRes.getSecond()};
         
         // Assertions
@@ -396,7 +403,6 @@ public class ReservationServiceTests {
     @MethodSource("urbi_invalidInputs")
     public void urbi_invalidInputs_nullBlank_400null(Integer rid, Reservation resData, String token) {
         // Running test
-
         Pair<Reservation, Integer> actualRes = resService.updateReservationById(rid, resData, token);
 
 //        Pair<Reservation, Integer> actualRes = resService.updateReservationById(username, rid, resData, token);
@@ -410,10 +416,10 @@ public class ReservationServiceTests {
     }
     private static Stream<Arguments> urbi_invalidInputs() {
         List<Arguments> arguments = new ArrayList<Arguments>();
-        arguments.add(Arguments.of(null, new Reservation(), "a"));     // invalid reservation id
-        arguments.add(Arguments.of(1, null, "a"));                     // invalid resData
+        arguments.add(Arguments.of(null, new Reservation(), ""));     // invalid reservation id
+        arguments.add(Arguments.of(1, null, ""));                     // invalid resData
         arguments.add(Arguments.of(1, new Reservation(), null));       // invalid password
-        arguments.add(Arguments.of(-1, new Reservation(), "a"));       // invalid reservation id
+        arguments.add(Arguments.of(-1, new Reservation(), ""));       // invalid reservation id
         arguments.add(Arguments.of(1, new Reservation(), ""));         // invalid password
         return arguments.stream();
     }
@@ -422,7 +428,7 @@ public class ReservationServiceTests {
     public void urbi_invalidInputs_resDataIsNull_400null() {
         // Running test
 
-        Pair<Reservation, Integer> actualRes = resService.updateReservationById(1, new Reservation(), "a");
+        Pair<Reservation, Integer> actualRes = resService.updateReservationById(1, new Reservation(), "");
 
 //        Pair<Reservation, Integer> actualRes = resService.updateReservationById("a", 1, new Reservation(), "a");
 //        Pair<Reservation, Integer> actualRes = resService.updateReservationById( new Reservation(), "a");

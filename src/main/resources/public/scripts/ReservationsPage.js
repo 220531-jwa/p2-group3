@@ -2,8 +2,11 @@
  * VARIABLES
  */
 
-const userRes = getSessionUserData();
-const seshToken = "";
+
+// const userRes = getSessionUserData();
+// const seshToken = "";
+window.onload = setupReservations();
+
 
 var allReservations = [];
 var allSessionCustomerResVations = [];
@@ -20,6 +23,8 @@ var reservation = {
     startDateTime: null,
     endDateTime: null,
 };
+
+
 
 // THIS UPDATED THE ABOVE OBJECT LITERAL
 async function updateIncomingReservationPage(incomingReservation) {
@@ -334,265 +339,37 @@ const ownerReservationsPage = ` <div id="main">
  
  
 </div>`;
-
-const customerReservationsPage = `<div id="main">
-
-<div id="topLvlButtsCont" class="container">
-    <div class="row">
-        <div class="col-6 col-sm-6">
-            <butoon id="viewReservationsDiv_butt" type="button" class="btn btn-primary" onclick="topLvlButtonsHandler(event.target)">View All Your Reservations</butoon>
-        </div>
-        <div class="col-6 col-sm-6">
-            <butoon id="createNewReservationDiv_butt" type="button" class="btn btn-primary" onclick="topLvlButtonsHandler(event.target)">Book New Reservation</butoon>
-        </div>
-    </div>
-
-</div>
+ // THIS IS WHERE WE ARE GOING TO "RENDER" OUR HTML AFTER FIGURING OUT USERTYPE LOGGED IN
 
 
-<div id="allCurrentReservationSide" class="container">
+
+ async function setupReservations(seshToken,userType){
+
+
+    const indexReservationDiv = document.getElementById("updateResCont");
+
+    if(userType === "CUSTOMER"){
+        // 
+        indexReservationDiv.innerHTML = customerReservationsPage;
+        setUpAllCustomerReservations(seshToken,userType);
+
+
+    }else if(userType==="OWNER"){
+        // indexReservationDiv.innerHTML =ownerReservationsPage;
+        setUpAllReservations(seshToken,userType);
+    }
+
+    // setupTopNav("forTheTopDiv",userType);
+    // setupSideNav("forTheSideDiv",userType);
+
+    // CUSTOMER SIDE
     
-    <div id="testLvlButtsCont" class="container" >
-        <div class="row">
-            <div class="col-4 col-sm-4">
-                <button id="allReservationsTableRow_butt" type="button" class="btn btn-primary" onclick="testLvlButtonsHandler(event.target)">test get all reservations</button>
-            </div>
-            <div class="col-4 col-sm-4">
-                <button id="allReservationsByUserNameTableRow_butt" type="button" class="btn btn-primary" onclick="testLvlButtonsHandler(event.target)">test get reservation by username</button>
-            </div>
-            <div class="col-4 col-sm-4">
-                <button id="getReservationByIdRow_butt" type="button" class="btn btn-primary" onclick="testLvlButtonsHandler(event.target)">test get reservation by id</button>
-            </div>
-        </div>
-    </div>
-
-    <div id="viewReservationsDiv" class="container">
-
-        <div id="allReservationsTableRow" class="row tableHolder">
-            <div class="row">
-                <div class="col-12 col-sm-12" style="margin-bottom: 3vh;">
-                    <h4 style="text-align:center; width: 100%;">All Reservations</h4>
-                </div>
-            </div>
-            
-            <div id="allReservationsTableCol" class="col-12 col-sm-12">
-            </div>
-        </div>
-
-        <div id="allReservationsByUserNameTableRow" class="row tableHolder off">
-            <div class="row">
-                <div class="col-12 col-sm-12" >
-                    <h4 style="text-align:center; width: 100%;">All By User Name</h4>
-
-                </div>
-            </div>
-            <div id="allReservationsByUserNameTableCol" class="col-12 col-sm-12">
-            </div>
-        </div>
-
-        <div id="getReservationByIdRow" class="row tableHolder off">
-            <div id="getReservationByIdTop" class="col-12 col-sm-12">
-                <div class="row">
-                    <div class="col-12 col-sm-12" >
-                        <h4 style="text-align:center; width: 100%;">Get Reservation By ID</h4>
-
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="col-2 col-sm-2" style="padding:4vh">
-                        <label for="req_id_box" style="float:right">Enter the Id of your request</label>
-                    </div>
-                    <div class="col-2 col-sm-2" style="padding:4vh">
-                        <input id="req_id_box" type="number">
-                    </div>
-                    <div class="col-2 col-sm-2" style="padding:4vh">
-                        <button id="getreqbutt" class="btn btn-primary" type="button" style="float:left" onclick="setUpReservationById()">Get Request</button>
-                    </div>
-                    <div class="col-6 col-sm-6" style="padding:4vh">
-                        <!-- <button id="getreqbutt" class="btn btn-primary" type="button" style="float:left">Get Request</button> -->
-                    </div>
-
-                </div>
-                <hr>
-
-                <div class="row">
-                    <div id="getReservationByIdTableCol" class="col-12 col-sm-12">
-                        <table class="table">
-                            <tr>
-                                <thead>
-                                    <th scope="col">Hi there</th>
-                                    <th scope="col">yello</th>
-                                </thead>
-                            </tr>
-                        </table>
-                        
-                    </div>
-                </div>
-            </div>
-        </div>
-
-
-        <div id="editReservationRow" class="row tableHolder off">
-            <div id="editReservationCol" class="col-12 col-sm-12" style="margin-bottom: 3vh;">
-
-              
-                    <h1 id="title" class="mb-4">Edit Reservation:</h1>
-                    <div id="error" style="Color: red"></div>
-                    <!-- <form id="form">
-                        <hr>
-                        <p><b>User Information</b></p>
-                        <div class="form-group row mb-4">
-                            <div id="emailField" class="col">
-                                <lable for="email">Email:</lable>
-                                <a id="email" href="#"></a>
-                            </div>
-                            <div class="col">
-                                <lable for="dog">Dog:</lable>
-                                <a id="dog" href="#"></a>
-                            </div>
-                        </div>
-                        <hr>
-                        <p><b>Registration Information</b></p>
-                        <div class="form-group row mb-4">
-                            <div class="col">
-                                <label style="display: block" for="updateStatus">Status:</label>
-                                <select id="updateStatus"></select>
-                            </div>
-                            <div class="col">
-                                <label style="display: block" for="service">Service:</label>
-                                <select id="service" disabled></select>
-                            </div>
-                        </div>
-                        <div class="form-group row mb-4 readOnly">
-                            <div class="col">
-                                <label style="display: block" for="startDate">Start Date</label>
-                                <input id="startDate" type="date" disabled>
-                            </div>
-                            <div class="col">
-                                <label style="display: block" for="startTime">Start Time</label>
-                                <input id="startTime" type="time" disabled>
-                            </div>
-                        </div>
-                        <div class="form-group row mb-4 readOnly">
-                            <div class="col">
-                                <label style="display: block" for="endDate">End Date</label>
-                                <input id="endDate" type="date" disabled>
-                            </div>
-                            <div class="col">
-                                <label style="display: block" for="endTime">End Time</label>
-                                <input id="endTime" type="time" disabled>
-                            </div>
-                        </div>
-                    </form>
-                    <div class="row">
-                        <div class="col">
-                            <button class="btn btn-primary mb-4" type="button" onclick="openEditReservation()">Back</button>
-                        </div>
-                        <div class="col text-end">
-                            <button id="saveBtn" class="btn btn-primary mb-4" type="button" onclick="save()">Save</button>
-                        </div>
-                    </div>
-                    <h1 class="mb-4 bg-dark">#</h1>
-                </div> --> -->
-                <div class="container bg-light">
-                    <h1 class="mb-4 bg-dark">#</h1>
-                    <h1 id="title" class="mb-4">Edit Reservation:</h1>
-                    <div id="error" style="Color: red"></div>
-                    <form id="form">
-                        <hr>
-                        <p><b>User Information</b></p>
-                        <div class="form-group row mb-4">
-                            <div id="reserveeField" class="col-6">
-                                <lable for="reservee">Reservee:</lable>
-                                <a id="reservee" href="#"></a>
-                            </div>
-                            <div class="col-6">
-                                <lable for="dog">Dog:</lable>
-                                <a id="dog" href="#"></a>
-                            </div>
-                        </div>
-                        <hr>
-                        <p><b>Registration Information</b></p>
-                        <div class="form-group row mb-4">
-                            <div class="col-6 col-sm-6">
-                                <label for="updateStatus">Status:</label>
-                                <select id="updateStatus">
-                                    <option value="REGISTERED">REGISTERED</option>
-                                    <option value="CHECKEDIN">CHECKEDIN</option>
-                                    <option value="CHECKEDOUT">CHECKEDOUT</option>
-                                    <option value="CANCELLED">CANCELLED</option>
-                                </select>
-                            </div>
-                            <div class="col-6 col-sm-6">
-                                <label style="display: block" for="service">Service:</label>
-                                <select id="service" disabled></select>
-                            </div>
-                        </div>
-                        <div class="form-group row mb-4 readOnly">
-                            <div class="col-6 col-sm-6">
-                                <span>
-                                    <label style="display: block" for="startDate">Start Date</label>
-                                    <input id="startDate" type="date" disabled>
-                                </span>
-                            </div>
-                            <div class="col-6 col-sm-6">
-                                <label style="display: block" for="startTime">Start Time</label>
-                                <input id="startTime" type="time" disabled>
-                            </div>
-                        </div>
-                        <div class="form-group row mb-4 readOnly">
-                            <div class="col-6 col-sm-6">
-                                <label style="display: block" for="endDate">End Date</label>
-                                <input id="endDate" type="date" disabled>
-                            </div>
-                            <div class="col-6 col-sm-6">
-                                <label for="endTime">End Time</label>
-                                <input id="endTime" type="time" disabled>
-                            </div>
-                        </div>
-                    </form>
-                    <div class="row">
-                        <div class="col-3 col-sm-3">
-                            <button class="btn btn-primary mb-4" type="button" onclick="openEditReservation()">Back</button>
-                        </div>
-                        <div class="col-3 col-sm-3 text-end">
-                            <button id="editBtn" class="btn btn-primary mb-4" type="button" onclick="allowEditHandler()">Edit</button>
-                        </div>
-                        <div class="col-3 col-sm-3 text-end">
-                            <button id="saveBtn" class="btn btn-primary mb-4" type="button" onclick="save()">Save</button>
-                        </div>
-                    </div>
-                    <h1 class="mb-4 bg-dark">#</h1>
-                </div>
-
-
-            </div>
-        </div>
-
-
-    </div>
-
-</div>
-
-
-<div id="createNewReservationDiv" class="container off">
-    <div class="row">
-        <div class="col-12 col-sm-12">
-            <h5>Create Reservation</h5> -->
-            <!--delete this below paragraph before pushing!-->
-            <p>
-                <a href="../html/newReservation.html">click here to go to new reservation</a>
-            </p>
-        </div>
-    </div>
-
     
-</div>
+    // OWNER SIDE
+
+}
 
 
-
-</div>`;
 
 async function setupReservations(seshToken, userType) {
     const indexReservationDiv = document.getElementById("updateResCont");
@@ -606,8 +383,24 @@ async function setupReservations(seshToken, userType) {
     }
 }
 
-function topLvlButtonsHandler(e) {
-    let elid = event.target.id;
+
+// async function updateIncomingReservation(incomingReservation){
+
+//     Object.keys(incomingReservation).forEach((key, index) => {
+//         reservation[key] = incomingReservation[key];
+//     });
+
+// }
+
+// const indexReservationDiv = document.getElementById("updateResCont");
+
+
+
+
+function topLvlButtonsHandler(e){
+
+
+    let elid = e.target.id;
 
     elid = elid.replace("_butt", "");
     let viewReservationsDiv = document.getElementById("viewReservationsDiv");
@@ -875,4 +668,4 @@ allowEditHandler = () => {
 
         allowEdit = true;
     }
-};
+}

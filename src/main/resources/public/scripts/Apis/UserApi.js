@@ -2,10 +2,10 @@
  * === INITIAL DATA ===
  */
 
-const baseUserURL = 'http://localhost:8080';
-const baseUserHeaders = {
-    'Content-Type': 'application/json'
-};
+// const baseUserURL = 'http://localhost:8080';
+// const baseUserHeaders = {
+//     'Content-Type': 'application/json'
+// };
 
 /*
  * === FETCH CALLS ===

@@ -33,6 +33,14 @@ window.addEventListener('load', initalizeIndexPage);
 async function initalizeIndexPage() {
     // Getting user data (who is logged in)
     let userData = getSessionUserData();
+     window.addEventListener('load', function () {
+        setupIndex()
+      })
+
+    
+    
+    
+    // var user = getSessionUserData();
 
     // Saving data to user state variable
     await updateIncomingUserIndex(userData);
@@ -79,19 +87,62 @@ async function updateIncomingUserIndex(incomingUser) {
         });
     }
 }
-
-/*
- * === ??? ===
- */
-
-const ownePage = "../html/newReservation.html";
-var docFrag = new DocumentFragment();
-const reservationsHTML = "../html/ReservationsPage.html";
-
+    
+  
 
 function setupIndexPageReservations(elToAppendTo, userType, token) {
     // seshToken = token
 
+    // async function setupIndex(){
+
+        let userData = getSessionUserData();
+        
+        await updateIncomingUserIndex(userData);
+
+        let userType = user.userType;
+        let seshToken = user.pswd;
+
+        // const ownePage = "../html/newReservation.html"
+        // var docFrag = new DocumentFragment();
+        let updateResCont = document.getElementById("updateResCont");
+        const reservationsHTMLDoc = "../html/ReservationsPage.html"
+        const reserVationResp =  await fetch(reservationsHTMLDoc);
+        const ReservationHTML =  await reserVationResp.text();
+        updateResCont.innerHTML = ReservationHTML;
+    
+        // let updateUserCont = document.getElementById("updateUserCont");
+        // const updateuserHTMLAgainTest = "../html/userProfile.html"
+        // const userResp =  fetch(updateuserHTMLAgainTest);
+        // const userHTML =  userResp.text();
+        // updateUserCont.innerHTML = userHTML;
+        setupTopNav("forTheTopDiv",userType);
+        setupSideNav("forTheSideDiv",userType);
+
+        
+
+        
+        // SET UP 
+
+        if(userType == "OWNER"){
+
+            // let indexResSpot = document.getElementById("updateResCont")
+            // indexResSpot.innerHTML = ReservationHTML;
+            // updateUserCont.innerHTML = userHTML;
+            // indexResSpot.innerHTML = await fetch(resHTMLAgainTest).then(await resp.text())
+
+
+            
+            // setupIndexPageReservations(indexReservationDiv, userType,seshToken)
+            // indexReservationDiv.innerHTML = clientReservationsPage
+            // const frag = document.createRange().createContextualFragment("../html/userProfile.html");
+            // idexUpdateUserDiv.innerHTML = userProfileElements;
+            
+            setupUserProfile(user.email);
+            setupReservations(seshToken,userType);
+        }else if(userType=="CUSTOMER"){
+            setupUserProfile(user.email);
+            setupReservations(seshToken,userType);
+        }
 
     if (userType == "OWNER") {
         // const frag = document.createRange().createContextualFragment("../html/ReservationsPage.html");
@@ -105,3 +156,31 @@ function setupIndexPageReservations(elToAppendTo, userType, token) {
 function navigatetoDogs() {
     location.href = "../html/DogsPage.html";
 }
+
+    
+
+    function setupIndexPageReservations(elToAppendTo, userType, token){
+        // seshToken = token
+        
+        if(userType=="OWNER"){
+            // const frag = document.createRange().createContextualFragment("../html/ReservationsPage.html");
+            // document.getElementById(elToAppendTo).load(reservationsHTML)  
+            // docFrag.appendChild(reservationsHTML)
+            
+            // indexReservationDiv.append(docFrag)    
+            // elToAppendTo.innerHTML = customerReservationsPage
+        }
+    }
+
+
+
+    function navigatetoDogs(){
+        location.href="../html/DogsPage.html"
+    }
+
+
+
+    
+ 
+
+   
