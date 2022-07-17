@@ -2,121 +2,33 @@
  * === INITIALIZATION ===
  */
 
-// window.onload = initalizePage();
-// function initalizePage() {
-//     // Getting query params
-//     let query = window.location.search;
-//     const params = new URLSearchParams(query);
-
-//     // Checking if new page
-//     if (params.has('username')) {
-//         // Loading existing user
-//         // Getting params - global
-//         username = params.get('username');
-//         updateViewExistingUser();
-//     }
-//     else {
-//         // New user
-//         updateViewNewUser();
-//     }
-
-// }
-
-
-////TODO:might need to delete below
-
 /**
- * === HTML PAGE ===
+ * Initalizes the user profile page depending on the given email.
+ * If null is passed will assume that a new user is being made
+ * Otherwise will fetch and populated all fields with the given users data
+ * @param {string} userEmail The user email to load the information of
  */
-
- const idexUpdateUserDiv = document.getElementById("updateUserCont");
- const userProfileElements = `
- <div class="container bg-light" style="margin-top:3vh;">
-    <div class="row"> 
-        <div class="col-12">
-            <h1 id="title" class="mb-4">New User:</h1>
-        </div>
-    </div>
-
- <div id="error" style="Color: red"></div>
- <form id="form">
-     <hr>
-     <p><b>User Information</b></p>
-     <div class="form-group row mb-4">
-         <div class="col">
-             <div id="inputEmailError" style="color: red"></div>
-             <lable style="display: block" for="inputEmail">Email:</lable>
-             <input id="inputEmail" class="input readOnly" type="text">
-         </div>
-         <div class="col user">
-             <div id="inputPasswordError" style="color: red"></div>
-             <lable id="inputPasswordLabel" style="display: block" for="inputPassword">Password:</lable>
-             <input id="inputPassword" class="input update" type="password">
-         </div>
-     </div>
-     <div class="form-group row mb-4">
-         <div class="col">
-             <div id="inputFirstNameError" style="color: red"></div>
-             <lable style="display: block" for="inputFirstName">First Name:</lable>
-             <input id="inputFirstName" class="input update" type="text">
-         </div>
-         <div class="col">
-             <div id="inputLastNameError" style="color: red"></div>
-             <lable style="display: block" for="inputLastName">Last Name:</lable>
-             <input id="inputLastName" class="input update" type="text">
-         </div>
-     </div>
-     <div class="form-group row mb-4">
-         <div class="col">
-             <div id="inputPhoneNumberError" style="color: red"></div>
-             <lable style="display: block" for="inputFirstName">Phone Number:</lable>
-             <input id="inputPhoneNumber" class="input update" type="text">
-         </div>
-         <div class="col user">
-             <div id="inputFundsError" style="color: red"></div>
-             <lable style="display: block" for="inputFunds">Funds:</lable>
-             <input id="inputFunds" type="number" class="input readOnly" min="0" max="9999.99" step="any" placeholder="$0.00">
-         </div>
-     </div>
- </form>
- <div class="row">
-     <div class="col">
-         <button class="btn btn-primary mb-4" type="button" onclick="back()">Back</button>
-     </div>
-     <div class="col text-end">
-         <button id="submitButton" class="btn btn-primary mb-4" type="button">Submit</button>
-     </div>
- </div>
- <h1 class="mb-4 bg-dark">#</h1>
- </div>`
-
- /**
-  * Setups the userProfile.html when it is loaded
-  * Called by index when editing it (with a nonnull username)
-  * Called by login when creating a new user
-  * @param {string} userName The username to load onto the edit user
-  */
-async function setupUserProfile(userName){
-    // Changing page
-    idexUpdateUserDiv.innerHTML = userProfileElements
-    console.log(`Got username: ${userName}`);
-
-    // Checking if new page
-    if (userName !== null) {
-        // Loading exisitng user
-        username = userName;    // global
+function initalizeUserProfilePage(userEmail) {
+    // Checking if new user
+    if (userEmail !== null) {
+        // Loading existing user
+        // Getting params - global
+        username = userEmail;
         updateViewExistingUser();
-    }
-    else {
-        // New User
+    } else {
+        // New user
         updateViewNewUser();
     }
-}
+ }
 
-/**
- * === HTML UPDATES ===
+/*
+ * === View Updates ===
  */
 
+/**
+ * Updates the user profile page to handle an existing user
+ * as well as setup html elements correctly
+ */
 async function updateViewExistingUser() {
     // Getting user data
     const userData = getSessionUserData();
@@ -128,14 +40,14 @@ async function updateViewExistingUser() {
     if (userData.email === username) {
         // User is viewing their own information
         // Updating button listener
-        let submitBtn = document.getElementById('submitButton');
+        let submitBtn = document.getElementById('userProfileSubmitBtn');
         submitBtn.innerHTML = 'Save';
         submitBtn.addEventListener('click', saveUserProfile);
     }
     else if (userData.userType === 'OWNER') {
         // User is owner and viewing user information
         // Hiding save button
-        document.getElementById('submitButton').hidden = true;
+        document.getElementById('userProfileSubmitBtn').hidden = true;
 
         // Hiding user only elements
         let userElements = document.getElementsByClassName('user');
@@ -186,10 +98,31 @@ async function updateViewExistingUser() {
     }
 }
 
+/**
+ * Updates the user profile page to handle a new user form
+ * as well as setup html elements correctly
+ */
 async function updateViewNewUser() {
     // Updating button listener
-    let submitBtn = document.getElementById('submitButton');
+    let submitBtn = document.getElementById('userProfileSubmitBtn');
     submitBtn.addEventListener('click', submitUserProfile);
+}
+/**
+ * Hides or Shows the upper and lower bars
+ * @param {boolean} upper Whether to hide the upper bar or not
+ * @param {boolean} lower Whether to hide the bottom bar or not
+ */
+function setUserProfileBarVisibility(upper, lower) {
+    document.getElementById('UPUpperBar').hidden = !upper;
+    document.getElementById('UPLowerBar').hidden = !lower;
+}
+
+/**
+ * Hides or shows the back button
+ * @param {boolean} visible Whether the back button is visible or not
+ */
+function setUserProfileBackButtonVisibility(visible) {
+    document.getElementById('userProfileBackBtn').hidden = !visible;
 }
 
 /*
@@ -197,14 +130,12 @@ async function updateViewNewUser() {
  */
 
 /**
- * Handles when the back button is clicked.
+ * Adds an event listener to the back button
+ * @param {string} event The event type to look for
+ * @param {function} callBackFunction The function to call when the event occurs
  */
-function back() {
-    // TODO: Be useful for index.html
-    // Currently just 'checks' if user is in an active session or not
-    // If they are, moved to index page
-    getSessionUserData(); // Delete this later when finished being useful
-    location.href = "../html/index.html";
+function addUserProfileBackButtonListener(event, callBackFunction) {
+    document.getElementById('userProfileBackBtn').addEventListener(event, callBackFunction);
 }
 
 /**
@@ -513,6 +444,6 @@ function formatPhoneNumber(phoneNumber) {
  */
  function notFound404() {
     document.getElementById('title').innerHTML = "404 : Request Not Found";
-    document.getElementById('form').innerHTML = '';
+    document.getElementById('userProfileForm').innerHTML = '';
     document.getElementById('btnSubmit').hidden = true;
 }
