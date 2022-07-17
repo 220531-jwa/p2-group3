@@ -125,11 +125,11 @@ function getDateTimeFromTimestamp(timestamp) {
 /*
  * === Loading Pages ===
  */
-
+//Dont forget to put an await in front when calling getHTMLPage()
 async function getHTMLPage(url) {
     // Getting the entire html
     const HTMLText = await (await fetch(url)).text();
-
+	
     // keeping body
     const bodyRegex = new RegExp('<body>[^]*</body>');
     let HTMLBody = HTMLText.match(bodyRegex)[0];

@@ -13,32 +13,20 @@
     <title>Reservations</title>
 </head>
 <body>
+    <div id="dogmain">
 
-
-    
-    <div id="forTheTopDiv">
-
-
-    </div>
-    <div id="forTheSideDiv">
-	
-        
-    </div>
-  
-    <div id="main">
-
-        <div id="topLvlButtsCont" class="container">
+        <div id="dogtopLvlButtsCont" class="container">
             <div class="row">
                 <div class="col-6 col-sm-6">
-                    <butoon id="viewDogsDiv_butt" type="button" class="btn btn-primary" onclick="topLvlButtonsHandler(event.target)">View All Your Dogs</butoon>
+                    <button id="viewDogsDiv_butt" type="button" class="btn btn-primary" onclick="topLvlButtonsHandler(event.target)">View All Your Dogs</button>
                 </div>
                 <div class="col-6 col-sm-6">
-                    <butoon id="createNewDogDiv_butt" type="button" class="btn btn-primary" onclick="topLvlButtonsHandler(event.target)">Book New Dog</butoon>
+                    <button id="createNewDogDiv_butt" type="button" class="btn btn-primary" onclick="topLvlButtonsHandler(event.target)">Book New Dog</button>
                 </div>
             </div>
 
         </div>
-        <div id="testLvlButtsCont" class="container" >
+        <div id="dogtestLvlButtsCont" class="container" >
             <div class="row">
                 <div class="col-4 col-sm-4">
                     <button id="allDogsTableRow_butt" type="button" class="btn btn-primary" onclick="testLvlButtonsHandler(event.target)">test get all Dogs</button>
@@ -90,10 +78,10 @@
                             <label for="req_id_box" style="float:right">Enter the Id of your request</label>
                         </div>
                         <div class="col-2 col-sm-2" style="padding:4vh">
-                            <input id="req_id_box" type="number">
+                            <input id="dog_req_id_box" type="number">
                         </div>
                         <div class="col-2 col-sm-2" style="padding:4vh">
-                            <button id="getreqbutt" class="btn btn-primary" type="button" style="float:left" onclick="setUpDogById()">Get Request</button>
+                            <button id="doggetreqbutt" class="btn btn-primary" type="button" style="float:left" onclick="setUpDogById()">Get Request</button>
                         </div>
                         <div class="col-6 col-sm-6" style="padding:4vh">
                             <!-- <button id="getreqbutt" class="btn btn-primary" type="button" style="float:left">Get Request</button> -->
@@ -123,18 +111,18 @@
                 <div id="editDogCol" class="col-12 col-sm-12" style="margin-bottom: 3vh;">
 
                     <div class="container bg-light">
-                        <h1 id="title" class="mb-4">Edit Dog:</h1>
-                        <div id="error" style="Color: red"></div>
-                        <form id="form">
+                        <h1 id="dogtitle" class="mb-4">Edit Dog:</h1>
+                        <div id="dogerror" style="Color: red"></div>
+                        <form id="dogform">
                             <hr>
                             <p><b>User Information</b></p>
                             <div class="form-group row mb-4">
                                 <div id="emailField" class="col">
-                                    <lable for="email">Email:</lable>
-                                    <a id="email" href="#"></a>
+                                    <label for="email">Email:</label>
+                                    <a id="dogemail" href="#"></a>
                                 </div>
                                 <div class="col">
-                                    <lable for="dog">Dog:</lable>
+                                    <label for="dog">Dog:</label>
                                     <a id="dog" href="#"></a>
                                 </div>
                             </div>
@@ -143,31 +131,31 @@
                             <div class="form-group row mb-4">
                                 <div class="col">
                                     <label style="display: block" for="updateStatus">Status:</label>
-                                    <select id="updateStatus"></select>
+                                    <select id="dogupdateStatus"></select>
                                 </div>
                                 <div class="col">
                                     <label style="display: block" for="service">Service:</label>
-                                    <select id="service" disabled></select>
+                                    <select id="dogservice" disabled></select>
                                 </div>
                             </div>
                             <div class="form-group row mb-4 readOnly">
                                 <div class="col">
                                     <label style="display: block" for="startDate">Start Date</label>
-                                    <input id="startDate" type="date" disabled>
+                                    <input id="dogstartDate" type="date" disabled>
                                 </div>
                                 <div class="col">
                                     <label style="display: block" for="startTime">Start Time</label>
-                                    <input id="startTime" type="time" disabled>
+                                    <input id="dogstartTime" type="time" disabled>
                                 </div>
                             </div>
                             <div class="form-group row mb-4 readOnly">
                                 <div class="col">
                                     <label style="display: block" for="endDate">End Date</label>
-                                    <input id="endDate" type="date" disabled>
+                                    <input id="dogendDate" type="date" disabled>
                                 </div>
                                 <div class="col">
                                     <label style="display: block" for="endTime">End Time</label>
-                                    <input id="endTime" type="time" disabled>
+                                    <input id="dogendTime" type="time" disabled>
                                 </div>
                             </div>
                         </form>
@@ -176,7 +164,7 @@
                                 <button class="btn btn-primary mb-4" type="button" onclick="openEditDog()">Back</button>
                             </div>
                             <div class="col text-end">
-                                <button id="saveBtn" class="btn btn-primary mb-4" type="button" onclick="save()">Save</button>
+                                <button id="dogsaveBtn" class="btn btn-primary mb-4" type="button" onclick="save()">Save</button>
                             </div>
                         </div>
                         <h1 class="mb-4 bg-dark">#</h1>

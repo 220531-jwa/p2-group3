@@ -41,13 +41,9 @@ async function fetchGetDogById(username, id, token) {
 }
 
 async function getAllDogsByUsername(username,token){
-	
 	let response = await fetch(`${baseDogURL}/${username}`,{
 		method:'GET',
-		header:{
-			'Content-Type': 'application/json',
-            'Token':token
-		}
+		headers: addTokenHeader(baseDogHeaders, token),
 	});
 	
 	if(response.status === 200) {

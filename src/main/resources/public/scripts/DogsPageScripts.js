@@ -8,8 +8,7 @@
  */
 
 
- const userRes = getSessionUserData();
- const seshToken = "";
+
  
  
  
@@ -18,326 +17,44 @@
  var openEL = "alldogsTableRow";
  var openTopEl = "viewdogsDiv"
  var isEditOpen = "false"
- 
- 
- var reservation = {
-     id:null,
-     userEmail:null,
-     dogId:null,
-     status:null,
-     startDateTime:null,
-     endDateTime:null
- }
- 
- // THIS UPDATED THE ABOVE OBJECT LITERAL
- async function updateIncomingReservationPage(incomingReservation){
- 
-     if(incomingReservation){
-         Object.keys(incomingReservation).forEach((key, index) => {
-     
-             if(key == "startDateTime" ){
-                 
-                 let incomingDate = incomingReservation[key];
-                 let newDate = new Date(incomingDate);
-                 let day = newDate.getDate();
-                 let month = newDate.getMonth() + 1;
-                 let year = newDate.getFullYear();
-                 let hour = newDate.getHours();
-                 let minutes = newDate.getMinutes().toString();
-                 let seconds = newDate.getSeconds().toString();
- 
-                 if(minutes.length==1){
-                     minutes = minutes +"0"
-                 }
- 
- 
-                 
-                 if(seconds.length==1){
-                     seconds = seconds + "0"
-                     
-                 }
-     
-                 let theDate = month + "/" + day + "/" + year
-                 let theTime = hour + ":" + minutes + ":" + seconds
- 
-                 let fullDate = theDate + " " + theTime
-     
-                 
-     
-                 reservation.startDateTime = fullDate;
-     
-     
-             }else if(key=="endDateTime"){
-     
-                 let incomingDate = incomingReservation[key];
-                 let newDate = new Date(incomingDate);
-                 let day = newDate.getDate();
-                 let month = newDate.getMonth() + 1;
-                 let year = newDate.getFullYear();
-                 let hour = newDate.getHours();
-                 let minutes = newDate.getMinutes().toString();
-                 let seconds = newDate.getSeconds().toString();
- 
-                 if(minutes.length==1){
-                     minutes = minutes +"0"
-                 }
- 
- 
-                 
-                 if(seconds.length==1){
-                     seconds = seconds + "0"
-                    
-                 }
-     
-                 let theDate = month + "/" + day + "/" + year
-                 let theTime = hour + ":" + minutes + ":" + seconds
- 
-                 let fullDate = theDate + " " + theTime
-     
-                 reservation.endDateTime = fullDate;
-     
-             }else{
-                 
-                 reservation[key] = incomingReservation[key];
-             }
-         });
- 
-     }
- 
- }
+ var userDogs = "allDogsByUserNameTableRow"
+
  
  
  
  
- /**
-  *  HTML PAGES TURNED INTO JAVASCRIPT
-  */
+
  
   // THIS IS WHERE WE ARE GOING TO "RENDER" OUR HTML AFTER FIGURING OUT USERTYPE LOGGED IN
  
- const indexdogDiv = `<div id="main">
-
-        <div id="topLvlButtsCont" class="container">
-            <div class="row">
-                <div class="col-6 col-sm-6">
-                    <butoon id="viewDogsDiv_butt" type="button" class="btn btn-primary" onclick="topLvlButtonsHandler(event.target)">View All Your Dogs</butoon>
-                </div>
-                <div class="col-6 col-sm-6">
-                    <butoon id="createNewDogDiv_butt" type="button" class="btn btn-primary" onclick="topLvlButtonsHandler(event.target)">Book New Dog</butoon>
-                </div>
-            </div>
-
-        </div>
-        <div id="testLvlButtsCont" class="container" >
-            <div class="row">
-                <div class="col-4 col-sm-4">
-                    <button id="allDogsTableRow_butt" type="button" class="btn btn-primary" onclick="testLvlButtonsHandler(event.target)">test get all Dogs</button>
-                </div>
-                <div class="col-4 col-sm-4">
-                    <button id="allDogsByUserNameTableRow_butt" type="button" class="btn btn-primary" onclick="testLvlButtonsHandler(event.target)">test get Dog by username</button>
-                </div>
-                <div class="col-4 col-sm-4">
-                    <button id="getDogByIdRow_butt" type="button" class="btn btn-primary" onclick="testLvlButtonsHandler(event.target)">test get Dog by id</button>
-                </div>
-            </div>
-        </div>
-
-        <div id="viewDogsDiv" class="container">
-
-            <div id="allDogsTableRow" class="row tableHolder">
-                <div class="row">
-                    <div class="col-12 col-sm-12" style="margin-bottom: 3vh;">
-                        <h4 style="text-align:center; width: 100%;">All Dogs</h4>
-                    </div>
-                </div>
-                
-                <div id="allDogsTableCol" class="col-12 col-sm-12">
-                </div>
-            </div>
-
-            <div id="allDogsByUserNameTableRow" class="row tableHolder off">
-                <div class="row">
-                    <div class="col-12 col-sm-12" >
-                        <h4 style="text-align:center; width: 100%;">All By User Name</h4>
-
-                    </div>
-                </div>
-                <div id="allDogsByUserNameTableCol" class="col-12 col-sm-12">
-                </div>
-            </div>
-
-            <div id="getDogByIdRow" class="row tableHolder off">
-                <div id="getDogByIdTop" class="col-12 col-sm-12">
-                    <div class="row">
-                        <div class="col-12 col-sm-12" >
-                            <h4 style="text-align:center; width: 100%;">Get Dog By ID</h4>
-    
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-2 col-sm-2" style="padding:4vh">
-                            <label for="req_id_box" style="float:right">Enter the Id of your request</label>
-                        </div>
-                        <div class="col-2 col-sm-2" style="padding:4vh">
-                            <input id="req_id_box" type="number">
-                        </div>
-                        <div class="col-2 col-sm-2" style="padding:4vh">
-                            <button id="getreqbutt" class="btn btn-primary" type="button" style="float:left" onclick="setUpDogById()">Get Request</button>
-                        </div>
-                        <div class="col-6 col-sm-6" style="padding:4vh">
-                            <!-- <button id="getreqbutt" class="btn btn-primary" type="button" style="float:left">Get Request</button> -->
-                        </div>
-
-                    </div>
-                    <hr>
-
-                    <div class="row">
-                        <div id="getDogByIdTableCol" class="col-12 col-sm-12">
-                            <table class="table">
-                                <tr>
-                                    <thead>
-                                        <th scope="col">Hi there</th>
-                                        <th scope="col">yello</th>
-                                    </thead>
-                                </tr>
-                            </table>
-                            
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-
-            <div id="editDogRow" class="row tableHolder off">
-                <div id="editDogCol" class="col-12 col-sm-12" style="margin-bottom: 3vh;">
-
-                    <div class="container bg-light">
-                        <h1 id="title" class="mb-4">Edit Dog:</h1>
-                        <div id="error" style="Color: red"></div>
-                        <form id="form">
-                            <hr>
-                            <p><b>User Information</b></p>
-                            <div class="form-group row mb-4">
-                                <div id="emailField" class="col">
-                                    <lable for="email">Email:</lable>
-                                    <a id="email" href="#"></a>
-                                </div>
-                                <div class="col">
-                                    <lable for="dog">Dog:</lable>
-                                    <a id="dog" href="#"></a>
-                                </div>
-                            </div>
-                            <hr>
-                            <p><b>Registration Information</b></p>
-                            <div class="form-group row mb-4">
-                                <div class="col">
-                                    <label style="display: block" for="updateStatus">Status:</label>
-                                    <select id="updateStatus"></select>
-                                </div>
-                                <div class="col">
-                                    <label style="display: block" for="service">Service:</label>
-                                    <select id="service" disabled></select>
-                                </div>
-                            </div>
-                            <div class="form-group row mb-4 readOnly">
-                                <div class="col">
-                                    <label style="display: block" for="startDate">Start Date</label>
-                                    <input id="startDate" type="date" disabled>
-                                </div>
-                                <div class="col">
-                                    <label style="display: block" for="startTime">Start Time</label>
-                                    <input id="startTime" type="time" disabled>
-                                </div>
-                            </div>
-                            <div class="form-group row mb-4 readOnly">
-                                <div class="col">
-                                    <label style="display: block" for="endDate">End Date</label>
-                                    <input id="endDate" type="date" disabled>
-                                </div>
-                                <div class="col">
-                                    <label style="display: block" for="endTime">End Time</label>
-                                    <input id="endTime" type="time" disabled>
-                                </div>
-                            </div>
-                        </form>
-                        <div class="row">
-                            <div class="col">
-                                <button class="btn btn-primary mb-4" type="button" onclick="openEditDog()">Back</button>
-                            </div>
-                            <div class="col text-end">
-                                <button id="saveBtn" class="btn btn-primary mb-4" type="button" onclick="save()">Save</button>
-                            </div>
-                        </div>
-                        <h1 class="mb-4 bg-dark">#</h1>
-                    </div>
-
-
-
-                </div>
-            </div>
-
-
-        </div>
-
-        <div id="createNewDogDiv" class="container off">
-            <div class="row">
-                <div class="col-12 col-sm-12">
-                    <h5>Create Dog</h5>
-                </div>
-            </div>
-
-            
-        </div>
-
-        
-        
-    </div>`
  
   async function setupDogs(seshToken,userType){
- 
+ 	let userData = getSessionUserData();
  
      const indexdogDiv = document.getElementById("updateDogCont");
- 
+
      if(userType === "CUSTOMER"){
          
-         indexdogDiv.innerHTML = customerdogsPage;
-         setUpAllCustomerdogs(seshToken,userType);
+         indexdogDiv.innerHTML = await getHTMLPage('http://localhost:8080/html/DogsPage.html');
+         setUpAllCustomerdogs(seshToken,userData.email);
  
  
      }else if(userType==="OWNER"){
-         indexdogDiv.innerHTML =ownerdogsPage;
-         setUpAlldogs(seshToken,userType);
+         indexdogDiv.innerHTML = ownerdogsPage;
+         setUpAlldogs(userData.email,seshToken);
      }
  
-     //setupTopNav("forTheTopDiv",userType);
-     //setupSideNav("forTheSideDiv",userType);
- 
-     // CUSTOMER SIDE
-     
-     
-     // OWNER SIDE
  
  }
  
-   
- 
- // async function updateIncomingReservation(incomingReservation){
- 
- //     Object.keys(incomingReservation).forEach((key, index) => {
- //         reservation[key] = incomingReservation[key];
- //     });
- 
- // }
- 
- // const indexReservationDiv = document.getElementById("updateResCont");
+
  
  
  
  
  function topLvlButtonsHandlerDogs(e){
  
-     let elid = event.target.id;
+     let elid = e.target.id;
  
      elid = elid.replace("_butt","");
      let viewdogsDiv = document.getElementById("viewdogsDiv");
@@ -397,11 +114,6 @@
  async function setUpAlldogs(seshToken){
  
      let alldogsTableCol = document.getElementById("alldogsTableCol");
-     
-     // let seshToken = userRes.pswrd
-     
-     
-     // let username = userRes.email;
  
      // PULL IN ALL dogS
     //  let dogs = await getAlldogs(seshToken);
@@ -417,12 +129,9 @@
  
  async function setUpAllCustomerdogs(seshToken,username){
  
-     let alldogsByUserNameTableCol = document.getElementById("alldogsByUserNameTableCol");
+     let alldogsByUserNameTableCol = document.getElementById(userDogs);
+     console.log(alldogsByUserNameTableCol)
      
-     // let seshToken = userRes.pswrd;
-     // let username = userRes.email;
- 
- 
      // PULL IN ALL dogS
      let allAllDogsByUsername = await getAllDogsByUsername(username, seshToken);
  
@@ -430,7 +139,7 @@
      alldogs = allAllDogsByUsername
  
      // Passing to create table function to create the table append to appropriate place.
-     createTableData(alldogsByUserNameTableCol,"multiple");
+     createTableData(alldogsByUserNameTableCol);
  
  
  }
@@ -460,11 +169,11 @@
      let r = 0;
  
      //  Appending Table Headers to Table.
-     for(reservProp in dog){
+     for(dogProp in dog){
          let tblHdr = document.createElement("th")
-         let reservPropStrng = reservProp.toString();
+         let dogPropStrng = dogProp.toString();
  
-         newHdr = reservPropStrng
+         newHdr = dogPropStrng
          tblHdr.scope = "col"
          tblHdr.innerText = newHdr
          tblHdrRow.append(tblHdr);
@@ -533,7 +242,7 @@
  
  
  
- async function createTableData(divToAppendTo, singleOrMultiple){
+ async function createTableData(divToAppendTo){
      
      let tbl = document.createElement("table");
      let tblHead = document.createElement("thead");
@@ -544,22 +253,20 @@
  
      let newHdr = ""
  
-     let allResLength = await alldogs.length;
+     let allResLength = alldogs.length;
      
      if(allResLength > 0){
  
          let r = 0;
           //  Appending Table Headers to Table.
-             for(reservProp in alldogs[0]){
-                 
+             for(dogProp in alldogs[0]){
                  let tblHdr = document.createElement("th")
-                 let reservPropStrng = reservProp.toString();
+                 let dogPropStrng = dogProp.toString();
  
-                 newHdr = reservPropStrng
+                 newHdr = dogPropStrng
                  tblHdr.scope = "col"
                  tblHdr.innerText = newHdr
                  tblHdrRow.append(tblHdr);
- 
                  if(r===5){
                      let editHdr = document.createElement("th");
                      editHdr.scope="col";
@@ -570,28 +277,24 @@
                  r++
              
              }
+    tblHead.append(tblHdrRow)
      }
-     tblHead.append(tblHdrRow)
- 
+
      let tbleBody = document.createElement("tbody");
  
- 
+ 	 //Iterate through alldogs array
      for(x = 0; x<=alldogs.length - 1; x++){
          
          let reqRow = document.createElement("tr");
          w = 0;
-         
-         
-         await updateIncomingdogPage(alldogs[x]);
- 
-         // for (key in allSessionCustomerResVations[x]) {
-         
-         for (key in dog) {
-             
+         dog = alldogs[x];
+		 //For each value in dog object
+         for (key in Object.values(dog)) {
+			 
              
              let reqTd = document.createElement("td")
-               
-             reqTd.innerText = dog[key];
+			 //Equal to value at index "key" of dog
+             reqTd.innerText = Object.values(dog)[key];
              reqRow.append(reqTd);
  
              if(w===5){

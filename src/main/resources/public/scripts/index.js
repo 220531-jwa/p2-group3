@@ -63,8 +63,8 @@ async function initalizeIndexPage() {
     }
     else {
         // User is customer
-        setupReservations(user.pswd, user.userType);
-        setupDogs(user.pswd,user.userType);
+        setupReservations(userData.pswd, user.userType);
+        setupDogs(userData.pswd,userData.userType);
     }
 }
 
