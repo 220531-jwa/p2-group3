@@ -174,13 +174,15 @@ public class ReservationService {
                 return new Pair<List<Reservation>, Integer>(respPair, 200);
             }
             else {
-                log.error("Failed to find reservations. Possible: username does not exist");
-                return new Pair<List<Reservation>, Integer>(null, 404);
+            	 log.error("Failed to find reservations. Possible: username does not exist");
+                 return new Pair<List<Reservation>, Integer>(null, 404);
             }
         }
         else {
-            log.error("user is not authorized to view reservaitons");
+        	log.error("user is not authorized to view reservaitons");
             return new Pair<List<Reservation>, Integer>(null, 403);
+            
+           
         }
     }
     
@@ -247,7 +249,7 @@ public class ReservationService {
         		return new Pair<Reservation, Integer>(res, 200);
         	}else {
         		log.error("User is not authorized to view reservation");
-        		return new Pair<Reservation, Integer>(null, 503);
+        		return new Pair<Reservation, Integer>(null, 403);
         	}
         	
         }else {
@@ -361,6 +363,8 @@ public class ReservationService {
      */
     public Pair<Reservation, Integer> updateReservationById(Integer res_id, Reservation resData, String token) {
     	
+    	
+        
         log.debug("Attempting to update reservation with res_id: " + res_id + " resData: " + resData + " token: " + token);
     	
         // Validating input
@@ -379,14 +383,18 @@ public class ReservationService {
         String requesterUsername = ActiveUserSessions.getActiveUserUsername(token);
         User requesterUser = userDAO.getUserByUsername(requesterUsername);
         
+        
         // Checking if user exists
         if (requesterUser == null) {
             log.fatal("User does not exist");
             return new Pair<Reservation, Integer>(null, 503);   // This should never happen (loggedin users can only login if the user exists)
         }
         
+        String userEmail = requesterUser.getEmail();
+        
         // Populating necessary data
         resData.setId(res_id);
+       
         
         // Checking to make sure the user is authorized to update reservation
         UserType userType = requesterUser.getUserType();
@@ -394,14 +402,16 @@ public class ReservationService {
         
         
         if(resp != null) {
+//        System.out.println(resp);
         	
         	 if(userType == UserType.OWNER || requesterUser.getEmail() == resp.getUserEmail()) {
              	
          		// Successfully updated reservation
          		return new Pair<Reservation, Integer>(resp, 200);
+         		
         	 }else {
         		 log.error("User is not authorized to update reservation");
-             	return new Pair<Reservation, Integer>(null, 503);
+             	return new Pair<Reservation, Integer>(null, 403);
         	 }
         }else {
         	log.error("This Reservation does not exist");

@@ -59,6 +59,9 @@ async function initalizeIndexPage() {
     setUserProfileBackButtonVisibility(false);
     setUserProfileBarVisibility(false, true);
 
+    const reservationsHTML = await getHTMLPage('../html/ReservationsPage.html')
+    document.getElementById("updateResCont").innerHTML = reservationsHTML;
+
     // Loading reservation into index page - and initalizing it
     if (user.userType === 'OWNER') {
         // User is owner
@@ -66,7 +69,7 @@ async function initalizeIndexPage() {
         // indexReservationDiv.innerHTML = clientReservationsPage
         // const frag = document.createRange().createContextualFragment("../html/userProfile.html");
         // idexUpdateUserDiv.innerHTML = userProfileElements;
-        setupReservations(user.pswd, user.userType);
+        // setupReservations(user.pswd, user.userType);
         setupDogs(user.pswd,user.userType);
     }
     else {
@@ -90,7 +93,7 @@ async function updateIncomingUserIndex(incomingUser) {
     
   
 
-function setupIndexPageReservations(elToAppendTo, userType, token) {
+async function setupIndexPageReservations(elToAppendTo, userType, token) {
     // seshToken = token
 
     // async function setupIndex(){
@@ -99,8 +102,8 @@ function setupIndexPageReservations(elToAppendTo, userType, token) {
         
         await updateIncomingUserIndex(userData);
 
-        let userType = user.userType;
-        let seshToken = user.pswd;
+        // let userType = user.userType;
+        // let seshToken = user.pswd;
 
         // const ownePage = "../html/newReservation.html"
         // var docFrag = new DocumentFragment();

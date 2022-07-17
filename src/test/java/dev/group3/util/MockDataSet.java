@@ -35,6 +35,8 @@ public class MockDataSet {
     
     private static void setupReservationTestSet() {
         reservationTestSet = new ArrayList<Reservation>();
+        
+       
         // Current day (7 dogs)
         reservationTestSet.add(new Reservation(1,   "email1",   1,  null,   ResStatusType.REGISTERED,   getTS("2022-07-01 9:00:00"),   getTS("2022-07-01 11:00:00")));
         reservationTestSet.add(new Reservation(2,   "email1",   2,  2,      ResStatusType.REGISTERED,   getTS("2022-07-01 9:00:00"),   getTS("2022-07-01 11:00:00")));
@@ -44,20 +46,23 @@ public class MockDataSet {
         reservationTestSet.add(new Reservation(6,   "dogLover", 10, 4,      ResStatusType.CHECKEDOUT,   getTS("2022-07-01 9:00:00"),   getTS("2022-07-01 11:00:00")));
         reservationTestSet.add(new Reservation(7,   "dogLover", 11, 5,      ResStatusType.REGISTERED,   getTS("2022-07-01 9:00:00"),   getTS("2022-07-01 11:00:00")));
         
-        reservationTestSet.add(new Reservation(1,   "email4",   1,  null,   ResStatusType.REGISTERED,   getTS("2022-07-01 9:00:00"),   getTS("2022-07-01 11:00:00")));
-        reservationTestSet.add(new Reservation(1,   "email5",   1,  null,   ResStatusType.REGISTERED,   getTS("2022-07-01 9:00:00"),   getTS("2022-07-01 11:00:00")));
+//        reservationTestSet.add(new Reservation(1,   "email4",   1,  null,   ResStatusType.REGISTERED,   getTS("2022-07-01 9:00:00"),   getTS("2022-07-01 11:00:00")));
+//        reservationTestSet.add(new Reservation(1,   "email5",   1,  null,   ResStatusType.REGISTERED,   getTS("2022-07-01 9:00:00"),   getTS("2022-07-01 11:00:00")));
+        reservationTestSet.add(new Reservation(8,   "email4",   1,  null,   ResStatusType.REGISTERED,   getTS("2022-07-01 9:00:00"),   getTS("2022-07-01 11:00:00")));
+        reservationTestSet.add(new Reservation(9,   "email5",   1,  null,   ResStatusType.REGISTERED,   getTS("2022-07-01 9:00:00"),   getTS("2022-07-01 11:00:00")));
         
-        reservationTestSet.add(new Reservation(1,   "owner",   1,  null,   ResStatusType.REGISTERED,   getTS("2022-07-01 9:00:00"),   getTS("2022-07-01 11:00:00")));
+        
+        reservationTestSet.add(new Reservation(10,   "owner",   1,  null,   ResStatusType.REGISTERED,   getTS("2022-07-01 9:00:00"),   getTS("2022-07-01 11:00:00")));
         // Past days
-        reservationTestSet.add(new Reservation(8,   "dogLover", 12, 2,      ResStatusType.CHECKEDOUT,   getTS("2022-06-01 9:00:00"),   getTS("2022-06-01 11:00:00")));
-        reservationTestSet.add(new Reservation(9,   "dogLover", 13, 3,      ResStatusType.CHECKEDOUT,   getTS("2022-06-01 9:00:00"),   getTS("2022-06-01 11:00:00")));
-        reservationTestSet.add(new Reservation(10,  "dogLover", 14, 4,      ResStatusType.CHECKEDOUT,   getTS("2022-06-01 9:00:00"),   getTS("2022-06-01 11:00:00")));
-        reservationTestSet.add(new Reservation(11,  "dogLover", 15, 5,      ResStatusType.CHECKEDOUT,   getTS("2022-06-01 9:00:00"),   getTS("2022-06-01 11:00:00")));
-        reservationTestSet.add(new Reservation(12,  "dogLover", 16, null,   ResStatusType.CHECKEDOUT,   getTS("2022-06-01 9:00:00"),   getTS("2022-06-01 11:00:00")));
-        reservationTestSet.add(new Reservation(13,  "dogLover", 17, 2,      ResStatusType.CHECKEDOUT,   getTS("2022-06-01 9:00:00"),   getTS("2022-06-01 11:00:00")));
-        reservationTestSet.add(new Reservation(14,  "dogLover", 18, 2,      ResStatusType.CHECKEDOUT,   getTS("2022-06-01 9:00:00"),   getTS("2022-06-01 11:00:00")));
-        reservationTestSet.add(new Reservation(15,  "dogLover", 19, 3,      ResStatusType.CHECKEDOUT,   getTS("2022-06-01 9:00:00"),   getTS("2022-06-01 11:00:00")));
-        reservationTestSet.add(new Reservation(16,  "dogLover", 20, null,   ResStatusType.CHECKEDOUT,   getTS("2022-06-01 9:00:00"),   getTS("2022-06-01 11:00:00")));
+        reservationTestSet.add(new Reservation(11,   "dogLover", 12, 2,      ResStatusType.CHECKEDOUT,   getTS("2022-06-01 9:00:00"),   getTS("2022-06-01 11:00:00")));
+        reservationTestSet.add(new Reservation(12,   "dogLover", 13, 3,      ResStatusType.CHECKEDOUT,   getTS("2022-06-01 9:00:00"),   getTS("2022-06-01 11:00:00")));
+        reservationTestSet.add(new Reservation(13,  "dogLover", 14, 4,      ResStatusType.CHECKEDOUT,   getTS("2022-06-01 9:00:00"),   getTS("2022-06-01 11:00:00")));
+        reservationTestSet.add(new Reservation(14,  "dogLover", 15, 5,      ResStatusType.CHECKEDOUT,   getTS("2022-06-01 9:00:00"),   getTS("2022-06-01 11:00:00")));
+        reservationTestSet.add(new Reservation(15,  "dogLover", 16, null,   ResStatusType.CHECKEDOUT,   getTS("2022-06-01 9:00:00"),   getTS("2022-06-01 11:00:00")));
+        reservationTestSet.add(new Reservation(16,  "dogLover", 17, 2,      ResStatusType.CHECKEDOUT,   getTS("2022-06-01 9:00:00"),   getTS("2022-06-01 11:00:00")));
+        reservationTestSet.add(new Reservation(17,  "dogLover", 18, 2,      ResStatusType.CHECKEDOUT,   getTS("2022-06-01 9:00:00"),   getTS("2022-06-01 11:00:00")));
+        reservationTestSet.add(new Reservation(18,  "dogLover", 19, 3,      ResStatusType.CHECKEDOUT,   getTS("2022-06-01 9:00:00"),   getTS("2022-06-01 11:00:00")));
+        reservationTestSet.add(new Reservation(19,  "dogLover", 20, null,   ResStatusType.CHECKEDOUT,   getTS("2022-06-01 9:00:00"),   getTS("2022-06-01 11:00:00")));
     }
     
     private static void setupServicesTestSet() {
