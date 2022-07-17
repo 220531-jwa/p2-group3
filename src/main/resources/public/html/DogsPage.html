@@ -7,7 +7,7 @@
     
      <!-- CSS only -->
      <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
-    <link href="../CSS/ReservationsPage.css" rel="stylesheet">
+    <link href="../CSS/dogPage.css" rel="stylesheet">
     <link href="../CSS/NavBars/SideBarNav.css" rel="stylesheet">
     <link href="../CSS/NavBars/TopNavBar.css" rel="stylesheet">
     <title>Reservations</title>
@@ -18,10 +18,10 @@
         <div id="dogtopLvlButtsCont" class="container">
             <div class="row">
                 <div class="col-6 col-sm-6">
-                    <button id="viewDogsDiv_butt" type="button" class="btn btn-primary" onclick="topLvlButtonsHandler(event.target)">View All Your Dogs</button>
+                    <button id="viewDogsDiv_butt" type="button" class="btn btn-primary" onclick="topLvlButtonsHandlerDogs(event.target)">View All Your Dogs</button>
                 </div>
                 <div class="col-6 col-sm-6">
-                    <button id="createNewDogDiv_butt" type="button" class="btn btn-primary" onclick="topLvlButtonsHandler(event.target)">Book New Dog</button>
+                    <button id="createNewDogDiv_butt" type="button" class="btn btn-primary" onclick="topLvlButtonsHandlerDogs(event.target)">Book New Dog</button>
                 </div>
             </div>
 
@@ -29,13 +29,13 @@
         <div id="dogtestLvlButtsCont" class="container" >
             <div class="row">
                 <div class="col-4 col-sm-4">
-                    <button id="allDogsTableRow_butt" type="button" class="btn btn-primary" onclick="testLvlButtonsHandler(event.target)">test get all Dogs</button>
+                    <button id="allDogsTableRow_butt" type="button" class="btn btn-primary" onclick="testLvlButtonsHandlerDogs(event.target)">test get all Dogs</button>
                 </div>
                 <div class="col-4 col-sm-4">
-                    <button id="allDogsByUserNameTableRow_butt" type="button" class="btn btn-primary" onclick="testLvlButtonsHandler(event.target)">test get Dog by username</button>
+                    <button id="allDogsByUserNameTableRow_butt" type="button" class="btn btn-primary" onclick="testLvlButtonsHandlerDogs(event.target)">test get Dog by username</button>
                 </div>
                 <div class="col-4 col-sm-4">
-                    <button id="getDogByIdRow_butt" type="button" class="btn btn-primary" onclick="testLvlButtonsHandler(event.target)">test get Dog by id</button>
+                    <button id="getDogByIdRow_butt" type="button" class="btn btn-primary" onclick="testLvlButtonsHandlerDogs(event.target)">test get Dog by id</button>
                 </div>
             </div>
         </div>
@@ -49,7 +49,7 @@
                     </div>
                 </div>
                 
-                <div id="allDogsTableCol" class="col-12 col-sm-12">
+                <div id="alldogsTableCol" class="col-12 col-sm-12">
                 </div>
             </div>
 

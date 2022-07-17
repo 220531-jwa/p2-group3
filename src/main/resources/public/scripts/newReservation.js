@@ -28,6 +28,8 @@ function setUpNewReservationPage() {
     }
 }
 function populateData(data) {
+
+
     for (d of data) {
         // Status - Adding current status
         let selectElement = document.getElementById("inputDogName");
@@ -35,6 +37,8 @@ function populateData(data) {
         optionElement.value = d.id;
         optionElement.innerHTML = d.dog_name;
         selectElement.append(optionElement);
+
+        console.log(data)
     }
 }
 
