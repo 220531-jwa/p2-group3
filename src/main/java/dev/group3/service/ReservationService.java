@@ -352,6 +352,9 @@ public class ReservationService {
             return new Pair<Reservation, Integer>(null, 503);   // This should never happen (loggedin users can only login if the user exists)
         }
         
+        // Populating necessary data
+        resData.setId(res_id);
+        
         // Checking to make sure the user is authorized to update reservation
         UserType userType = requesterUser.getUserType();
         if(userType == UserType.OWNER) {

@@ -107,6 +107,7 @@ async function updateViewNewUser() {
     let submitBtn = document.getElementById('userProfileSubmitBtn');
     submitBtn.addEventListener('click', submitUserProfile);
 }
+
 /**
  * Hides or Shows the upper and lower bars
  * @param {boolean} upper Whether to hide the upper bar or not
@@ -170,7 +171,7 @@ async function submitUserProfile() {
         inActiveSession(result[1]);
     }
     else {
-        document.getElementById("error").innerHTML = "Invalid User Input";
+        document.getElementById("userProfileError").innerHTML = "Invalid User Input";
     }
 }
 
@@ -209,7 +210,7 @@ async function saveUserProfile() {
         inActiveSession(result[1]);
     }
     else {
-        document.getElementById("error").innerHTML = "Failed to update user. Try again later.";
+        document.getElementById("userProfileError").innerHTML = "Failed to update user. Try again later.";
     }
 }
 
@@ -396,10 +397,10 @@ function validateUpdateInput() {
 
     // Checking if there were any changes
     if (!changed && success) {
-        document.getElementById('error').innerHTML = "Can't save with no changes. Make changes or click back";
+        document.getElementById('userProfileError').innerHTML = "Can't save with no changes. Make changes or click back";
     }
     else {
-        document.getElementById('error').innerHTML = "";
+        document.getElementById('userProfileError').innerHTML = "";
     }
 
     return changed && success;

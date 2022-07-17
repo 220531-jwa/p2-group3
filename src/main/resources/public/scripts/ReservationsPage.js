@@ -111,17 +111,20 @@ async function updateIncomingReservationPage(incomingReservation){
  */
 
  // THIS IS WHERE WE ARE GOING TO "RENDER" OUR HTML AFTER FIGURING OUT USERTYPE LOGGED IN
-
- const ownerEditReservation =  `<div id="error" style="Color: red"></div>
- <form id="form">
+ const ownerEditReservation =
+ `<div class="container bg-light">
+ <h1 id="ERUpperBar" class="mb-4 bg-dark">#</h1>
+ <h1 id="title" class="mb-4">Edit Reservation:</h1>
+ <div id="editReservationError" style="Color: red"></div>
+ <form id="editReservationForm">
      <hr>
      <p><b>User Information</b></p>
      <div class="form-group row mb-4">
-         <div id="reserveeField" class="col-6">
+         <div id="reserveeField" class="col">
              <lable for="reservee">Reservee:</lable>
              <a id="reservee" href="#"></a>
          </div>
-         <div class="col-6">
+         <div class="col">
              <lable for="dog">Dog:</lable>
              <a id="dog" href="#"></a>
          </div>
@@ -129,55 +132,46 @@ async function updateIncomingReservationPage(incomingReservation){
      <hr>
      <p><b>Registration Information</b></p>
      <div class="form-group row mb-4">
-         <div class="col-6 col-sm-6">
-             <label for="updateStatus">Status:</label>
-             <select id="updateStatus">
-                 <option value="REGISTERED">REGISTERED</option>
-                 <option value="CHECKEDIN">CHECKEDIN</option>
-                 <option value="CHECKEDOUT">CHECKEDOUT</option>
-                 <option value="CANCELLED">CANCELLED</option>
-             </select>
+         <div class="col">
+             <label style="display: block" for="updateStatus">Status:</label>
+             <select id="updateStatus"></select>
          </div>
-         <div class="col-6 col-sm-6">
+         <div class="col">
              <label style="display: block" for="service">Service:</label>
              <select id="service" disabled></select>
          </div>
      </div>
      <div class="form-group row mb-4 readOnly">
-         <div class="col-6 col-sm-6">
-             <span>
-                 <label style="display: block" for="startDate">Start Date</label>
-                 <input id="startDate" type="date" disabled>
-             </span>
+         <div class="col">
+             <label style="display: block" for="startDate">Start Date</label>
+             <input id="startDate" type="date" disabled>
          </div>
-         <div class="col-6 col-sm-6">
+         <div class="col">
              <label style="display: block" for="startTime">Start Time</label>
              <input id="startTime" type="time" disabled>
          </div>
      </div>
      <div class="form-group row mb-4 readOnly">
-         <div class="col-6 col-sm-6">
+         <div class="col">
              <label style="display: block" for="endDate">End Date</label>
              <input id="endDate" type="date" disabled>
          </div>
-         <div class="col-6 col-sm-6">
-             <label for="endTime">End Time</label>
+         <div class="col">
+             <label style="display: block" for="endTime">End Time</label>
              <input id="endTime" type="time" disabled>
          </div>
      </div>
  </form>
  <div class="row">
-     <div class="col-3 col-sm-3">
-         <button class="btn btn-primary mb-4" type="button" onclick="openEditReservation()">Back</button>
+     <div class="col">
+         <button id="editReservationBackBtn" class="btn btn-primary mb-4" type="button">Back</button>
      </div>
-     <div class="col-3 col-sm-3 text-end">
-         <button id="editBtn" class="btn btn-primary mb-4" type="button" onclick="allowEditHandler()">Edit</button>
+     <div class="col text-end">
+         <button id="editReservationSaveBtn" class="btn btn-primary mb-4" type="button" onclick="save()">Save</button>
      </div>
-     <div class="col-3 col-sm-3 text-end">
-         <button id="saveBtn" class="btn btn-primary mb-4" type="button" onclick="save()">Save</button>
-     </div>
- </div>`
-
+ </div>
+ <h1 id="ERLowerBar" class="mb-4 bg-dark">#</h1>
+</div>`;
 
  const createReservationOwner = `<div class="container bg-light">
  <h1 class="mb-4 bg-dark">#</h1>
@@ -958,7 +952,7 @@ async function createTableData(divToAppendTo, singleOrMultiple){
                     reserv_id = reserv_id.replace("_edit","")
                     openEditReservation()
                     console.log("here is res id " + reserv_id)
-                    updateViewExistingReservationReTry(reserv_id)
+                    initalizeEditReservationPage(null, reserv_id)
                 }
                 
                 // buttnTD.className="btn btn-primary editButt"
