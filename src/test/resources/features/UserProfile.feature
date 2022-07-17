@@ -1,25 +1,31 @@
-@userProfile
 Feature: User Profile
 
+  ## Navigate to Create New User
+  Scenario: A user can navigate to create a new account
+    Given a user is on the login page
+    When the user clicks on the new account link
+    Then the user will be on the new user profile page
+
+  ## User can create an account
+  Scenario: A user can create a new account
+    Given a use is on the new account page
+    When the user enters valid account information
+    And clicks on the submit button
+    Then the user will have a new account
+    And be on the home page
+
   ## View User Profile page
-  Scenario: User navigates to User Profile page
-    Given A user is logged in
-    And User is on home page
-    When User clicks on User Profile
+  Scenario: A user can view their user information
+    Given A user is logged in with "<username>" "<password>" and on the homepage
+    When User clicks on the <edit user profile> button
     Then User Profile page appears
-    And <Edit User Information> button is displayed
-    And <View User Information> is displayed
-    And <Navigation Bar> is displayed
 
   ## Edit User information
   Scenario Outline: A user can edit their user information
-    Given A user is logged in with "<username>" "<password>" and on the homepage
-    And The user is on the edit-userProfile section
-    When User clicks on the <edit userpage> button
-    And User edits data
-    And User clicks Save button
-    Then User is sent back to User Profile Page
-    And Message box appears that changes were successful
+    Given A user is logged in with "<username>" "<password>" and on the end user profile page
+    When User enters new valid user information
+    And User clicks the save button
+    Then The user profile information is changed
 
     Examples: 
       | username | password |

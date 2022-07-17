@@ -9,10 +9,15 @@ public class IndexPage {
     
     private WebDriver driver;
     
-    // === Nav Buttons ===
+    // === Top Nav Buttons ===
     
     @FindBy(xpath = "")
     public WebElement logoutBtn;
+    
+    // === Side Nav Buttons ===
+    
+    @FindBy(xpath = "")
+    public WebElement editUserProfileBtn;
     
     // === Constructor ===
     

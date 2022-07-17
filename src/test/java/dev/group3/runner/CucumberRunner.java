@@ -11,7 +11,7 @@ import io.cucumber.java.AfterAll;
 import io.cucumber.java.BeforeAll;
 
 @Suite
-public class UserProfileRunner {
+public class CucumberRunner {
     
     public static WebDriver driver;
     public static LoginPage loginPage;
