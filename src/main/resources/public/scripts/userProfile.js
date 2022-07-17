@@ -19,7 +19,7 @@ function initalizeUserProfilePage(userEmail) {
         // New user
         updateViewNewUser();
     }
- }
+}
 
 /*
  * === View Updates ===
