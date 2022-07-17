@@ -2,9 +2,9 @@
  * === INITIAL DATA ===
  */
 
-const baseDogURL = 'http://localhost:8080/dogs';
+const baseDogURL = "http://localhost:8080/dogs";
 const baseDogHeaders = {
-    'Content-Type': 'application/json'
+    "Content-Type": "application/json",
 };
 
 /*
@@ -27,8 +27,8 @@ async function fetchGetDogById(username, id, token) {
 
     // Sending response
     let response = await fetch(url, {
-        method: 'GET',
-        headers: addTokenHeader(baseDogHeaders, token)
+        method: "GET",
+        headers: addTokenHeader(baseDogHeaders, token),
     });
 
     // Getting data if status is ok
@@ -40,26 +40,22 @@ async function fetchGetDogById(username, id, token) {
     return [response.status, data];
 }
 
-async function getAllDogsByUsername(username,token){
-	
-	let response = await fetch(`${baseDogURL}/${username}`,{
-		method:'GET',
-		header:{
-			'Content-Type': 'application/json',
-            'Token':token
-		}
-	});
-	
-	if(response.status === 200) {
-		let data = await response.json();
-		let request = data;
-		
-		return request;
-	}
-	else {
-		console.log("There was no data");
+async function getAllDogsByUsername(username, token) {
+    let response = await fetch(`${baseDogURL}/${username}`, {
+        method: "GET",
+        header: {
+            "Content-Type": "application/json",
+            Token: token,
+        },
+    });
+
+    if (response.status === 200) {
+        let data = await response.json();
+        let request = data;
+
+        return request;
+    } else {
+        console.log("There was no data");
         return null;
-	}
-	
-	
+    }
 }
