@@ -424,10 +424,10 @@
  
  
      // PULL IN ALL dogS
-     let allSessionCustomerResVations = await getAllDogsByUsername(username, seshToken);
+     let allAllDogsByUsername = await getAllDogsByUsername(username, seshToken);
  
      // SETTING MAIN VARIABLE TO THE ARRAY OF dogS
-     alldogs = allSessionCustomerResVations
+     alldogs = allAllDogsByUsername
  
      // Passing to create table function to create the table append to appropriate place.
      createTableData(alldogsByUserNameTableCol,"multiple");
