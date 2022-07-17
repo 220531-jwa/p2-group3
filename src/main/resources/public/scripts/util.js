@@ -24,11 +24,11 @@
 /**
  * Is called when a user logins in or creates a new user
  * Stores the user session data and moves to home page
- * @param {Object} userData The user data to save
+ * @param {Object} userSessionData The user data to save
  */
-function inActiveSession(userData) {
+function inActiveSession(userSessionData) {
     // Saving user session
-    sessionStorage.userData = JSON.stringify(userData);
+    sessionStorage.userData = JSON.stringify(userSessionData);
 
     // Moving to home page
     location.href = "../html/index.html";

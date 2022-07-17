@@ -162,17 +162,16 @@ public class ReservationController {
      * Handles an update request for updating a reservation by id
      * Takes the id from the path
      * Takes the token from the header
+     * Takes reservations update from body
      * @return 200 with updated reservation if successful, and 400 series error otherwise.
      */
     public void updateReservationById(Context ctx) {
-        log.debug("Recieved HTTP PATCH request at endpoint /reservations//{username}/{res_id}");
+        log.debug("Recieved HTTP PATCH request at endpoint /reservations/{username}/{res_id}");
 
         // Getting user input
         String token = ctx.header("Token");
         Validator<Integer> vid = ctx.pathParamAsClass("res_id", Integer.class);
         Integer id = vid.getOrDefault(null);
-        
-//        Integer res_id = Integer.parseInt(ctx.pathParam("res_id"));
         Reservation resData = ctx.bodyAsClass(Reservation.class);
 
         // Attempting to update reservaiton

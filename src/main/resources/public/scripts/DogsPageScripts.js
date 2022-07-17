@@ -1,16 +1,8 @@
-
-
-
-
-
 /**
  * VARIABLES
  */
 
 
-
- 
- 
  
  var alldogs = [];
  var allSessionCustomerResVations = [];
@@ -344,7 +336,3 @@
      // }
  
  }
- 
- 
- 
- 

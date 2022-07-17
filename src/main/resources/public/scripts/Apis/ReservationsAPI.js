@@ -1,55 +1,42 @@
-
 const baseURLReservations = "http://localhost:8080/reservations";
 
-
-var allReservations = []
+var allReservations = [];
 var reservation = {
-    id:null,
-    userEmail:null,
-    dogId:null,
-    status:null,
-    startDateTime:null,
-    endDateTime:null
-}
+    id: null,
+    userEmail: null,
+    dogId: null,
+    status: null,
+    startDateTime: null,
+    endDateTime: null,
+};
 
 // This loops through incoming object and fills in the object literal above.
-async function updateIncomingReservation(incomingReservation){
-
+async function updateIncomingReservation(incomingReservation) {
     Object.keys(incomingReservation).forEach((key, index) => {
         reservation[key] = incomingReservation[key];
     });
-
 }
 
-async function getAllReservations(token){
+async function getAllReservations(token) {
     // token = JSON.stringify(token);
     let newtoken = getSessionUserData().pswd;
-    console.log(newtoken)
-    let response = await fetch(`${baseURLReservations}`,{
-        method:'GET',
-        headers:{
-            'Content-Type': 'application/json',
-            'Token':newtoken
-        }
-
-        
+    console.log(newtoken);
+    let response = await fetch(`${baseURLReservations}`, {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+            Token: newtoken,
+        },
     });
 
-
-
     if (response.status === 200) {
-       
         let data = await response.json();
-        return data
+        return data;
         // let request = data;
         // console.log(request)
 
         // return request;
-
-
-        
     } else {
-
         console.log("There was no data");
         return null;
         /*
@@ -58,30 +45,22 @@ async function getAllReservations(token){
     }
 }
 
-async function getAllRservationsByUsername(username,token){
-
-
-    let response = await fetch(`${baseURLReservations}/${username}`,{
-        method:'GET',
-        header:{
-            'Content-Type': 'application/json',
-            'Token':token
+async function getAllRservationsByUsername(username, token) {
+    let response = await fetch(`${baseURLReservations}/${username}`, {
+        method: "GET",
+        header: {
+            "Content-Type": "application/json",
+            Token: token,
         },
         // header:{'cors':'no-cors'},
-        
     });
 
     if (response.status === 200) {
-    
         let data = await await response.json();
         let request = data;
 
         return request;
-
-
-        
     } else {
-
         console.log("There was no data");
         return null;
         /*
@@ -104,11 +83,11 @@ async function fetchGetReservationById(username, res_id, token) {
 
     // Sending response
     let response = await fetch(url, {
-        method: 'GET',
+        method: "GET",
         headers: {
-            'Content-Type': 'application/json',
-            'Token': token
-        }
+            "Content-Type": "application/json",
+            Token: token,
+        },
     });
 
     // Getting data if status is ok
@@ -128,17 +107,17 @@ async function fetchGetReservationById(username, res_id, token) {
  * @param {string} token The token of the current active session
  * @returns OK status with reservation information, and 400 series status with null otherwise.
  */
- async function fetchGetReservationDTOById(username, res_id, token) {
+async function fetchGetReservationDTOById(username, res_id, token) {
     // Init
     const url = `${baseURLReservations}/${username}/${res_id}/dto`;
 
     // Sending response
     let response = await fetch(url, {
-        method: 'GET',
+        method: "GET",
         headers: {
-            'Content-Type': 'application/json',
-            'Token': token
-        }
+            "Content-Type": "application/json",
+            Token: token,
+        },
     });
 
     // Getting data if status is ok
@@ -158,25 +137,25 @@ async function fetchGetReservationById(username, res_id, token) {
  * @param {string} token The token of the current active session
  * @returns OK status with updated reservation information, and 400 series status with null otherwise.
  */
-async function fetchUpdateReservationById(username,res_id, resData, token) {
-        // Init
-        const url = `${baseURLReservations}/${username}/${res_id}`
-    
-        // Sending response
-        let response = await fetch(url, {
-            method: 'PATCH',
-            headers: {
-                'Content-Type': 'application/json',
-                'Token': token
-            },
-            body: resData
-        });
-    
-        // Getting data if status is ok
-        let data = null;
-        if (response.ok) {
-            // data = await response.json();    // Nothing is returned
-        }
-    
-        return [response.status, data];
+async function fetchUpdateReservationById(username, res_id, resData, token) {
+    // Init
+    const url = `${baseURLReservations}/${username}/${res_id}`;
+
+    // Sending response
+    let response = await fetch(url, {
+        method: "PATCH",
+        headers: {
+            "Content-Type": "application/json",
+            Token: token,
+        },
+        body: resData,
+    });
+
+    // Getting data if status is ok
+    let data = null;
+    if (response.ok) {
+        // data = await response.json();    // Nothing is returned
+    }
+
+    return [response.status, data];
 }

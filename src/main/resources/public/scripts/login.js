@@ -33,6 +33,7 @@ async function initalizeLoginPage() {
     if (result[0] === 200) {
 
         // Login successful - saving session data and moving to home page
+        inActiveSession(result[1]);
         sessionStorage.userData = JSON.stringify(result[1]);
         location.href = "../html/index.html";
     }
