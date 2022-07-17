@@ -34,7 +34,7 @@ async function updateViewExistingUser() {
     const userData = getSessionUserData();
 
     // Updating title
-    document.getElementById('title').innerHTML = "Edit User:"
+    document.getElementById('UPtitle').innerHTML = "Edit User:"
 
     // Checking who is attempting to view user information
     if (userData.email === username) {
@@ -70,7 +70,7 @@ async function updateViewExistingUser() {
     }
 
     // Updating Labels
-    document.getElementById('inputPasswordLabel').innerHTML = "New Password:"
+    document.getElementById('UPinputPasswordLabel').innerHTML = "New Password:"
 
     // Attempting to get user information associated with username
     const result = await fetchGetUserByUsername(username, userData.pswd);
@@ -82,11 +82,11 @@ async function updateViewExistingUser() {
         userDataJson = result[1];
 
         // Populating user information
-        document.getElementById('inputEmail').value = userDataJson.email;
-        document.getElementById('inputFirstName').value = userDataJson.firstName;
-        document.getElementById('inputLastName').value = userDataJson.lastName;
-        document.getElementById('inputPhoneNumber').value = formatPhoneNumber(userDataJson.phoneNumber);
-        document.getElementById('inputFunds').value = userDataJson.funds;
+        document.getElementById('UPinputEmail').value = userDataJson.email;
+        document.getElementById('UPinputFirstName').value = userDataJson.firstName;
+        document.getElementById('UPinputLastName').value = userDataJson.lastName;
+        document.getElementById('UPinputPhoneNumber').value = formatPhoneNumber(userDataJson.phoneNumber);
+        document.getElementById('UPinputFunds').value = userDataJson.funds;
     }
     else if (result[0] === 401) {
         // User not in active session
@@ -153,12 +153,12 @@ async function submitUserProfile() {
 
     // Getting user input
     const newUserData = {
-        email: document.getElementById("inputEmail").value,
-        pswd: document.getElementById("inputPassword").value,
-        firstName: document.getElementById("inputFirstName").value,
-        lastName: document.getElementById("inputLastName").value,
-        phoneNumber: document.getElementById("inputPhoneNumber").value,
-        funds: document.getElementById("inputFunds").value,
+        email: document.getElementById("UPinputEmail").value,
+        pswd: document.getElementById("UPinputPassword").value,
+        firstName: document.getElementById("UPinputFirstName").value,
+        lastName: document.getElementById("UPinputLastName").value,
+        phoneNumber: document.getElementById("UPinputPhoneNumber").value,
+        funds: document.getElementById("UPinputFunds").value,
     }
     const newUserDataJsonString = JSON.stringify(newUserData);
 
@@ -189,10 +189,10 @@ async function saveUserProfile() {
 
     // Getting user updates
     let updatedUserData = {};
-    let pswd = document.getElementById("inputPassword").value;
-    let firstName = document.getElementById("inputFirstName").value;
-    let lastName = document.getElementById("inputLastName").value;
-    let phoneNumber = document.getElementById("inputPhoneNumber").value;
+    let pswd = document.getElementById("UPinputPassword").value;
+    let firstName = document.getElementById("UPinputFirstName").value;
+    let lastName = document.getElementById("UPinputLastName").value;
+    let phoneNumber = document.getElementById("UPinputPhoneNumber").value;
     if (pswd !== "") {updatedUserData.pswd = pswd;}
     if (firstName !== userDataJson.firstName) {updatedUserData.firstName = firstName;}
     if (lastName !== userDataJson.lastName) {updatedUserData.lastName = lastName;}
@@ -245,29 +245,28 @@ function validateInput() {
 
     // Checking if email is valid
     const validEmailRegex = new RegExp("^(?=.{1,64}@)[A-Za-z0-9_-]+(\\.[A-Za-z0-9_-]+)*@[^-][A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$");
-    const emailElement = document.getElementById('inputEmail');
+    const emailElement = document.getElementById('UPinputEmail');
     if (emailElement.value != "" && !validEmailRegex.test(emailElement.value)) {
         success = false;
         document.getElementById(`${emailElement.id}Error`).innerHTML = "Email Invalid";
     }
 
     // Checking if password is valid
-    const validPasswordRegex = new RegExp("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^!&-+=()])(?=\\S+$).{8,}$");
-    const passwordElement = document.getElementById('inputPassword');
+    const passwordElement = document.getElementById('UPinputPassword');
     if (passwordElement.value != "" && !isValidPassword(passwordElement.value)) {
         success = false;
         document.getElementById(`${passwordElement.id}Error`).innerHTML = "Password must contain 8 characters with at least 1 lowercase letter, 1 upper case letter, 1 number, and 1 symbol";
     }
 
     // Checking if phone number is valid
-    const phoneNumberElement = document.getElementById('inputPhoneNumber');
+    const phoneNumberElement = document.getElementById('UPinputPhoneNumber');
     if (phoneNumberElement.value != "" && !isValidPhoneNumber(phoneNumberElement.value)) {
         success = false;
         document.getElementById(`${phoneNumberElement.id}Error`).innerHTML = "Invalid phone number - Need 10 digits";
     }
 
     // Checking if funds are valid
-    const fundsElement = document.getElementById('inputFunds');
+    const fundsElement = document.getElementById('UPinputFunds');
     if (fundsElement.value != "" && fundsElement.value !== "" && fundsElement.value < fundsElement.min || fundsElement.value > fundsElement.max) {
         success = false;
         document.getElementById(`${fundsElement.id}Error`).innerHTML = `Invalid Amount. Must be between $${fundsElement.min} and $${fundsElement.max}`;
@@ -287,10 +286,10 @@ function validateUpdateInput() {
     let changes = [false, false, false, false];
 
     // Getting updated inputs to validate
-    let pswd = document.getElementById("inputPassword").value;
-    let firstName = document.getElementById("inputFirstName").value;
-    let lastName = document.getElementById("inputLastName").value;
-    let phoneNumber = document.getElementById("inputPhoneNumber").value;
+    let pswd = document.getElementById("UPinputPassword").value;
+    let firstName = document.getElementById("UPinputFirstName").value;
+    let lastName = document.getElementById("UPinputLastName").value;
+    let phoneNumber = document.getElementById("UPinputPhoneNumber").value;
 
     // Checking if password was updated
     if (pswd !== "") {
@@ -299,20 +298,20 @@ function validateUpdateInput() {
             // Password is valid
             successes[0] = true;
             changes[0] = true;
-            document.getElementById(`inputPasswordError`).innerHTML = "";
+            document.getElementById(`UPinputPasswordError`).innerHTML = "";
         }
         else {
             // Password is invalid
             successes[0] = false;
             changes[0] = false;
-            document.getElementById(`inputPasswordError`).innerHTML = "Password must contain 8 characters with at least 1 lowercase letter, 1 upper case letter, 1 number, and 1 symbol";
+            document.getElementById(`UPinputPasswordError`).innerHTML = "Password must contain 8 characters with at least 1 lowercase letter, 1 upper case letter, 1 number, and 1 symbol";
         }
     }
     else {
         // No Changes
         successes[0] = true;
         changes[0] = false;
-        document.getElementById(`inputPasswordError`).innerHTML = "";}
+        document.getElementById(`UPinputPasswordError`).innerHTML = "";}
 
     // Checking if firstname was updated
     if (firstName !== userDataJson.firstName) {
@@ -321,20 +320,20 @@ function validateUpdateInput() {
             // Valid firstname (not empty)
             successes[1] = true;
             changes[1] = true;
-            document.getElementById(`inputFirstNameError`).innerHTML = "";
+            document.getElementById(`UPinputFirstNameError`).innerHTML = "";
         }
         else {
             // Invalid firstname (is empty)
             successes[1] = false;
             changes[1] = false;
-            document.getElementById(`inputFirstNameError`).innerHTML = "This field is required";
+            document.getElementById(`UPinputFirstNameError`).innerHTML = "This field is required";
         }
     }
     else {
         // No changes
         successes[1] = true;
         changes[1] = false;
-        document.getElementById(`inputFirstNameError`).innerHTML = "";
+        document.getElementById(`UPinputFirstNameError`).innerHTML = "";
     }
 
     // Checking if lastname was updated
@@ -344,20 +343,20 @@ function validateUpdateInput() {
             // Valid lastname (not empty)
             successes[2] = true;
             changes[2] = true;
-            document.getElementById(`inputLastNameError`).innerHTML = "";
+            document.getElementById(`UPinputLastNameError`).innerHTML = "";
         }
         else {
             // Invalid lastname (is empty)
             successes[2] = false;
             changes[2] = false;
-            document.getElementById(`inputLastNameError`).innerHTML = "This field is required";
+            document.getElementById(`UPinputLastNameError`).innerHTML = "This field is required";
         }
     }
     else {
         // No changes
         successes[2] = true;
         changes[2] = false;
-        document.getElementById(`inputLastNameError`).innerHTML = "";
+        document.getElementById(`UPinputLastNameError`).innerHTML = "";
     }
 
     // Checking if phoneNumber was updated
@@ -367,20 +366,20 @@ function validateUpdateInput() {
             // Valid phoneNumber (not empty)
             successes[3] = true;
             changes[3] = true;
-            document.getElementById(`inputPhoneNumberError`).innerHTML = "";
+            document.getElementById(`UPinputPhoneNumberError`).innerHTML = "";
         }
         else {
             // Invalid phoneNumber (is empty)
             successes[3] = false;
             changes[3] = false;
-            document.getElementById(`inputPhoneNumberError`).innerHTML = "Invalid phone number - Need 10 digits";
+            document.getElementById(`UPinputPhoneNumberError`).innerHTML = "Invalid phone number - Need 10 digits";
         }
     }
     else {
         // No changes
         successes[3] = true;
         changes[3] = false;
-        document.getElementById(`inputPhoneNumberError`).innerHTML = "";
+        document.getElementById(`UPinputPhoneNumberError`).innerHTML = "";
     }
 
     // Checking if there were any changes
@@ -444,7 +443,7 @@ function formatPhoneNumber(phoneNumber) {
  * Updates the user profile page for when a user wasn't found or was invalid.
  */
  function notFound404() {
-    document.getElementById('title').innerHTML = "404 : Request Not Found";
+    document.getElementById('UPtitle').innerHTML = "404 : Request Not Found";
     document.getElementById('userProfileForm').innerHTML = '';
-    document.getElementById('btnSubmit').hidden = true;
+    document.getElementById('userProfileSubmitBtn').hidden = true;
 }
