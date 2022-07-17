@@ -24,6 +24,7 @@ function initalizeEditReservationPage(userEmail, resId) {
     }
 }
 
+
 /*
  * === HTML VIEW UPDATES ===
  */
@@ -181,6 +182,8 @@ function setEditReservationBackButtonVisibility(visible) {
  * - If it was and wasn't finished already then will save and move back to index page
  * - Otherwise will give an error saying no changes were made
  */
+
+
 async function save() {
     // Checking if any changes were made
     if (resDataJson.status === document.getElementById('updateStatus').value) {
@@ -193,19 +196,29 @@ async function save() {
         document.getElementById('editReservationError').innerHTML = '';
     }
 
+    console.log(id.valueOf());
     // Getting user (status) updates
     const updatedReservationData = {
+        id:JSON.parse(id),
         status: document.getElementById('updateStatus').value
     };
     const updatedReservationDataJsonString = JSON.stringify(updatedReservationData);
 
     // Sending response
     const userData = getSessionUserData();
-    const result = await fetchUpdateReservationById('None', id, updatedReservationDataJsonString, userData.pswd);
+
+    console.log(editReservation)
+
+    console.log(updatedReservationDataJsonString)
+    // const result = await fetchUpdateReservationById('None', id, updatedReservationDataJsonString, userData.pswd);
+    const result = await fetchUpdateReservationById(userData.email, id, updatedReservationDataJsonString, userData.pswd);
 
     // Processing response
     if (result[0] === 200) {
         // Reservation successfully updated
+        document.getElementById('editReservationPositive').classList.toggle("off");
+        document.getElementById('editReservationPositive').innerHTML = "Your reservation has been successfully updated.";
+
     }
     else {
         document.getElementById('editReservationError').innerHTML = "Failed to update reservation. Try again later.";

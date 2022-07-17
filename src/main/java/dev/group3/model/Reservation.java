@@ -15,8 +15,18 @@ public class Reservation {
     private Timestamp endDateTime;
     
     public Reservation() {}
+    
+    
 
-    public Reservation(Integer id, String userEmail, Integer dogId, Integer serviceId, ResStatusType status,
+    public Reservation(Integer id, ResStatusType status) {
+		super();
+		this.id = id;
+		this.status = status;
+	}
+
+
+
+	public Reservation(Integer id, String userEmail, Integer dogId, Integer serviceId, ResStatusType status,
             Timestamp startDateTime, Timestamp endDateTime) {
         super();
         this.id = id;

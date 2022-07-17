@@ -8,17 +8,16 @@
 }
 
 
-#topLvlButtsCont{
+#dogtopLvlButtsCont{
     background-color: aqua;
     margin-top:5vh;
-    margin-bottom:5vh;
     /* margin-left:25vh; */
     /* margin-right:25vh; */
 }
 
-#testLvlButtsCont{
+#dogtestLvlButtsCont{
     background-color: green;
-    /* margin-top:5vh; */
+    margin-top:5vh;
     margin-bottom: 5vh;
     /* margin-left:25vh; */
     /* margin-right:25vh; */
@@ -31,7 +30,7 @@
     margin-bottom:4vh;
 }
 
-#getReservationByIdRow{
+#getdogByIdRow{
     margin-top:3vh;
 }
 
@@ -46,12 +45,6 @@
 
 
 
-.editResCol{
+#editdogCol{
     width:50%;
-}
-
-#editReservationPositive{
-    width:50%;
-    padding:10px;
-    border-radius: 20px;
 }
