@@ -136,6 +136,7 @@ public class ReservationService {
      * @return 200 with reservations if successful, and 400 null series error otherwise
      */
     public Pair<List<Reservation>, Integer> getAllReservationsByUsername(String username, String token) {
+    	
         log.debug("Attemtping to get all reservations associated with username: " + username + " token: " + token);
 
         // Validating input
@@ -162,10 +163,10 @@ public class ReservationService {
         
         // Checking to make sure the user is authorized to view all reservations
         UserType userType = requesterUser.getUserType();
-        if (userType == UserType.OWNER) {
+        List<Reservation> respPair = resDAO.getAllRservationsByUsername(username);
+        if (userType == UserType.OWNER || requesterUser.getEmail() == respPair.get(0).getUserEmail() ) {
 
             // Attempting to get all reservations associated with username
-            List<Reservation> respPair = resDAO.getAllRservationsByUsername(username);
             
             // Checking if reservations were found
             if (respPair != null) {
@@ -223,33 +224,65 @@ public class ReservationService {
         }
         
        
-    	// Checking to make sure the user is authorized to update reservation
-        UserType userType = requesterUser.getUserType();
+    	
         
         
-        if(userType == UserType.OWNER) {
+        Reservation res = resDAO.getReservationById(rid);
+       
+        if(res != null) {
         	
+        	// Checking to make sure the user is authorized to update reservation
+            UserType userType = requesterUser.getUserType();
+            String requesterUserName =requesterUser.getEmail();
+            String userName = res.getUserEmail();
+            
+           
         	
-        	 // Attempting to get reservations by id
-        	Reservation res = resDAO.getReservationById(rid);
-        	
-        	// Checking if reservation was updated successfully
-        	if(res != null) {
-        	    // Successfully updated reservation
+        	if(userType == UserType.OWNER || requesterUserName == userName) {
+        		 System.out.println("Here is username "+userName);
+                 System.out.println("Here is userType "+userType);
+                 
+                 System.out.println(res);
+        		// Successfully updated reservation
         		return new Pair<Reservation, Integer>(res, 200);
+        	}else {
+        		log.error("User is not authorized to view reservation");
+        		return new Pair<Reservation, Integer>(null, 503);
         	}
-        	else {
-        	    log.error("Failed to update reservation. Possible: Reservation does not exist");
-        		return new Pair<Reservation, Integer>(null, 404);
-        	}
+        	
+        }else {
+        	
+        	log.error("This Reservation does not exist");
+        	return new Pair<Reservation, Integer>(null, 404);
         }
+        	
+       
+       
+      
+        
+        
+//        if(userType == UserType.OWNER) {
+//        	
+//        	
+//        	 // Attempting to get reservations by id
+//        	
+//        	// Checking if reservation was updated successfully
+//        	if(res != null) {
+//        	    // Successfully updated reservation
+//        		return new Pair<Reservation, Integer>(res, 200);
+//        	}
+//        	else {
+//        	    log.error("Failed to update reservation. Possible: Reservation does not exist");
+//        		return new Pair<Reservation, Integer>(null, 404);
+//        	}
+//        }
         	 // Attempting to get reservations by id
 //        	Reservation res = resDAO.getReservationById(rid);
         	
-        else {
-            log.error("User is not authorized to update reservation");
-        	return new Pair<Reservation, Integer>(null, 403);
-        }
+//        else {
+//            log.error("User is not authorized to update reservation");
+//        	return new Pair<Reservation, Integer>(null, 403);
+//        }
     
         
     }
@@ -354,24 +387,25 @@ public class ReservationService {
         
         // Checking to make sure the user is authorized to update reservation
         UserType userType = requesterUser.getUserType();
-        if(userType == UserType.OWNER) {
+        Reservation resp = resDAO.updateReservationById(resData);
+        
+        
+        if(resp != null) {
         	
-            // Attempting to update reservation
-        	Reservation resp = resDAO.updateReservationById(resData);
-        	
-        	// Checking if reservation was updated successfully
-        	if(resp != null) {
-        	    // Successfully updated reservation
-        		return new Pair<Reservation, Integer>(resp, 200);
-        	}
-        	else {
-        	    log.error("Failed to update reservation. Possible: Reservation does not exist");
-        		return new Pair<Reservation, Integer>(null, 404);
-        	}
+        	 if(userType == UserType.OWNER || requesterUser.getEmail() == resp.getUserEmail()) {
+             	
+         		// Successfully updated reservation
+         		return new Pair<Reservation, Integer>(resp, 200);
+        	 }else {
+        		 log.error("User is not authorized to update reservation");
+             	return new Pair<Reservation, Integer>(null, 503);
+        	 }
+        }else {
+        	log.error("This Reservation does not exist");
+    		return new Pair<Reservation, Integer>(null, 404);
         }
-        else {
-            log.error("User is not authorized to update reservation");
-        	return new Pair<Reservation, Integer>(null, 403);
-        }
+        
+       
+        
     }
 }

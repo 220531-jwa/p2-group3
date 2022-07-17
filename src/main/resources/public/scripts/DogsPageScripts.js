@@ -8,8 +8,8 @@ window.initalizePage = setupDogs()
  */
 
 
- const userRes = getSessionUserData();
- const seshToken = "";
+//  const userRes = getSessionUserData();
+//  const seshToken = "";
  
  
  

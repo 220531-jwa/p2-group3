@@ -43,6 +43,11 @@ public class MockDataSet {
         reservationTestSet.add(new Reservation(5,   "email3",   8,  null,   ResStatusType.CANCELLED,    getTS("2022-07-01 9:00:00"),   getTS("2022-07-01 11:00:00")));
         reservationTestSet.add(new Reservation(6,   "dogLover", 10, 4,      ResStatusType.CHECKEDOUT,   getTS("2022-07-01 9:00:00"),   getTS("2022-07-01 11:00:00")));
         reservationTestSet.add(new Reservation(7,   "dogLover", 11, 5,      ResStatusType.REGISTERED,   getTS("2022-07-01 9:00:00"),   getTS("2022-07-01 11:00:00")));
+        
+        reservationTestSet.add(new Reservation(1,   "email4",   1,  null,   ResStatusType.REGISTERED,   getTS("2022-07-01 9:00:00"),   getTS("2022-07-01 11:00:00")));
+        reservationTestSet.add(new Reservation(1,   "email5",   1,  null,   ResStatusType.REGISTERED,   getTS("2022-07-01 9:00:00"),   getTS("2022-07-01 11:00:00")));
+        
+        reservationTestSet.add(new Reservation(1,   "owner",   1,  null,   ResStatusType.REGISTERED,   getTS("2022-07-01 9:00:00"),   getTS("2022-07-01 11:00:00")));
         // Past days
         reservationTestSet.add(new Reservation(8,   "dogLover", 12, 2,      ResStatusType.CHECKEDOUT,   getTS("2022-06-01 9:00:00"),   getTS("2022-06-01 11:00:00")));
         reservationTestSet.add(new Reservation(9,   "dogLover", 13, 3,      ResStatusType.CHECKEDOUT,   getTS("2022-06-01 9:00:00"),   getTS("2022-06-01 11:00:00")));
