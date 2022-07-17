@@ -1,3 +1,4 @@
+@userProfile
 Feature: User Profile
 
   ## View User Profile page

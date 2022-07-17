@@ -12,16 +12,17 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import dev.group3.page.IndexPage;
 import dev.group3.page.LoginPage;
 import dev.group3.page.UserProfilePage;
+import dev.group3.runner.UserProfileRunner;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 
 public class UserProfileSteps {
     
-    private WebDriver driver;
-    private LoginPage loginPage;
-    private UserProfilePage userProfilePage;
-    private IndexPage indexPage;
+    private WebDriver driver = UserProfileRunner.driver;
+    private LoginPage loginPage = UserProfileRunner.loginPage;
+    private UserProfilePage userProfilePage = UserProfileRunner.userProfilePage;
+    private IndexPage indexPage = UserProfileRunner.indexPage;
     
     // === Logging in ===
     
@@ -70,7 +71,7 @@ public class UserProfileSteps {
     }
     
     public void waitForClickable(WebElement click) {
-        new WebDriverWait(driver, Duration.ofSeconds(10))
+        new WebDriverWait(driver, Duration.ofSeconds(1))
         .until(ExpectedConditions.elementToBeClickable(click));
     }
 }
