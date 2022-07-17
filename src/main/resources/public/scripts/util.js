@@ -121,3 +121,21 @@ function getTimeFromTimestamp(timestamp) {
 function getDateTimeFromTimestamp(timestamp) {
     return `${getDateFromTimestamp(timestamp)} ${getTimeFromTimestamp(timestamp)}`
 }
+
+/*
+ * === Loading Pages ===
+ */
+
+async function getHTMLPage(url) {
+    // Getting the entire html
+    const HTMLText = await (await fetch(url)).text();
+
+    // keeping body
+    const bodyRegex = new RegExp('<body>[^]*</body>');
+    let HTMLBody = HTMLText.match(bodyRegex)[0];
+
+    // Removing scripts
+    HTMLBody = HTMLBody.replace(/<script[^]*script>/g, '');
+
+    return HTMLBody;
+}
