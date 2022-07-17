@@ -59,10 +59,12 @@ async function initalizeIndexPage() {
         // const frag = document.createRange().createContextualFragment("../html/userProfile.html");
         // idexUpdateUserDiv.innerHTML = userProfileElements;
         setupReservations(user.pswd, user.userType);
+        setupDogs(user.pswd,user.userType);
     }
     else {
         // User is customer
         setupReservations(user.pswd, user.userType);
+        setupDogs(user.pswd,user.userType);
     }
 }
 
@@ -86,8 +88,10 @@ const ownePage = "../html/newReservation.html";
 var docFrag = new DocumentFragment();
 const reservationsHTML = "../html/ReservationsPage.html";
 
+
 function setupIndexPageReservations(elToAppendTo, userType, token) {
     // seshToken = token
+
 
     if (userType == "OWNER") {
         // const frag = document.createRange().createContextualFragment("../html/ReservationsPage.html");
