@@ -1,18 +1,11 @@
-
-
-
-window.addEventListener('load', function () {
+window.addEventListener("load", function () {
     // alert("It's loaded!")
-  })
+});
 
+const mainBody = document.body;
+const mainDiv = document.getElementById("main");
 
-  const mainBody = document.body;
-  const mainDiv = document.getElementById("main")
-  
-  
-
-
-const OwnerTopNav =` <nav class="navbar navbar-expand-lg bg-dark fixed-top">
+const OwnerTopNav = ` <nav class="navbar navbar-expand-lg bg-dark fixed-top">
 <div class="container-fluid">
   <a class="navbar-brand" href="#" style="color:seagreen">Welcome</a>
   <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -35,11 +28,9 @@ const OwnerTopNav =` <nav class="navbar navbar-expand-lg bg-dark fixed-top">
     </form>
     </div>
     </div>
-    </nav>`
+    </nav>`;
 
-
-    
-const CustomerTopNav =` <nav class="navbar navbar-expand-lg bg-dark fixed-top">
+const CustomerTopNav = ` <nav class="navbar navbar-expand-lg bg-dark fixed-top">
 <div class="container-fluid">
   <a class="navbar-brand" href="#" style="color:seagreen">Welcome</a>
   <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -65,15 +56,10 @@ const CustomerTopNav =` <nav class="navbar navbar-expand-lg bg-dark fixed-top">
     </form>
     </div>
     </div>
-    </nav>`
+    </nav>`;
 
-    
-
-{/* <a href="#" onclick="openUserPanel(event.target)">Update Profile</a> */}
-{/* <a href="#" id="reservationPanel_tag" onclick="openUserPanel(event.target)">Reservations</a> */}
-        // <a href="#" id="dogsPanel_tag" onclick="openUserPanel(event.target)">Dogs</a>
 //   <!-- Side navigation -->
-    const customerSideNavdos =`<div class="sidenav">
+const customerSideNavdos = `<div class="sidenav">
       <div class="container">
         <h6>customer</h6>
       </div>
@@ -87,9 +73,9 @@ const CustomerTopNav =` <nav class="navbar navbar-expand-lg bg-dark fixed-top">
         </div
         
       </div>
-    </div>`
+    </div>`;
 
-    const ownerSideNavdos =`<div class="sidenav">
+const ownerSideNavdos = `<div class="sidenav">
     <div class="container">
       <h6>Owner</h6>
     </div>
@@ -103,103 +89,40 @@ const CustomerTopNav =` <nav class="navbar navbar-expand-lg bg-dark fixed-top">
       </div
       
     </div>
-  </div>`
+  </div>`;
 
+function setupTopNav(divToAttachTo, userRole) {
+    let topDiv = document.getElementById(divToAttachTo);
 
+    let navCont = document.createElement("div");
+    navCont.id = "navCont";
 
-function setupTopNav(divToAttachTo,userRole){
+    if (userRole == "CUSTOMER") {
+        let myElements = CustomerTopNav;
+        navCont.innerHTML = myElements;
+    } else {
+        let myElements = OwnerTopNav;
+        navCont.innerHTML = myElements;
+    }
 
-  let topDiv = document.getElementById(divToAttachTo)
-  
-  let navCont = document.createElement("div");
-  navCont.id="navCont";
-
-
-
-  if(userRole == "CUSTOMER"){
-
-    let myElements = CustomerTopNav;
-    navCont.innerHTML = myElements
-
-  }else{
-
-    let myElements = OwnerTopNav;
-    navCont.innerHTML = myElements
-
-  }
-
-  topDiv.append(navCont);
-  
-
+    topDiv.append(navCont);
 }
 
+function setupSideNav(divToAttachTo, userRole) {
+    let topDiv = document.getElementById(divToAttachTo);
 
-function setupSideNav(divToAttachTo,userRole){
-
-    let topDiv = document.getElementById(divToAttachTo)
-    
     let navCont = document.createElement("div");
-    navCont.id="navCont";
-  
-    console.log(userRole)
-  
-  
-    if(userRole == "CUSTOMER"){
-  
-      let myElements = customerSideNavdos;
-      navCont.innerHTML = myElements
-  
-    }else{
-  
-      let myElements = ownerSideNavdos;
-      navCont.innerHTML = myElements
-  
+    navCont.id = "navCont";
+
+    console.log(userRole);
+
+    if (userRole == "CUSTOMER") {
+        let myElements = customerSideNavdos;
+        navCont.innerHTML = myElements;
+    } else {
+        let myElements = ownerSideNavdos;
+        navCont.innerHTML = myElements;
     }
-  
+
     topDiv.append(navCont);
-    
-  
-  }
-
-
-
-
-// const customerSideNav = `<div class="main">
-// <div id="mySidenav" class="sidenav">
-//   <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-//   <a href="./testhtml.html">Home</a>
-//   <a href="./UpdateUserProfilePage.html">Update Information</a>
-//   <a href="./EERequestPage.html">Requests</a>
-//   <!-- <a href="#">Clients</a> -->
-//   <!-- <a href="#">Contact</a> -->
-// </div>
-
-// <!-- Use any element to open the sidenav -->
-// <span class="sideNavButt" onclick="openNav()">Open Side Nav</span>
-
-// </div>`
-
-
-
-
-
-
-
-
-
-
-
-
-// const ownerSideNav = `
-// <div id="mySidenav" class="sidenav">
-//   <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-//   <a href="./testhtml.html">Home</a>
-//   <a href="./UpdateUserProfilePage.html">Update Information</a>
-//   <a href="./EERequestPage.html">Requests</a>
-//   <!-- <a href="#">Clients</a> -->
-//   <!-- <a href="#">Contact</a> -->
-// </div>
-
-// <!-- Use any element to open the sidenav -->
-// <span class="sideNavButt" onclick="openNav()">Open Side Nav</span>
-// `
+}
