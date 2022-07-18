@@ -1,5 +1,6 @@
 package dev.group3.service;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
@@ -48,6 +49,7 @@ public class ReservationService {
      * - dogId - associated with userEmail
      * - startDateTime
      * - endDateTime
+     * - serviceId
      * Authorization:
      * - Only customer can create a reservation for their dog
      * @param resData The data of the reservation
@@ -56,19 +58,76 @@ public class ReservationService {
     public Pair<Reservation, Integer> createReservation(String username, Reservation resData, String token) {
         log.debug("Attempting to create new reservation with username: " + username + " resData: " + resData + " token: " + token);
         
+        //Checking if inputs are null
+    	if (resData == null) {
+    		log.error("Failed to create reservation. Please ensure your information was entered correctly.");
+    		return new Pair<Reservation, Integer>(null, 400);
+    	}
+    	
+        
+    	//1- Reviewing if any required fields are null
+    	if (resData.getDogId() == null ||
+    	    resData.getStartDateTime() == null ||
+    	    resData.getEndDateTime() == null ||
+    	    resData.getServiceId() == null) {
+    		log.error("Reservation data is missing a required field. Try again.");
+    		return new Pair<Reservation, Integer>(null, 400);
+    	}
+    	
+    	
         // Attempting to create a new reservation
         resData.setStatus(ResStatusType.REGISTERED);
     	Reservation createdReservation = resDAO.createReservation(resData);
+    
+    	
+    	//2-Making sure resData inputs are valid
+    	if (!isValidDogId(resData.getDogId()) ||
+    		!isValidServiceId(resData.getServiceId()) ||
+    		!isValidStartDateTime(resData.getStartDateTime()) ||
+    		!isValidEndDateTime(resData.getEndDateTime())) {
+    		log.error("Invalid input(s) entered. Try again.");
+    		return new Pair<Reservation, Integer>(null, 400);
+    	}
+    	
+    	//4- Making sure dog exists
+    	
+    	
+    	//5- Making sure user is in an active session
+    	
+    	
+    	//6- Making sure user is authorized to create reservation
+  
+        
     	
     	// Successfully created new reservation
 		return new Pair<Reservation, Integer>(createdReservation, 200);
     }
     
+	private boolean isValidDogId(Integer dogId) {
+		return !(dogId < 0 || dogId > 2147483647) ;
+	}
+    	//how to validate timestamp??
+	private boolean isValidStartDateTime(Timestamp timestamp) {
+    		String validStartDateTimeRegex = "^([0]\\d|[1][0-2])\\/([0-2]\\d|[3][0-1])\\/([2][01]|[1][6-9])\\d{2}(\\s([0]\\d|[1][0-2])(\\:[0-5]\\d){1,2})*\\s*([aApP][mM]{0,2})?$";
+    		return false;
+    }
+   
+	private boolean isValidEndDateTime(Timestamp timestamp) {
+    	String validEndDateTimeRegex = "^([0]\\d|[1][0-2])\\/([0-2]\\d|[3][0-1])\\/([2][01]|[1][6-9])\\d{2}(\\s([0]\\d|[1][0-2])(\\:[0-5]\\d){1,2})*\\s*([aApP][mM]{0,2})?$";;
+		return false;
+	}
+    
+    private boolean isValidServiceId(Integer serviceId) {
+    	return !(serviceId < 0 || serviceId > 2147483647);
+  	}
+	
     /*
      * === GET / READ ===
      */
     
-    /**
+   
+
+	/**
      * Retrieves all the reservations.
      * Requires a token associated with an active user session to access this service.
      * Authorization:
