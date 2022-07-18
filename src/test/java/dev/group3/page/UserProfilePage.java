@@ -8,6 +8,10 @@ import org.openqa.selenium.support.PageFactory;
 public class UserProfilePage {
 
     private WebDriver driver;
+    
+    // === xpaths ===
+    
+    public final String firstNameXpath = "//*[@id=\"UPinputFirstName\"]";
 
     // === Fields ===
 
@@ -17,7 +21,7 @@ public class UserProfilePage {
     @FindBy(xpath = "//*[@id=\"UPinputPassword\"]")
     public WebElement passwordField;
 
-    @FindBy(xpath = "//*[@id=\"UPinputFirstName\"]")
+    @FindBy(xpath = firstNameXpath)
     public WebElement firstNameField;
 
     @FindBy(xpath = "//*[@id=\"UPinputLastName\"]")

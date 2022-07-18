@@ -4,8 +4,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.time.Duration;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -24,7 +26,7 @@ public class UserProfileSteps {
     private UserProfilePage userProfilePage = CucumberRunner.userProfilePage;
     private IndexPage indexPage = CucumberRunner.indexPage;
     
-    private int explicitWaitSec = 1;
+    private int explicitWaitSec = 5;
     
     // === Logging in ===
     
@@ -108,8 +110,8 @@ public class UserProfileSteps {
     @Then("and will have a new account")
     public void and_will_have_a_new_account() {
         indexPage.editUserProfileBtn.click();
-        waitForClickable(userProfilePage.submitBtn);
-        assertEquals("Wolfy", userProfilePage.firstNameField.getText());
+        waitForUserProfileToFill();
+        assertEquals("Wolfy", userProfilePage.firstNameField.getAttribute("value"));
     }
     
     // === View User Profile ===
@@ -127,7 +129,7 @@ public class UserProfileSteps {
 
     @Then("User Profile page appears")
     public void user_profile_page_appears() {
-        assertEquals("Edit User:", userProfilePage.titleLable);
+        assertEquals("Edit User:", userProfilePage.titleLable.getText());
     }
     
     // === Edit User Profile ===
@@ -141,7 +143,7 @@ public class UserProfileSteps {
 
     @When("User enters new valid user information")
     public void user_enters_new_valid_user_information() {
-        userProfilePage.fillOutForm(null, "newPass123!", "newFirstName", "newLastName", "111-111-1111", null);
+        userProfilePage.fillOutForm(null, null, "newFirstName", "newLastName", "111-111-1111", null);
     }
 
     @When("User clicks the save button")
@@ -151,9 +153,8 @@ public class UserProfileSteps {
 
     @Then("The user profile information is changed")
     public void the_user_profile_information_is_changed() {
-        waitForClickable(indexPage.editUserProfileBtn);
-        indexPage.editUserProfileBtn.click();
-        assertEquals("newFirstName", userProfilePage.firstNameField.getText());
+        waitForUserProfileToFill();
+        assertEquals("newFirstName", userProfilePage.firstNameField.getAttribute("value"));
     }
     
     // === Utility ===
@@ -167,5 +168,13 @@ public class UserProfileSteps {
     public void waitForClickable(WebElement click) {
         new WebDriverWait(driver, Duration.ofSeconds(explicitWaitSec))
         .until(ExpectedConditions.elementToBeClickable(click));
+    }
+    
+    public void waitForUserProfileToFill() {
+        new WebDriverWait(driver, Duration.ofSeconds(explicitWaitSec))
+        .until(new ExpectedCondition<Boolean>() {
+            public Boolean apply(WebDriver d) {
+                return d.findElement(By.xpath(userProfilePage.firstNameXpath)).getAttribute("value").length() != 0;
+            }});
     }
 }
