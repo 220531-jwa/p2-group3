@@ -11,12 +11,12 @@ public class IndexPage {
     
     // === Top Nav Buttons ===
     
-    @FindBy(xpath = "")
+    @FindBy(xpath = "//*[@id=\"navbarSupportedContent\"]/form/button")
     public WebElement logoutBtn;
     
     // === Side Nav Buttons ===
     
-    @FindBy(xpath = "")
+    @FindBy(xpath = "//*[@id=\"userPanel_tag\"]")
     public WebElement editUserProfileBtn;
     
     // === Constructor ===
