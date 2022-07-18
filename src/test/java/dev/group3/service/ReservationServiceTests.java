@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
@@ -77,6 +78,7 @@ public class ReservationServiceTests {
             when(mockResDAO.getAllRservationsByUsername(user.getEmail())).thenReturn(MockDataSet.getFilteredReservationDataSet(user.getEmail()));
         }
         for (Reservation res: mockReses) {
+
             when(mockResDAO.getReservationById(res.getId())).thenReturn(res);
         }
     }
@@ -284,7 +286,7 @@ public class ReservationServiceTests {
         
         // Running test
         Pair<List<Reservation>, Integer> actualRes = resService.getAllReservationsByUsername("email2", token);
-        Object[] expectedResults = {null, 401};
+        Object[] expectedResults = {null, 403};
         Object[] actualResults = {actualRes.getFirst(), actualRes.getSecond()};
         
         // Assertions
@@ -356,7 +358,7 @@ public class ReservationServiceTests {
         
         // Running test
         Pair<Reservation, Integer> actualRes = resService.getReservationById(3, token);
-        Object[] expectedResults = {null, 401};
+        Object[] expectedResults = {null, 403};
         Object[] actualResults = {actualRes.getFirst(), actualRes.getSecond()};
         
         // Assertions
@@ -367,15 +369,26 @@ public class ReservationServiceTests {
     @MethodSource("gubu_validInputs")
     public void grbi_userIsAuthorized_200Reseration(int resIndex, Integer rid, String userUsername) {
         // Init mock data set
-        String token = ActiveUserSessions.addActiveUser(userUsername);
-        
-        // Running test
-        Pair<Reservation, Integer> actualRes = resService.getReservationById(rid, token);
-        Object[] expectedResults = {mockReses, 200};
-        Object[] actualResults = {actualRes.getFirst(), actualRes.getSecond()};
-        
-        // Assertions
-        assertArrayEquals(expectedResults, actualResults); 
+    	
+    
+    		
+    		String token = ActiveUserSessions.addActiveUser(userUsername);
+    		
+    		// Running test
+    		Pair<Reservation, Integer> actualRes = resService.getReservationById(rid, token);
+    		System.out.println(mockReses);
+//        
+//        for(int x=0 ; x<mockReses.size(); x++) {
+//        	
+//        	Reservation resToCheck = mockReses.get(resIndex);
+//        }
+    		
+    		Object[] expectedResults = {mockReses.get(resIndex), 200};
+    		Object[] actualResults = {actualRes.getFirst(), actualRes.getSecond()};
+    		
+    		// Assertions
+    		assertArrayEquals(expectedResults, actualResults); 
+    	
     }
     private static Stream<Arguments> gubu_validInputs() {
         List<Arguments> arguments = new ArrayList<Arguments>();
@@ -396,7 +409,6 @@ public class ReservationServiceTests {
     @MethodSource("urbi_invalidInputs")
     public void urbi_invalidInputs_nullBlank_400null(Integer rid, Reservation resData, String token) {
         // Running test
-
         Pair<Reservation, Integer> actualRes = resService.updateReservationById(rid, resData, token);
 
 //        Pair<Reservation, Integer> actualRes = resService.updateReservationById(username, rid, resData, token);
@@ -410,10 +422,10 @@ public class ReservationServiceTests {
     }
     private static Stream<Arguments> urbi_invalidInputs() {
         List<Arguments> arguments = new ArrayList<Arguments>();
-        arguments.add(Arguments.of(null, new Reservation(), "a"));     // invalid reservation id
-        arguments.add(Arguments.of(1, null, "a"));                     // invalid resData
+        arguments.add(Arguments.of(null, new Reservation(), ""));     // invalid reservation id
+        arguments.add(Arguments.of(1, null, ""));                     // invalid resData
         arguments.add(Arguments.of(1, new Reservation(), null));       // invalid password
-        arguments.add(Arguments.of(-1, new Reservation(), "a"));       // invalid reservation id
+        arguments.add(Arguments.of(-1, new Reservation(), ""));       // invalid reservation id
         arguments.add(Arguments.of(1, new Reservation(), ""));         // invalid password
         return arguments.stream();
     }
@@ -422,7 +434,7 @@ public class ReservationServiceTests {
     public void urbi_invalidInputs_resDataIsNull_400null() {
         // Running test
 
-        Pair<Reservation, Integer> actualRes = resService.updateReservationById(1, new Reservation(), "a");
+        Pair<Reservation, Integer> actualRes = resService.updateReservationById(1, new Reservation(), "");
 
 //        Pair<Reservation, Integer> actualRes = resService.updateReservationById("a", 1, new Reservation(), "a");
 //        Pair<Reservation, Integer> actualRes = resService.updateReservationById( new Reservation(), "a");
@@ -456,11 +468,11 @@ public class ReservationServiceTests {
         String token = ActiveUserSessions.addActiveUser("email1");
         
         // Running test
+        Reservation someReserve = new Reservation(3,   "email2",   5,  3,      ResStatusType.CHECKEDIN,    getTS("2022-07-01 9:00:00"),   getTS("2022-07-01 11:00:00"));
+        someReserve.setStatus(ResStatusType.CHECKEDOUT);
+        when(mockResDAO.updateReservationById(someReserve)).thenReturn(someReserve);
+        Pair<Reservation, Integer> actualRes = resService.updateReservationById(3, someReserve, token);
 
-        Pair<Reservation, Integer> actualRes = resService.updateReservationById(3, new Reservation().setStatus(ResStatusType.CHECKEDIN), token);
-
-//        Pair<Reservation, Integer> actualRes = resService.updateReservationById("email2", 3, new Reservation().setStatus(ResStatusType.CHECKEDIN), token);
-//        Pair<Reservation, Integer> actualRes = resService.updateReservationById(new Reservation().setStatus(ResStatusType.CHECKEDIN), token);
 
         Object[] expectedResults = {null, 403};
         Object[] actualResults = {actualRes.getFirst(), actualRes.getSecond()};
@@ -468,6 +480,12 @@ public class ReservationServiceTests {
         // Assertions
         assertArrayEquals(expectedResults, actualResults); 
     }
+    
+ 
+    private static Timestamp getTS(String timestamp) {
+        return Timestamp.valueOf(timestamp);
+    }
+    
     
     @Test
     public void urbi_userIsActive_userDoesNotExist_503null() {

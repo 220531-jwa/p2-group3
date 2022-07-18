@@ -2,37 +2,28 @@
  * VARIABLES
  */
 
-
  
  var alldogs = [];
- var allSessionCustomerResVations = [];
- var openEL = "alldogsTableRow";
- var openTopEl = "viewdogsDiv"
+ var openELDogs = "alldogsTableRow";
+ var openTopElDogs = "viewdogsDiv"
  var isEditOpen = "false"
- var userDogs = "allDogsByUserNameTableRow"
+//  var userDogs = "allDogsByUserNameTableRow"
+ var userDogs = "allDogsByUserNameTableCol"
 
  
- 
- 
- 
-
- 
-  // THIS IS WHERE WE ARE GOING TO "RENDER" OUR HTML AFTER FIGURING OUT USERTYPE LOGGED IN
- 
- 
-  async function setupDogs(seshToken,userType){
+async function setupDogs(seshToken,userType){
  	let userData = getSessionUserData();
  
-     const indexdogDiv = document.getElementById("updateDogCont");
+    //  const indexdogDiv = document.getElementById("updateDogCont");
 
      if(userType === "CUSTOMER"){
          
-         indexdogDiv.innerHTML = await getHTMLPage('http://localhost:8080/html/DogsPage.html');
+        //  indexdogDiv.innerHTML = await getHTMLPage('http://localhost:8080/html/DogsPage.html');
          setUpAllCustomerdogs(seshToken,userData.email);
  
  
      }else if(userType==="OWNER"){
-         indexdogDiv.innerHTML = ownerdogsPage;
+        //  indexdogDiv.innerHTML = ownerdogsPage;
          setUpAlldogs(userData.email,seshToken);
      }
  
@@ -65,14 +56,14 @@
      
     
      eltochange.classList.toggle("off")
-     openTopEl = elid;
+     openTopElDogs = elid;
  
  }
  
  
- function testLvlButtonsHandler(e){
+ function testLvlButtonsHandlerDogs(e){
  
-     let elid = event.target.id;
+     let elid = e.id;
  
      elid = elid.replace("_butt","");
  
@@ -109,11 +100,11 @@
  
      // PULL IN ALL dogS
     //  let dogs = await getAlldogs(seshToken);
- 
+    let dogs = [];
      alldogs = dogs
  
      // Passing to create table function to create the table append to appropriate place.
-     createTableData(alldogsTableCol,"multiple");
+     createTableDataDogs(alldogsTableCol);
  
  
  }
@@ -121,6 +112,7 @@
  
  async function setUpAllCustomerdogs(seshToken,username){
  
+
      let alldogsByUserNameTableCol = document.getElementById(userDogs);
      console.log(alldogsByUserNameTableCol)
      
@@ -131,7 +123,7 @@
      alldogs = allAllDogsByUsername
  
      // Passing to create table function to create the table append to appropriate place.
-     createTableData(alldogsByUserNameTableCol);
+     createTableDataDogs(alldogsByUserNameTableCol);
  
  
  }
@@ -234,7 +226,7 @@
  
  
  
- async function createTableData(divToAppendTo){
+ async function createTableDataDogs(divToAppendTo){
      
      let tbl = document.createElement("table");
      let tblHead = document.createElement("thead");
