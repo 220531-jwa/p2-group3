@@ -24,13 +24,25 @@ The Doggy Daycare System (DDS) manages the process of customers booking and trac
 ## Features
 
 List of features ready and TODOs for future development
-* Awesome feature 1
-* Awesome feature 2
-* Awesome feature 3
+* A user can login & logout of their account
+* A user can create an account
+* A user can view their account information
+* A user can edit their account information
+* A user can register a dog to their account
+* A user can view their dog information
+* A user can edit their dog information
+* A user can delete their dog information
+* A user can create a reservation to drop their dog off
+* A user can view their reservation
+* A user can cancel their reservation
+* The owner can see any user account information
+* The owner can see any dog information
+* The owner can see any reservation information
+* The owner can checkin and checkout the dog
+
 
 To-do list:
-* Wow improvement to be done 1
-* Wow improvement to be done 2
+* 
 
 ## Getting Started
    
@@ -49,7 +61,7 @@ To-do list:
 
 ## Contributors
 
-> Here list the people who have contributed to this project. (ignore this section, if its a solo project)
+> Joshua Friesner, Gerard Prats, Theresa Sherman, and Robert Randolph
 
 ## License
 
