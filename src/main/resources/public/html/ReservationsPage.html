@@ -32,20 +32,20 @@
             
             <div id="testLvlButtsCont" class="container">
                 <div class="row">
-                    <div class="col-4 col-sm-4">
+                    <div id="allReservationsButtnCol" class="col-6 col-sm-6 off">
                         <button id="allReservationsTableRow_butt" type="button" class="btn btn-primary" onclick="testLvlButtonsHandler(event.target)">test get all reservations</button>
                     </div>
-                    <div class="col-4 col-sm-4">
+                    <div id="allReservationsByuserNameBtncol" class="col-6 col-sm-6 off">
                         <button id="allReservationsByUserNameTableRow_butt" type="button" class="btn btn-primary" onclick="testLvlButtonsHandler(event.target)">test get reservation by username</button>
                     </div>
-                    <div class="col-4 col-sm-4">
+                    <div id="allReservationsByIDCol" class="col-6 col-sm-6">
                         <button id="getReservationByIdRow_butt" type="button" class="btn btn-primary" onclick="testLvlButtonsHandler(event.target)">test get reservation by id</button>
                     </div>
                 </div>
             </div>
 
             <div id="viewReservationsDiv" class="container">
-                <div id="allReservationsTableRow" class="row tableHolder">
+                <div id="allReservationsTableRow" class="row tableHolder off">
                     <div class="row">
                         <div class="col-12 col-sm-12" style="margin-bottom: 3vh">
                             <h4 style="text-align: center; width: 100%">All Reservations</h4>

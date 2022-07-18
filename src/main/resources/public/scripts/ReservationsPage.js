@@ -182,9 +182,28 @@ async function setupReservations(seshToken, userType) {
     if (userType === "CUSTOMER") {
         // indexReservationDiv.innerHTML = customerReservationsPage;
         setUpAllCustomerReservations(seshToken, userType);
+        
+        // let allReservationsButtnCol = document.getElementById("allReservationsByuserNameBtncol")
+       //  let allDogsByIDCol = document.getElementById("allDogsByIDCol")
+    //    allReservationsButtnCol.classList.toggle("'off");
+        document.getElementById("allReservationsByUserNameTableRow").classList.toggle("off")
+        document.getElementById("allReservationsByuserNameBtncol").classList.toggle("off")
+    //    document.getElementById("allReservationsByIDCol").classList.toggle("off")
+
+       openELDogs = "allReservationsByUserNameTableRow";
+
+
     } else if (userType === "OWNER") {
         // indexReservationDiv.innerHTML = ownerReservationsPage;
         setUpAllReservations(seshToken, userType);
+
+        document.getElementById("allReservationsTableRow").classList.toggle("off")
+        document.getElementById("allReservationsButtnCol").classList.toggle("off")
+
+        // document.getElementById("allReservationsButtnCol").classList.toggle("off");
+       //  document.getElementById("allDogsByUserNameTableRow").classList.toggle("off")
+
+       var openELDogs = "allReservationsTableRow";
     }
 }
 
@@ -230,18 +249,23 @@ function testLvlButtonsHandler(e) {
     let allReservationsByUserNameTableRow = document.getElementById("allReservationsByUserNameTableRow");
     let allReservationsByUserNameTableCol = document.getElementById("getReservationByIdRow");
 
-    if (openEL == "allReservationsTableRow") {
-        allReservationsTableCol.classList.toggle("off");
-    } else if (openEL == "allReservationsByUserNameTableRow") {
-        allReservationsByUserNameTableRow.classList.toggle("off");
-    } else if (openEL == "getReservationByIdRow") {
-        allReservationsByUserNameTableCol.classList.toggle("off");
+    if(openEL === elid){
+
+    }else{
+
+        if (openEL == "allReservationsTableRow") {
+            allReservationsTableCol.classList.toggle("off");
+        } else if (openEL == "allReservationsByUserNameTableRow") {
+            allReservationsByUserNameTableRow.classList.toggle("off");
+        } else if (openEL == "getReservationByIdRow") {
+            allReservationsByUserNameTableCol.classList.toggle("off");
+        }
+    
+        let eltochange = document.getElementById(elid);
+    
+        eltochange.classList.toggle("off");
+        openEL = elid;
     }
-
-    let eltochange = document.getElementById(elid);
-
-    eltochange.classList.toggle("off");
-    openEL = elid;
 }
 
 
@@ -261,16 +285,16 @@ async function setUpAllReservations(seshToken) {
 
 async function setUpAllCustomerReservations(seshToken, username) {
     let allReservationsByUserNameTableCol = document.getElementById("allReservationsByUserNameTableCol");
-
+    username = user.email
 
     // PULL IN ALL RESERVATIONS
-    let allSessionCustomerResVations = await getAllRservationsByUsername(username, seshToken);
-
+    let allReservations = await getAllRservationsByUsername(username, seshToken);
+    console.log(allReservations)
     // SETTING MAIN VARIABLE TO THE ARRAY OF RESERVATIONS
     allReservations = allSessionCustomerResVations;
 
     // Passing to create table function to create the table append to appropriate place.
-    createTableData(allReservationsByUserNameTableCol, "multiple");
+    createTableData(allReservationsByUserNameTableCol);
 }
 
 async function setUpReservationById(seshToken, username) {
@@ -371,7 +395,7 @@ async function createTableData(divToAppendTo) {
 
     let newHdr = "";
 
-    let allResLength = await allReservations.length;
+    let allResLength = allReservations.length;
 
     if (allResLength > 0) {
         let r = 0;

@@ -20,11 +20,24 @@ async function setupDogs(seshToken,userType){
          
         //  indexdogDiv.innerHTML = await getHTMLPage('http://localhost:8080/html/DogsPage.html');
          setUpAllCustomerdogs(seshToken,userData.email);
+         let allDogsButtnCol = document.getElementById("allDogsButtnCol")
+         allDogsButtnCol.classList.toggle("'off");
+
+        //  document.getElementById("allDogsTableRow").classList.toggle("off")
+         document.getElementById("allDogsByUserNameTableRow").classList.toggle("off")
+        document.getElementById("allDogsByuserNameCol").classList.toggle("off")
+
+        openELDogs = "allDogsByUserNameTableRow";
  
  
      }else if(userType==="OWNER"){
         //  indexdogDiv.innerHTML = ownerdogsPage;
          setUpAlldogs(userData.email,seshToken);
+         document.getElementById("allDogsTableRow").classList.toggle("off")
+         document.getElementById("allDogsButtnCol").classList.toggle("off")
+        //  document.getElementById("allDogsByUserNameTableRow").classList.toggle("off")
+
+        var openELDogs = "allDogsByIDCol";
      }
  
  
@@ -73,21 +86,27 @@ async function setupDogs(seshToken,userType){
      let alldogsByUserNameTableRow = document.getElementById("alldogsByUserNameTableRow");
      let alldogsByUserNameTableCol = document.getElementById("getdogByIdRow");
  
+    if(openELDogs === elid){
+        
+    }else{
+
+        if(openELDogs === "alldogsTableRow"){
+            alldogsTableCol.classList.toggle("off");
+    
+        }else if(openELDogs === "alldogsByUserNameTableRow"){
+            alldogsByUserNameTableRow.classList.toggle("off");
+        }else if(openELDogs ==="getdogByIdRow"){
+            alldogsByUserNameTableCol.classList.toggle("off");
+        }
+
+        let eltochange = document.getElementById(elid);
+        
+        eltochange.classList.toggle("off")
+        openELDogs = elid;
+
+    }
  
-     if(openEL == "alldogsTableRow"){
-         alldogsTableCol.classList.toggle("off");
  
-     }else if(openEL == "alldogsByUserNameTableRow"){
-         alldogsByUserNameTableRow.classList.toggle("off");
-     }else if(openEL == "getdogByIdRow"){
-         alldogsByUserNameTableCol.classList.toggle("off");
-     }
- 
- 
-     let eltochange = document.getElementById(elid);
-     
-     eltochange.classList.toggle("off")
-     openEL = elid;
     
  
  }

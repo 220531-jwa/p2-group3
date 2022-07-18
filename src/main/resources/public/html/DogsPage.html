@@ -28,13 +28,13 @@
         </div>
         <div id="dogtestLvlButtsCont" class="container" >
             <div class="row">
-                <div class="col-4 col-sm-4">
+                <div id="allDogsButtnCol" class="col-6 col-sm-6 off">
                     <button id="allDogsTableRow_butt" type="button" class="btn btn-primary" onclick="testLvlButtonsHandlerDogs(event.target)">test get all Dogs</button>
                 </div>
-                <div class="col-4 col-sm-4">
-                    <button id="allDogsByUserNameTableRow_butt" type="button" class="btn btn-primary" onclick="testLvlButtonsHandlerDogs(event.target)">test get Dog by username</button>
+                <div id="allDogsByuserNameCol" class="col-6 col-sm-6 off">
+                    <button id="allDogsByUserNameTableRow_butt" type="button" class="btn btn-primary" onclick="testLvlButtonsHandlerDogs(event.target)">Get Dog by Username</button>
                 </div>
-                <div class="col-4 col-sm-4">
+                <div id="allDogsByIDCol" class="col-6 col-sm-6">
                     <button id="getDogByIdRow_butt" type="button" class="btn btn-primary" onclick="testLvlButtonsHandlerDogs(event.target)">test get Dog by id</button>
                 </div>
             </div>
@@ -42,7 +42,7 @@
 
         <div id="viewDogsDiv" class="container">
 
-            <div id="allDogsTableRow" class="row tableHolder">
+            <div id="allDogsTableRow" class="row tableHolder off">
                 <div class="row">
                     <div class="col-12 col-sm-12" style="margin-bottom: 3vh;">
                         <h4 style="text-align:center; width: 100%;">All Dogs</h4>
