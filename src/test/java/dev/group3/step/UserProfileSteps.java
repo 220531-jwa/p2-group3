@@ -110,7 +110,6 @@ public class UserProfileSteps {
     @Then("and will have a new account")
     public void and_will_have_a_new_account() {
         indexPage.editUserProfileBtn.click();
-//        waitForClickable(userProfilePage.submitBtn);
         waitForUserProfileToFill();
         assertEquals("Wolfy", userProfilePage.firstNameField.getAttribute("value"));
     }
@@ -154,7 +153,6 @@ public class UserProfileSteps {
 
     @Then("The user profile information is changed")
     public void the_user_profile_information_is_changed() {
-        waitForClickable(indexPage.editUserProfileBtn);
         waitForUserProfileToFill();
         assertEquals("newFirstName", userProfilePage.firstNameField.getAttribute("value"));
     }

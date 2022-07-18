@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,7 +42,12 @@ public class ReservationDAO {
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.setString(1, resData.getUserEmail());
             ps.setInt(2, resData.getDogId());
-            ps.setInt(3, resData.getServiceId());
+            if (resData.getServiceId() == null) { 
+                ps.setNull(3, Types.INTEGER);
+            }
+            else {
+                ps.setInt(3, resData.getServiceId());
+            }
             ps.setString(4, resData.getStatus().name());
             ps.setTimestamp(5, resData.getStartDateTime());
             ps.setTimestamp(6, resData.getEndDateTime());
