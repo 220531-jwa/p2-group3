@@ -58,3 +58,21 @@ async function getAllDogsByUsername(username,token){
         return null;
     }
 }
+
+async function getAllDogs(token){
+		let response = await fetch(`${baseDogURL}`,{
+		method:'GET',
+		headers: addTokenHeader(baseDogHeaders, token),
+	});
+	
+	if(response.status === 200) {
+		let data = await response.json();
+		let request = data;
+		
+		return request;
+	}
+	else {
+		console.log("There was no data");
+        return null;
+    }
+}

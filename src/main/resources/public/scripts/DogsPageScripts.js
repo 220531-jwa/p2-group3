@@ -32,7 +32,7 @@ async function setupDogs(seshToken,userType){
  
      }else if(userType==="OWNER"){
         //  indexdogDiv.innerHTML = ownerdogsPage;
-         setUpAlldogs(userData.email,seshToken);
+         setUpAlldogs(seshToken);
          document.getElementById("allDogsTableRow").classList.toggle("off")
          document.getElementById("allDogsButtnCol").classList.toggle("off")
         //  document.getElementById("allDogsByUserNameTableRow").classList.toggle("off")
@@ -50,7 +50,7 @@ async function setupDogs(seshToken,userType){
  
  function topLvlButtonsHandlerDogs(e){
  
-     let elid = e.target.id;
+     let elid = e.id;
  
      elid = elid.replace("_butt","");
      let viewdogsDiv = document.getElementById("viewdogsDiv");
@@ -119,13 +119,15 @@ async function setupDogs(seshToken,userType){
  
      // PULL IN ALL dogS
     //  let dogs = await getAlldogs(seshToken);
-    let dogs = [];
-     alldogs = dogs
+    let allTheDogs = await getAllDogs(seshToken);
+    
+    //SETTING MAIN VARIABLE TO THE ARRAY OF dogs
+     alldogs = allTheDogs;
  
      // Passing to create table function to create the table append to appropriate place.
      createTableDataDogs(alldogsTableCol);
- 
- 
+     
+     
  }
  
  
@@ -139,7 +141,7 @@ async function setupDogs(seshToken,userType){
      let allAllDogsByUsername = await getAllDogsByUsername(username, seshToken);
  
      // SETTING MAIN VARIABLE TO THE ARRAY OF dogS
-     alldogs = allAllDogsByUsername
+     alldogs = allAllDogsByUsername;
  
      // Passing to create table function to create the table append to appropriate place.
      createTableDataDogs(alldogsByUserNameTableCol);

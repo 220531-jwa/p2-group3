@@ -159,15 +159,10 @@ public class DogServiceTests {
 	 */
 	
 	@Test
-	public static Pair<Dog,String> patchUpdateDog(Dog dg) {
+	public void patchUpdateDog(Dog dg) {
 		
-		Pair<Dog,String> dgPair = new Pair<Dog,String>(null,null);
 
-//		Pair<Dog,String> dgPair = dd.patchUpdateDog(dg);
 
-		
-		
-		return dgPair;
 	}
 	
 	
@@ -178,15 +173,9 @@ public class DogServiceTests {
 	 */
 	
 	@Test
-	public static String deleteDog(int dogId) {
+	public void deleteDog() {
 		
-		String dogDeleted = "";
 
-//		String dogDeleted = = dd.deleteDog(dogId);
-
-		
-		
-		return dogDeleted;
 	}
 
 	
