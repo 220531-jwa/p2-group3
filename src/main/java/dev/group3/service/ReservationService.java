@@ -217,7 +217,7 @@ public class ReservationService {
         // Checking to make sure the user is authorized to view all reservations
         UserType userType = requesterUser.getUserType();
         List<Reservation> respPair = resDAO.getAllRservationsByUsername(username);
-        if (userType == UserType.OWNER || requesterUser.getEmail() == respPair.get(0).getUserEmail() ) {
+        if (userType == UserType.OWNER || requesterUser.getEmail().equals(respPair.get(0).getUserEmail()) ) {
 
             // Attempting to get all reservations associated with username
             

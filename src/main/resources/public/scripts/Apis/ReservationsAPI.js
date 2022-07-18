@@ -48,10 +48,10 @@ async function getAllReservations(token) {
 async function getAllRservationsByUsername(username, token) {
     let response = await fetch(`${baseURLReservations}/${username}`, {
         method: "GET",
-        header: {
+        headers: {
             "Content-Type": "application/json",
-            Token: token,
-        },
+            Token: token
+        }
         // header:{'cors':'no-cors'},
     });
 
