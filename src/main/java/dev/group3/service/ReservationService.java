@@ -1,6 +1,5 @@
 package dev.group3.service;
 
-import java.sql.Timestamp;
 import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
@@ -63,6 +62,11 @@ public class ReservationService {
     		return new Pair<Reservation, Integer>(null, 400);
     	}
     	
+    	// Checking if user is in an active session
+        if (!ActiveUserSessions.isActiveUser(token)) {
+            log.error("User is not in an active user session");
+            return new Pair<Reservation, Integer>(null, 401);
+        }
         
     	//1- Reviewing if any required fields are null
     	if (resData.getDogId() == null ||
@@ -78,11 +82,6 @@ public class ReservationService {
     		log.error("Invalid input(s) entered. Try again.");
     		return new Pair<Reservation, Integer>(null, 400);
     	}
-    	// Checking if user is in an active session
-        if (!ActiveUserSessions.isActiveUser(token)) {
-            log.error("User is not in an active user session");
-            return new Pair<Reservation, Integer>(null, 401);
-        }
 
     	//6- Making sure user is authorized to create reservation
     	String RequestorUser = ActiveUserSessions.getActiveUserUsername(token);
@@ -94,11 +93,10 @@ public class ReservationService {
         // Attempting to create a new reservation
         resData.setStatus(ResStatusType.REGISTERED);
     	Reservation createdReservation = resDAO.createReservation(resData);
-    
-    	
     	
     	//4 && 5- Making sure dog/user exists--complete
     	if (createdReservation == null) {
+    	    log.error("User or dog does not exist");
     		return new Pair<Reservation, Integer>(null, 404);
     	}
     	
