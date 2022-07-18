@@ -100,7 +100,7 @@ Start Program:
 
 ## Contributors
 
-> Joshua Friesner
-> Gerard Prats
-> Theresa Sherman,
-> Robert Randolph
+> Joshua Friesner  
+> Gerard Prats  
+> Theresa Sherman  
+> Robert Randolph  
