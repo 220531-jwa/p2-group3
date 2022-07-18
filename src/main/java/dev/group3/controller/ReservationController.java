@@ -173,6 +173,7 @@ public class ReservationController {
         Validator<Integer> vid = ctx.pathParamAsClass("res_id", Integer.class);
         Integer id = vid.getOrDefault(null);
         Reservation resData = ctx.bodyAsClass(Reservation.class);
+        System.out.println(resData);
 
         // Attempting to update reservaiton
         Pair<Reservation, Integer> result = rs.updateReservationById(id, resData, token);

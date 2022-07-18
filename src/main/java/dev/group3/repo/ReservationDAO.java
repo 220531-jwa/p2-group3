@@ -211,35 +211,58 @@ public class ReservationDAO {
     	log.debug("Attempting to update the reservation data with resData: " + res);
     	
     	// Init
-    	String sql = "Update reservations SET"
-    			+ " user_email = coalesce(?, user_email),"
-    			+ " dog_id = coalesce(?, dog_id)," 
-    			+ " service_id = coalesce(?, service_id),"
-    			+ " status = coalesce(?, status),"
-    			+ " start_datetime = coalesce(?, start_datetime),"
-    			+ " end_datetime = coalesce(?, end_datetime)"
-    			+ " WHERE id = ? returning *;";
+//    	String sql = "Update reservations SET"
+//    			+ " user_email = coalesce(?, user_email),"
+//    			+ " dog_id = coalesce(?, dog_id)," 
+//    			+ " service_id = coalesce(?, service_id),"
+//    			+ " status = coalesce(?, status),"
+//    			+ " start_datetime = coalesce(?, start_datetime),"
+//    			+ " end_datetime = coalesce(?, end_datetime)"
+//    			+ " WHERE id = ? returning *;";
+    	
+
+//    	String sql = "Update reservations SET"
+//    			+ " status = coalesce(?, status),"
+//    			+ " WHERE id = ? returning *;";
+    	
+    	String sql = "Update reservations SET status = ? WHERE id = ? returning *;";
     	
     	// Attempting to execute query
     	try(Connection conn = cu.getConnection()){
     		PreparedStatement ps = conn.prepareStatement(sql);
-    		ps.setString(1, res.getUserEmail());
-    		ps.setInt(2, res.getDogId());
-    		ps.setInt(3, res.getServiceId());
-    		ps.setString(4, res.getStatus().name());
-    		ps.setTimestamp(5, res.getStartDateTime());
-    		ps.setTimestamp(6, res.getEndDateTime());
-    		ps.setInt(7, res.getId());
-    		ResultSet rs = ps.executeQuery();
     		
+    		
+    		ps.setString(1, res.getStatus().name());
+    	
+    		ps.setInt(2, res.getId());
+    		
+    		
+    		
+//    		ps.setString(1, res.getUserEmail());
+//    		ps.setInt(2, res.getDogId());
+//    		ps.setInt(3, res.getServiceId());
+//    		ps.setString(4, res.getStatus().name());
+//    		ps.setTimestamp(5, res.getStartDateTime());
+//    		ps.setTimestamp(6, res.getEndDateTime());
+//    		ps.setInt(7, res.getId());
+    		
+    		
+    		
+    		ResultSet rs = ps.executeQuery();
+//    		ps.execute();
+    		int count = ps.getUpdateCount();
+    		System.out.println(count);
+    		
+//    		return res;
     		if(rs.next()) {
     			return createReservationFromResultSet(rs);
     		}
     		else {
-    			return null;
+    			return res;
     		}
     	} catch(SQLException e) {
     	    log.error("Failed to execute query: " + sql);
+    	    e.printStackTrace();
     		return null;
     	}
     }

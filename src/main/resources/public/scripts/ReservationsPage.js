@@ -11,17 +11,22 @@ window.onload = setupReservations();
 var allReservations = [];
 var allSessionCustomerResVations = [];
 var openEL = "allReservationsTableRow";
-var openTopEl = "viewReservationsDiv";
+var openTopEl = "viewReservationsDivTop";
 var isEditOpen = "false";
 var allowEdit = false;
+
+var didUpdateStatus = false
+var updateStatusVal = ""
 
 var reservation = {
     id: null,
     userEmail: null,
     dogId: null,
+    serviceId:null,
     status: null,
     startDateTime: null,
     endDateTime: null,
+
 };
 
 
@@ -85,377 +90,189 @@ async function updateIncomingReservationPage(incomingReservation) {
     }
 }
 
-/**
- *  HTML PAGES TURNED INTO JAVASCRIPT
- */
 
-// THIS IS WHERE WE ARE GOING TO "RENDER" OUR HTML AFTER FIGURING OUT USERTYPE LOGGED IN
-const ownerEditReservation = `<div class="container bg-light">
- <h1 id="ERUpperBar" class="mb-4 bg-dark">#</h1>
- <h1 id="title" class="mb-4">Edit Reservation:</h1>
- <div id="editReservationError" style="Color: red"></div>
- <form id="editReservationForm">
-     <hr>
-     <p><b>User Information</b></p>
-     <div class="form-group row mb-4">
-         <div id="reserveeField" class="col">
-             <lable for="reservee">Reservee:</lable>
-             <a id="reservee" href="#"></a>
-         </div>
-         <div class="col">
-             <lable for="dog">Dog:</lable>
-             <a id="dog" href="#"></a>
-         </div>
-     </div>
-     <hr>
-     <p><b>Registration Information</b></p>
-     <div class="form-group row mb-4">
-         <div class="col">
-             <label style="display: block" for="updateStatus">Status:</label>
-             <select id="updateStatus"></select>
-         </div>
-         <div class="col">
-             <label style="display: block" for="service">Service:</label>
-             <select id="service" disabled></select>
-         </div>
-     </div>
-     <div class="form-group row mb-4 readOnly">
-         <div class="col">
-             <label style="display: block" for="startDate">Start Date</label>
-             <input id="startDate" type="date" disabled>
-         </div>
-         <div class="col">
-             <label style="display: block" for="startTime">Start Time</label>
-             <input id="startTime" type="time" disabled>
-         </div>
-     </div>
-     <div class="form-group row mb-4 readOnly">
-         <div class="col">
-             <label style="display: block" for="endDate">End Date</label>
-             <input id="endDate" type="date" disabled>
-         </div>
-         <div class="col">
-             <label style="display: block" for="endTime">End Time</label>
-             <input id="endTime" type="time" disabled>
-         </div>
-     </div>
- </form>
- <div class="row">
-     <div class="col">
-         <button id="editReservationBackBtn" class="btn btn-primary mb-4" type="button">Back</button>
-     </div>
-     <div class="col text-end">
-         <button id="editReservationSaveBtn" class="btn btn-primary mb-4" type="button" onclick="save()">Save</button>
-     </div>
- </div>
- <h1 id="ERLowerBar" class="mb-4 bg-dark">#</h1>
-</div>`;
+var editReservation = {
+    id: null,
+    userEmail: null,
+    dogId: null,
+    serviceId:null,
+    status: null,
+    startDateTime: null,
+    endDateTime: null,
 
-const createReservationOwner = `<div class="container bg-light">
- <h1 class="mb-4 bg-dark">#</h1>
- <h1 id="title" class="mb-4">New Reservation:</h1>
- <div id="error" style="Color: red"></div>
- <form id="form">
-     <hr>
-     <p><b>New Reservation Information</b></p>
-     <div class="form-group row mb-4">
-         <div class="col">
-             <div id="inputDogNameError" style="color: red"></div>
-             <label style="display: block" for="inputDogName">Enter your dog's name for the Reservation:</label>
-             <select id="inputDogName" type="inputDogName">
-                 <option id="dogOptions" selected ="selected" disabled>Select your dog</option>
-                 <option id="dog1" value="5">Ribena</option>
-                 <option id="dog2" value="6">Riddick</option>
-             </select>
-         </div>
-     </div>
-     <div class="form-group row mb-4">
-         <div class="col">
-             <div id="inputStartDateTimeError" style="color: red"></div>
-             <label style="display: block" for="inputStartDateTime">Check-in:</label>
-             <input id="inputStartDateTime" class="input" type="datetime-local">
-         </div>
-         <div class="col">
-             <div id="inputEndDateTimeError" style="color: red"></div>
-             <label style="display: block" for="inputEndDateTime">Check-out:</label>
-             <input id="inputEndDateTime" class="input" type="datetime-local">
-         </div>
-     </div>
-     <div class="form-group row mb-4">
-         <div class="dropdown">
-             <div id="inputServiceIdError" style="color: red"></div>
-             <label style="display: block" for="inputServiceId">Additional Service (optional)</label>
-             <select name="inputServiceId" id="inputServiceId">
-                 <option value="null">Select an Option</option>>
-                 <option id="groomingInput" value="2">Grooming - $25.00</option>
-                 <option id="bellyrubInput" value="3">Belly Rub - $0.99</option>
-                 <option id="dogwalkInput" value="4">Walk - $15.00</option>
-                 <option id="nailtrimInput" value="5">Nail Trimming - $19.99</option>
-             </select>
-         </div>
-     </div>
- </form>
- <div class="row">
-     <div class="col text-end">
-         <button class="btn btn-primary mb-4" type="button" onclick="submitReservation()">Submit</button>
-     </div>
- </div>
- <h1 class="mb-4 bg-dark">#</h1>
-</div>`;
-
-const ownerReservationsPage = ` <div id="main">
-
- <div id="topLvlButtsCont" class="container">
-     <div class="row">
-         <div class="col-6 col-sm-6">
-             <butoon id="viewReservationsDiv_butt" type="button" class="btn btn-primary" onclick="topLvlButtonsHandler(event.target)">View All Your Reservations</butoon>
-         </div>
-         <div class="col-6 col-sm-6">
-             <butoon id="createNewReservationDiv_butt" type="button" class="btn btn-primary" onclick="topLvlButtonsHandler(event.target)">Book New Reservation</butoon>
-         </div>
-     </div>
-
- </div>
-
-
- <div id="allCurrentReservationSide" class="container">
-     
-     <div id="testLvlButtsCont" class="container" >
-         <div class="row">
-             <div class="col-4 col-sm-4">
-                 <button id="allReservationsTableRow_butt" type="button" class="btn btn-primary" onclick="testLvlButtonsHandler(event.target)">test get all reservations</button>
-             </div>
-             <div class="col-4 col-sm-4">
-                 <button id="allReservationsByUserNameTableRow_butt" type="button" class="btn btn-primary" onclick="testLvlButtonsHandler(event.target)">test get reservation by username</button>
-             </div>
-             <div class="col-4 col-sm-4">
-                 <button id="getReservationByIdRow_butt" type="button" class="btn btn-primary" onclick="testLvlButtonsHandler(event.target)">test get reservation by id</button>
-             </div>
-         </div>
-     </div>
-
-     <div id="viewReservationsDiv" class="container">
-
-         <div id="allReservationsTableRow" class="row tableHolder">
-             <div class="row">
-                 <div class="col-12 col-sm-12" style="margin-bottom: 3vh;">
-                     <h4 style="text-align:center; width: 100%;">All Reservations</h4>
-                 </div>
-             </div>
-             
-             <div id="allReservationsTableCol" class="col-12 col-sm-12">
-             </div>
-         </div>
-
-         <div id="allReservationsByUserNameTableRow" class="row tableHolder off">
-             <div class="row">
-                 <div class="col-12 col-sm-12" >
-                     <h4 style="text-align:center; width: 100%;">All By User Name</h4>
-
-                 </div>
-             </div>
-             <div id="allReservationsByUserNameTableCol" class="col-12 col-sm-12">
-             </div>
-         </div>
-
-         <div id="getReservationByIdRow" class="row tableHolder off">
-             <div id="getReservationByIdTop" class="col-12 col-sm-12">
-                 <div class="row">
-                     <div class="col-12 col-sm-12" >
-                         <h4 style="text-align:center; width: 100%;">Get Reservation By ID</h4>
- 
-                     </div>
-                 </div>
-
-                 <div class="row">
-                     <div class="col-2 col-sm-2" style="padding:4vh">
-                         <label for="req_id_box" style="float:right">Enter the Id of your request</label>
-                     </div>
-                     <div class="col-2 col-sm-2" style="padding:4vh">
-                         <input id="req_id_box" type="number">
-                     </div>
-                     <div class="col-2 col-sm-2" style="padding:4vh">
-                         <button id="getreqbutt" class="btn btn-primary" type="button" style="float:left" onclick="setUpReservationById()">Get Request</button>
-                     </div>
-                     <div class="col-6 col-sm-6" style="padding:4vh">
-                         <!-- <button id="getreqbutt" class="btn btn-primary" type="button" style="float:left">Get Request</button> -->
-                     </div>
-
-                 </div>
-                 <hr>
-
-                 <div class="row">
-                     <div id="getReservationByIdTableCol" class="col-12 col-sm-12">
-                         <table class="table">
-                             <tr>
-                                 <thead>
-                                     <th scope="col">Hi there</th>
-                                     <th scope="col">yello</th>
-                                 </thead>
-                             </tr>
-                         </table>
-                         
-                     </div>
-                 </div>
-             </div>
-         </div>
-
-
-         <div id="editReservationRow" class="row tableHolder off">
-             <div id="editReservationCol" class="col-12 col-sm-12" style="margin-bottom: 3vh;">
-
-               
-                     ${ownerEditReservation}
-
-
-             </div>
-         </div>
-
-
-     </div>
-
- </div>
-
-
- <div id="createNewReservationDiv" class="container off">
- <div class="row">
-     <div class="col-12 col-sm-12">
-         <h5>Create Reservation</h5> -->
-         <!--delete this below paragraph before pushing!-->
-         <p>
-             <a href="../html/newReservation.html">click here to go to new reservation</a>
-         </p>
-     </div>
- </div>
- <div class="row">
-     <div id="createResCol" class="col-12 col-sm-12">
-         ${createReservationOwner}
-     </div>
- </div>
-
- 
-</div>
-
- 
- 
-</div>`;
- // THIS IS WHERE WE ARE GOING TO "RENDER" OUR HTML AFTER FIGURING OUT USERTYPE LOGGED IN
+};
 
 
 
- async function setupReservations(seshToken,userType){
+// THIS UPDATED THE ABOVE OBJECT LITERAL
+async function updateIncomingEditReservationPage(incomingReservation) {
+    if (incomingReservation) {
+        Object.keys(incomingReservation).forEach((key, index) => {
+            if (key == "startDateTime") {
+                let incomingDate = incomingReservation[key];
+                let newDate = new Date(incomingDate);
+                let day = newDate.getDate();
+                let month = newDate.getMonth() + 1;
+                let year = newDate.getFullYear();
+                let hour = newDate.getHours();
+                let minutes = newDate.getMinutes().toString();
+                let seconds = newDate.getSeconds().toString();
 
+                if (minutes.length == 1) {
+                    minutes = minutes + "0";
+                }
 
-    const indexReservationDiv = document.getElementById("updateResCont");
+                if (seconds.length == 1) {
+                    seconds = seconds + "0";
+                }
 
-    if(userType === "CUSTOMER"){
-        // 
-        indexReservationDiv.innerHTML = customerReservationsPage;
-        setUpAllCustomerReservations(seshToken,userType);
+                let theDate = month + "/" + day + "/" + year;
+                let theTime = hour + ":" + minutes + ":" + seconds;
 
+                let fullDate = theDate + " " + theTime;
 
-    }else if(userType==="OWNER"){
-        // indexReservationDiv.innerHTML =ownerReservationsPage;
-        setUpAllReservations(seshToken,userType);
+                editReservation.startDateTime = fullDate;
+            } else if (key == "endDateTime") {
+                let incomingDate = incomingReservation[key];
+                let newDate = new Date(incomingDate);
+                let day = newDate.getDate();
+                let month = newDate.getMonth() + 1;
+                let year = newDate.getFullYear();
+                let hour = newDate.getHours();
+                let minutes = newDate.getMinutes().toString();
+                let seconds = newDate.getSeconds().toString();
+
+                if (minutes.length == 1) {
+                    minutes = minutes + "0";
+                }
+
+                if (seconds.length == 1) {
+                    seconds = seconds + "0";
+                }
+
+                let theDate = month + "/" + day + "/" + year;
+                let theTime = hour + ":" + minutes + ":" + seconds;
+
+                let fullDate = theDate + " " + theTime;
+
+                editReservation.endDateTime = fullDate;
+            } else {
+                editReservation[key] = incomingReservation[key];
+            }
+        });
     }
-
-    // setupTopNav("forTheTopDiv",userType);
-    // setupSideNav("forTheSideDiv",userType);
-
-    // CUSTOMER SIDE
-    
-    
-    // OWNER SIDE
-
 }
-
 
 
 async function setupReservations(seshToken, userType) {
-    const indexReservationDiv = document.getElementById("updateResCont");
+
+    // const indexReservationDiv = document.getElementById("updateResCont");
+
+    try{
+        
+        let newResCont = document.getElementById("createResCol");
+        const newreservationsHTMLDoc = "./newReservation.html"
+        const newreserVationResp =  await fetch(newreservationsHTMLDoc);
+        const newReservationHTML =  await newreserVationResp.text();
+        newResCont.innerHTML = newReservationHTML;
+    }catch{
+        console.log("Loading the Create Reservation Page")
+    }
 
     if (userType === "CUSTOMER") {
-        indexReservationDiv.innerHTML = customerReservationsPage;
+        // indexReservationDiv.innerHTML = customerReservationsPage;
         setUpAllCustomerReservations(seshToken, userType);
+        
+        // let allReservationsButtnCol = document.getElementById("allReservationsByuserNameBtncol")
+       //  let allDogsByIDCol = document.getElementById("allDogsByIDCol")
+    //    allReservationsButtnCol.classList.toggle("'off");
+        document.getElementById("allReservationsByUserNameTableRow").classList.toggle("off")
+        document.getElementById("allReservationsByuserNameBtncol").classList.toggle("off")
+    //    document.getElementById("allReservationsByIDCol").classList.toggle("off")
+
+       openELDogs = "allReservationsByUserNameTableRow";
+
+
     } else if (userType === "OWNER") {
-        indexReservationDiv.innerHTML = ownerReservationsPage;
+        // indexReservationDiv.innerHTML = ownerReservationsPage;
         setUpAllReservations(seshToken, userType);
+
+        document.getElementById("allReservationsTableRow").classList.toggle("off")
+        document.getElementById("allReservationsButtnCol").classList.toggle("off")
+
+        // document.getElementById("allReservationsButtnCol").classList.toggle("off");
+       //  document.getElementById("allDogsByUserNameTableRow").classList.toggle("off")
+
+       var openELDogs = "allReservationsTableRow";
     }
 }
-
-
-// async function updateIncomingReservation(incomingReservation){
-
-//     Object.keys(incomingReservation).forEach((key, index) => {
-//         reservation[key] = incomingReservation[key];
-//     });
-
-// }
-
-// const indexReservationDiv = document.getElementById("updateResCont");
-
-
 
 
 function topLvlButtonsHandler(e){
 
 
-    let elid = e.target.id;
+    // let elid = e.target.id;
+    let elid = e.id;
 
     elid = elid.replace("_butt", "");
-    let viewReservationsDiv = document.getElementById("viewReservationsDiv");
-    let createNewReservationDiv = document.getElementById("createNewReservationDiv");
-    let allCurrentRes = document.getElementById("allCurrentReservationSide");
+    
+    // let viewReservationsDiv = document.getElementById("viewReservationsDivTop");
+    // let createNewReservationDiv = document.getElementById("createNewReservationDiv");
+    // let allCurrentRes = document.getElementById("allCurrentReservationSide");
+    // let testLvlButtsCont = document.getElementById("testLvlButtsCont");
+    
+    // console.log(elid)
+    // console.log("open top el = " + openTopEl)
 
-    if (openTopEl == "viewReservationsDiv" && elid == "viewReservationsDiv") {
-        viewReservationsDiv.classList.toggle("off");
-    } else if (openTopEl == "createNewReservationDiv" && elid == "createNewReservationDiv") {
-    } else if (openTopEl == "createNewReservationDiv" && elid == "viewReservationsDiv") {
-        createNewReservationDiv.classList.toggle("off");
-        allCurrentRes.classList.toggle("off");
-    } else if (openTopEl == "createNewReservationDiv" && elid == "viewReservationsDiv") {
-        createNewReservationDiv.classList.toggle("off");
-        allCurrentRes.classList.toggle("off");
-    } else if (openTopEl == "viewReservationsDiv" && elid == "createNewReservationDiv") {
-        createNewReservationDiv.classList.toggle("off");
-        allCurrentRes.classList.toggle("off");
-    }
+    // if(openTopEl === "createNewReservationDiv"){
+    //     testLvlButtsCont.classList.toggle("off")
+    // }
+
+    let documentToClose = document.getElementById(openTopEl);
+    documentToClose.classList.toggle("off")
 
     let eltochange = document.getElementById(elid);
 
-    // eltochange.classList.toggle("off")
+    eltochange.classList.toggle("off")
     openTopEl = elid;
+
+
+    
 }
 
 function testLvlButtonsHandler(e) {
-    let elid = event.target.id;
-
+    let elid = e.id;
+    console.log(elid)
     elid = elid.replace("_butt", "");
 
     let allReservationsTableCol = document.getElementById("allReservationsTableRow");
     let allReservationsByUserNameTableRow = document.getElementById("allReservationsByUserNameTableRow");
     let allReservationsByUserNameTableCol = document.getElementById("getReservationByIdRow");
 
-    if (openEL == "allReservationsTableRow") {
-        allReservationsTableCol.classList.toggle("off");
-    } else if (openEL == "allReservationsByUserNameTableRow") {
-        allReservationsByUserNameTableRow.classList.toggle("off");
-    } else if (openEL == "getReservationByIdRow") {
-        allReservationsByUserNameTableCol.classList.toggle("off");
+    if(openEL === elid){
+
+    }else{
+
+        if (openEL == "allReservationsTableRow") {
+            allReservationsTableCol.classList.toggle("off");
+        } else if (openEL == "allReservationsByUserNameTableRow") {
+            allReservationsByUserNameTableRow.classList.toggle("off");
+        } else if (openEL == "getReservationByIdRow") {
+            allReservationsByUserNameTableCol.classList.toggle("off");
+        }
+    
+        let eltochange = document.getElementById(elid);
+    
+        eltochange.classList.toggle("off");
+        openEL = elid;
     }
-
-    let eltochange = document.getElementById(elid);
-
-    eltochange.classList.toggle("off");
-    openEL = elid;
 }
 
+
+//THIS WILL GRAB ALL OF THE RESERVATIONS FROM THE DB AND PASS THEM AND THE APPROPRIATE DIV TO APPEND TABLE TO.
 async function setUpAllReservations(seshToken) {
+
     let allReservationsTableCol = document.getElementById("allReservationsTableCol");
-
-    // let seshToken = userRes.pswrd
-
-    // let username = userRes.email;
 
     // PULL IN ALL RESERVATIONS
     let reservations = await getAllReservations(seshToken);
@@ -463,39 +280,45 @@ async function setUpAllReservations(seshToken) {
     allReservations = reservations;
 
     // Passing to create table function to create the table append to appropriate place.
-    createTableData(allReservationsTableCol, "multiple");
+    createTableData(allReservationsTableCol);
 }
 
 async function setUpAllCustomerReservations(seshToken, username) {
     let allReservationsByUserNameTableCol = document.getElementById("allReservationsByUserNameTableCol");
-
-    // let seshToken = userRes.pswrd;
-    // let username = userRes.email;
+    username = user.email
 
     // PULL IN ALL RESERVATIONS
-    let allSessionCustomerResVations = await getAllRservationsByUsername(username, seshToken);
-
+    let allReservations = await getAllRservationsByUsername(username, seshToken);
+    console.log(allReservations)
     // SETTING MAIN VARIABLE TO THE ARRAY OF RESERVATIONS
     allReservations = allSessionCustomerResVations;
 
     // Passing to create table function to create the table append to appropriate place.
-    createTableData(allReservationsByUserNameTableCol, "multiple");
+    createTableData(allReservationsByUserNameTableCol);
 }
 
 async function setUpReservationById(seshToken, username) {
+
+    //ASSIGNING THE VARIABLES FOR WHERE TO APPEND TABLE
     let allReservationsByUserNameTableCol = document.getElementById("getReservationByIdTableCol");
     let res_id = document.getElementById("req_id_box").value;
 
+
+
     // PULL IN ALL RESERVATIONS
     let requestedReservation = await fetchGetReservationById(username, res_id, seshToken);
-
+    // UPDATE VARIABLE WITH ALL RESERVATIONS
     await updateIncomingReservationPage(requestedReservation);
 
+
+
+    // CREATE TABLE ELEMENTS
     let tbl = document.createElement("table");
+    tbl.className = "table";
+
     let tblHead = document.createElement("thead");
     let tblHdrRow = document.createElement("tr");
 
-    tbl.className = "table";
 
     let newHdr = "";
     let r = 0;
@@ -509,8 +332,8 @@ async function setUpReservationById(seshToken, username) {
         tblHdr.scope = "col";
         tblHdr.innerText = newHdr;
         tblHdrRow.append(tblHdr);
-
-        if (r === 5) {
+        console.log(reservation.length)
+        if (r === 6) {
             let editHdr = document.createElement("th");
             editHdr.scope = "col";
             editHdr.innerText = "Edit";
@@ -561,7 +384,9 @@ async function setUpReservationById(seshToken, username) {
     allReservationsByUserNameTableCol.append(tbl);
 }
 
-async function createTableData(divToAppendTo, singleOrMultiple) {
+async function createTableData(divToAppendTo) {
+
+    
     let tbl = document.createElement("table");
     let tblHead = document.createElement("thead");
     let tblHdrRow = document.createElement("tr");
@@ -570,7 +395,7 @@ async function createTableData(divToAppendTo, singleOrMultiple) {
 
     let newHdr = "";
 
-    let allResLength = await allReservations.length;
+    let allResLength = allReservations.length;
 
     if (allResLength > 0) {
         let r = 0;
@@ -583,8 +408,9 @@ async function createTableData(divToAppendTo, singleOrMultiple) {
             tblHdr.scope = "col";
             tblHdr.innerText = newHdr;
             tblHdrRow.append(tblHdr);
+            
 
-            if (r === 5) {
+            if (r === 6) {
                 let editHdr = document.createElement("th");
                 editHdr.scope = "col";
                 editHdr.innerText = "Edit";
@@ -612,21 +438,20 @@ async function createTableData(divToAppendTo, singleOrMultiple) {
             reqTd.innerText = reservation[key];
             reqRow.append(reqTd);
 
-            if (w === 5) {
+            if (w === 6) {
                 let buttTd = document.createElement("td");
                 let buttn = document.createElement("button");
                 buttn.type = "button";
                 buttn.className = "btn editButt";
                 buttn.id = reservation.id + "_edit";
-                buttn.onclick = (e) => {
-                    let reserv_id = e.target.id;
-                    reserv_id = reserv_id.replace("_edit", "");
-                    openEditReservation();
-                    console.log("here is res id " + reserv_id);
-                    initalizeEditReservationPage(null, reserv_id);
+                buttn.onclick = () => {
+                    // let reserv_id = e.target.id;
+                    let reserve_id = buttn.id;
+                    reserve_id = reserve_id.replace("_edit", "");
+                    let sesh = user.pswd
+                    editButtonHandler(user.email,reserve_id, sesh);
+                    // document.getElementById("viewReservationsDivTop").classList.toggle("off")
                 };
-
-                // buttnTD.className="btn btn-primary editButt"
                 buttn.innerText = "Edit";
                 buttTd.append(buttn);
                 reqRow.append(buttTd);
@@ -649,6 +474,9 @@ async function openEditReservation(reser) {
     let divToShowOrHide = document.getElementById(openEL);
 
     // if(isEditOpen){
+    // document.getElementById("viewReservationsDivTop").classList.toggle("off")
+    
+    document.getElementById("testLvlButtsCont").classList.toggle("off")
     editReservationRow.classList.toggle("off");
     divToShowOrHide.classList.toggle("off");
     // }
@@ -668,4 +496,26 @@ allowEditHandler = () => {
 
         allowEdit = true;
     }
+}
+
+
+function updateStatusReser(){
+    let updateStatus = document.getElementById("updateStatus");
+    console.log(updateStatus.options[updateStatus.selectedIndex].value)// var value = select.options[select.selectedIndex].value;
+    editReservation.status = updateStatus.selected
+
+    console.log(editReservation)
+    
+
+}
+
+
+async function editButtonHandler(username,reserve_id,sesh){
+
+    let reser = await fetchGetReservationById(username,reserve_id,sesh)
+    updateIncomingEditReservationPage(reser);
+    openEditReservation();
+                    console.log("here is res id " + reserve_id);
+                    
+    initalizeEditReservationPage(null, reserve_id);
 }

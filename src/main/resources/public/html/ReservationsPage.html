@@ -20,7 +20,7 @@
         <div id="topLvlButtsCont" class="container">
             <div class="row">
                 <div class="col-6 col-sm-6">
-                    <button id="viewReservationsDiv_butt" type="button" class="btn btn-primary" onclick="topLvlButtonsHandler(event.target)">View All Your Reservations</button>
+                    <button id="viewReservationsDivTop_butt" type="button" class="btn btn-primary" onclick="topLvlButtonsHandler(event.target)">View All Your Reservations</button>
                 </div>
                 <div class="col-6 col-sm-6">
                     <button id="createNewReservationDiv_butt" type="button" class="btn btn-primary" onclick="topLvlButtonsHandler(event.target)">Book New Reservation</button>
@@ -28,23 +28,24 @@
             </div>
         </div>
 
-        <div id="allCurrentReservationSide" class="container">
+        <div id="viewReservationsDivTop" class="container">
+            
             <div id="testLvlButtsCont" class="container">
                 <div class="row">
-                    <div class="col-4 col-sm-4">
+                    <div id="allReservationsButtnCol" class="col-6 col-sm-6 off">
                         <button id="allReservationsTableRow_butt" type="button" class="btn btn-primary" onclick="testLvlButtonsHandler(event.target)">test get all reservations</button>
                     </div>
-                    <div class="col-4 col-sm-4">
+                    <div id="allReservationsByuserNameBtncol" class="col-6 col-sm-6 off">
                         <button id="allReservationsByUserNameTableRow_butt" type="button" class="btn btn-primary" onclick="testLvlButtonsHandler(event.target)">test get reservation by username</button>
                     </div>
-                    <div class="col-4 col-sm-4">
+                    <div id="allReservationsByIDCol" class="col-6 col-sm-6">
                         <button id="getReservationByIdRow_butt" type="button" class="btn btn-primary" onclick="testLvlButtonsHandler(event.target)">test get reservation by id</button>
                     </div>
                 </div>
             </div>
 
             <div id="viewReservationsDiv" class="container">
-                <div id="allReservationsTableRow" class="row tableHolder">
+                <div id="allReservationsTableRow" class="row tableHolder off">
                     <div class="row">
                         <div class="col-12 col-sm-12" style="margin-bottom: 3vh">
                             <h4 style="text-align: center; width: 100%">All Reservations</h4>
@@ -104,12 +105,11 @@
 
                 <div id="editReservationRow" class="row tableHolder off">
                     <div id="editReservationCol" class="col-12 col-sm-12" style="margin-bottom: 3vh">
-                        <h1 id="title" class="mb-4">Edit Reservation:</h1>
-                        <div id="error" style="color: red"></div>
                         <div class="container bg-light">
                             <h1 class="mb-4 bg-dark">#</h1>
                             <h1 id="title" class="mb-4">Edit Reservation:</h1>
-                            <div id="error" style="color: red"></div>
+                            <div id="editReservationError" style="color: red"></div>
+                            <div id="editReservationPositive" class="off" style="background-color: lightgreen"></div>
                             <form id="form">
                                 <hr />
                                 <p><b>User Information</b></p>
@@ -128,11 +128,11 @@
                                 <div class="form-group row mb-4">
                                     <div class="col-6 col-sm-6">
                                         <label for="updateStatus">Status:</label>
-                                        <select id="updateStatus">
-                                            <option value="REGISTERED">REGISTERED</option>
+                                        <select id="updateStatus" onchange="updateStatusReser()">
+                                            <!-- <option value="REGISTERED">REGISTERED</option>
                                             <option value="CHECKEDIN">CHECKEDIN</option>
                                             <option value="CHECKEDOUT">CHECKEDOUT</option>
-                                            <option value="CANCELLED">CANCELLED</option>
+                                            <option value="CANCELLED">CANCELLED</option> -->
                                         </select>
                                     </div>
                                     <div class="col-6 col-sm-6">
@@ -185,11 +185,6 @@
             <div class="row">
                 <div class="col-12 col-sm-12">
                     <h5>Create Reservation</h5>
-                    -->
-                    <!--delete this below paragraph before pushing!-->
-                    <p>
-                        <a href="../html/newReservation.html">click here to go to new reservation</a>
-                    </p>
                 </div>
             </div>
             <div class="row">
@@ -207,4 +202,5 @@
 
 <script src="../scripts/ReservationsPage.js"></script>
 <script src="../scripts/Apis/ReservationsAPI.js"></script>
+<script src="../scripts/editReservation.js"></script>
 </html>

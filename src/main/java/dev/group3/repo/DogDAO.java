@@ -27,7 +27,7 @@ public class DogDAO {
      * @param dogData The dog to add
      * @return The dog if successfully added, and null otherwise
      */
-    public Dog createDog(Dog dogData) {
+    public boolean createDog(Dog dogData) {
         log.debug("Adding dog with dogData: " + dogData);
 
         // Init
@@ -42,19 +42,21 @@ public class DogDAO {
             ps.setString(4, dogData.getBreed());
             ps.setInt(5, dogData.getDog_age());
             ps.setBoolean(6, dogData.isVaccinated());
-            ResultSet rs = ps.executeQuery();
-
+            int rs =  ps.executeUpdate();
+            
+            ps = conn.prepareStatement(sql);
+            
             // Checking if dog was added successfully
-            if (rs.next()) {
+            if (rs == 1) {
                 // Dog added successfully
-                return createDogFromResultSet(rs);
+                return true;
             }
         } catch (SQLException q) {
             log.error("Failed to execute query: " + sql);
             q.printStackTrace();
         }
         
-        return null;
+        return false;
     }
 
     /*
@@ -134,7 +136,7 @@ public class DogDAO {
      * @param userName The username to find all the dogs of
      * @return The list of dogs if successful, and null otherwise
      */
-    public List<Dog> getAllDogsByUserId(String userName) {
+    public List<Dog> getAllDogsByUsername(String userName) {
         log.debug("Getting all dogs with userName: " + userName);
         
         // Init

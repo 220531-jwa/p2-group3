@@ -44,13 +44,13 @@ public class DogController {
     	Dog dogData = ctx.bodyAsClass(Dog.class);
     	
     	// Attempting to create a new dog
-    	Dog newDog = ds.postCreateNewDog(dogData, token);
+    	boolean result = ds.postCreateNewDog(dogData, token);
     	
     	// Checking if the dog was successfully created
-    	if(newDog != null) {
+    	if(result) {
     	    log.info("Dog successfully created");
     		ctx.status(201);
-        	ctx.json(newDog);
+        	ctx.json(result);
     	} else {
     		ctx.status(400);
     		ctx.result("Dog creation failed");
@@ -100,7 +100,7 @@ public class DogController {
     	String token = ctx.header("Token");
     	
     	// Attempting to get all dogs associated with user
-    	List<Dog> dogList = ds.getAllDogsByUserId(userName, token);
+    	List<Dog> dogList = ds.getAllDogsByUsername(userName, token);
     	
     	// Checking if dogs were successfully retrieved
     	if(dogList != null) {

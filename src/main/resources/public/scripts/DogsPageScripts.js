@@ -2,45 +2,42 @@
  * VARIABLES
  */
 
-
-<<<<<<< HEAD
-=======
-//  const userRes = getSessionUserData();
-//  const seshToken = "";
- 
- 
->>>>>>> jfriesner_reservations
  
  var alldogs = [];
- var allSessionCustomerResVations = [];
- var openEL = "alldogsTableRow";
- var openTopEl = "viewdogsDiv"
+ var openELDogs = "alldogsTableRow";
+ var openTopElDogs = "viewdogsDiv"
  var isEditOpen = "false"
- var userDogs = "allDogsByUserNameTableRow"
+//  var userDogs = "allDogsByUserNameTableRow"
+ var userDogs = "allDogsByUserNameTableCol"
 
  
- 
- 
- 
-
- 
-  // THIS IS WHERE WE ARE GOING TO "RENDER" OUR HTML AFTER FIGURING OUT USERTYPE LOGGED IN
- 
- 
-  async function setupDogs(seshToken,userType){
+async function setupDogs(seshToken,userType){
  	let userData = getSessionUserData();
  
-     const indexdogDiv = document.getElementById("updateDogCont");
+    //  const indexdogDiv = document.getElementById("updateDogCont");
 
      if(userType === "CUSTOMER"){
          
-         indexdogDiv.innerHTML = await getHTMLPage('http://localhost:8080/html/DogsPage.html');
+        //  indexdogDiv.innerHTML = await getHTMLPage('http://localhost:8080/html/DogsPage.html');
          setUpAllCustomerdogs(seshToken,userData.email);
+         let allDogsButtnCol = document.getElementById("allDogsButtnCol")
+         allDogsButtnCol.classList.toggle("'off");
+
+        //  document.getElementById("allDogsTableRow").classList.toggle("off")
+         document.getElementById("allDogsByUserNameTableRow").classList.toggle("off")
+        document.getElementById("allDogsByuserNameCol").classList.toggle("off")
+
+        openELDogs = "allDogsByUserNameTableRow";
  
  
      }else if(userType==="OWNER"){
-         indexdogDiv.innerHTML = ownerdogsPage;
+        //  indexdogDiv.innerHTML = ownerdogsPage;
          setUpAlldogs(userData.email,seshToken);
+         document.getElementById("allDogsTableRow").classList.toggle("off")
+         document.getElementById("allDogsButtnCol").classList.toggle("off")
+        //  document.getElementById("allDogsByUserNameTableRow").classList.toggle("off")
+
+        var openELDogs = "allDogsByIDCol";
      }
  
  
@@ -72,14 +69,14 @@
      
     
      eltochange.classList.toggle("off")
-     openTopEl = elid;
+     openTopElDogs = elid;
  
  }
  
  
- function testLvlButtonsHandler(e){
+ function testLvlButtonsHandlerDogs(e){
  
-     let elid = event.target.id;
+     let elid = e.id;
  
      elid = elid.replace("_butt","");
  
@@ -89,21 +86,27 @@
      let alldogsByUserNameTableRow = document.getElementById("alldogsByUserNameTableRow");
      let alldogsByUserNameTableCol = document.getElementById("getdogByIdRow");
  
+    if(openELDogs === elid){
+        
+    }else{
+
+        if(openELDogs === "alldogsTableRow"){
+            alldogsTableCol.classList.toggle("off");
+    
+        }else if(openELDogs === "alldogsByUserNameTableRow"){
+            alldogsByUserNameTableRow.classList.toggle("off");
+        }else if(openELDogs ==="getdogByIdRow"){
+            alldogsByUserNameTableCol.classList.toggle("off");
+        }
+
+        let eltochange = document.getElementById(elid);
+        
+        eltochange.classList.toggle("off")
+        openELDogs = elid;
+
+    }
  
-     if(openEL == "alldogsTableRow"){
-         alldogsTableCol.classList.toggle("off");
  
-     }else if(openEL == "alldogsByUserNameTableRow"){
-         alldogsByUserNameTableRow.classList.toggle("off");
-     }else if(openEL == "getdogByIdRow"){
-         alldogsByUserNameTableCol.classList.toggle("off");
-     }
- 
- 
-     let eltochange = document.getElementById(elid);
-     
-     eltochange.classList.toggle("off")
-     openEL = elid;
     
  
  }
@@ -116,11 +119,11 @@
  
      // PULL IN ALL dogS
     //  let dogs = await getAlldogs(seshToken);
- 
+    let dogs = [];
      alldogs = dogs
  
      // Passing to create table function to create the table append to appropriate place.
-     createTableData(alldogsTableCol,"multiple");
+     createTableDataDogs(alldogsTableCol);
  
  
  }
@@ -128,6 +131,7 @@
  
  async function setUpAllCustomerdogs(seshToken,username){
  
+
      let alldogsByUserNameTableCol = document.getElementById(userDogs);
      console.log(alldogsByUserNameTableCol)
      
@@ -138,7 +142,7 @@
      alldogs = allAllDogsByUsername
  
      // Passing to create table function to create the table append to appropriate place.
-     createTableData(alldogsByUserNameTableCol);
+     createTableDataDogs(alldogsByUserNameTableCol);
  
  
  }
@@ -241,7 +245,7 @@
  
  
  
- async function createTableData(divToAppendTo){
+ async function createTableDataDogs(divToAppendTo){
      
      let tbl = document.createElement("table");
      let tblHead = document.createElement("thead");

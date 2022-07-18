@@ -2,14 +2,15 @@
  * === Index State Variables ===
  */
 
-var reservation = {
-    id: null,
-    userEmail: null,
-    dogId: null,
-    status: null,
-    startDateTime: null,
-    endDateTime: null,
-  };
+
+// var reservation = {
+//     id: null,
+//     userEmail: null,
+//     dogId: null,
+//     status: null,
+//     startDateTime: null,
+//     endDateTime: null,
+//   };
   
 var user = {
     email: null,
@@ -33,9 +34,9 @@ window.addEventListener('load', initalizeIndexPage);
 async function initalizeIndexPage() {
     // Getting user data (who is logged in)
     let userData = getSessionUserData();
-     window.addEventListener('load', function () {
-        setupIndex()
-      })
+    //  window.addEventListener('load', function () {
+    //     setupIndex()
+    //   })
 
     
     
@@ -48,7 +49,7 @@ async function initalizeIndexPage() {
     // Setting up nav bars
     setupTopNav("forTheTopDiv", user.userType);
     setupSideNav("forTheSideDiv", user.userType);
-
+    
     // === Setting up content panels ===
 
     // Loading user profile into index page - and initalizing it
@@ -59,19 +60,39 @@ async function initalizeIndexPage() {
     setUserProfileBackButtonVisibility(false);
     setUserProfileBarVisibility(false, true);
 
+
+    let ResCont = document.getElementById("updateResCont");
+    const reservationsHTMLDoc = "../html/ReservationsPage.html"
+    const reserVationResp =  await fetch(reservationsHTMLDoc);
+    const ReservationHTML =  await reserVationResp.text();
+    ResCont.innerHTML = ReservationHTML;
+    
+    setupReservations(user.pswd, user.userType);
+    
+
+    // const reservationsHTML = await getHTMLPage('html\ReservationsPage.html')
+    // document.getElementById("updateResCont").innerHTML = reservationsHTML;
+
+
+    let updatedogCont = document.getElementById("updateDogCont");
+    const dogsHTMLDoc = "../html/DogsPage.html"
+    const dogsResp =  await fetch(dogsHTMLDoc);
+    const dogsHTML =  await dogsResp.text();
+    updatedogCont.innerHTML = dogsHTML;
+
+    // const dogsHTML = await getHTMLPage('../DogsPage.html');
+    // document.getElementById("updateDogCont");
+
+
     // Loading reservation into index page - and initalizing it
     if (user.userType === 'OWNER') {
-        // User is owner
-        // setupIndexPageReservations(indexReservationDiv, userType,seshToken)
-        // indexReservationDiv.innerHTML = clientReservationsPage
-        // const frag = document.createRange().createContextualFragment("../html/userProfile.html");
-        // idexUpdateUserDiv.innerHTML = userProfileElements;
-        setupReservations(user.pswd, user.userType);
+
+        
         setupDogs(user.pswd,user.userType);
     }
     else {
         // User is customer
-        setupReservations(userData.pswd, user.userType);
+        
         setupDogs(userData.pswd,userData.userType);
     }
 }
@@ -90,7 +111,7 @@ async function updateIncomingUserIndex(incomingUser) {
     
   
 
-function setupIndexPageReservations(elToAppendTo, userType, token) {
+async function setupIndexPageReservations(elToAppendTo, userType, token) {
     // seshToken = token
 
     // async function setupIndex(){
@@ -99,24 +120,24 @@ function setupIndexPageReservations(elToAppendTo, userType, token) {
         
         await updateIncomingUserIndex(userData);
 
-        let userType = user.userType;
-        let seshToken = user.pswd;
+        // let userType = user.userType;
+        // let seshToken = user.pswd;
 
         // const ownePage = "../html/newReservation.html"
         // var docFrag = new DocumentFragment();
-        let updateResCont = document.getElementById("updateResCont");
-        const reservationsHTMLDoc = "../html/ReservationsPage.html"
-        const reserVationResp =  await fetch(reservationsHTMLDoc);
-        const ReservationHTML =  await reserVationResp.text();
-        updateResCont.innerHTML = ReservationHTML;
+        // let updateResCont = document.getElementById("updateResCont");
+        // const reservationsHTMLDoc = "../html/ReservationsPage.html"
+        // const reserVationResp =  await fetch(reservationsHTMLDoc);
+        // const ReservationHTML =  await reserVationResp.text();
+        // updateResCont.innerHTML = ReservationHTML;
     
         // let updateUserCont = document.getElementById("updateUserCont");
         // const updateuserHTMLAgainTest = "../html/userProfile.html"
         // const userResp =  fetch(updateuserHTMLAgainTest);
         // const userHTML =  userResp.text();
         // updateUserCont.innerHTML = userHTML;
-        setupTopNav("forTheTopDiv",userType);
-        setupSideNav("forTheSideDiv",userType);
+        // setupTopNav("forTheTopDiv",userType);
+        // setupSideNav("forTheSideDiv",userType);
 
         
 
@@ -137,11 +158,10 @@ function setupIndexPageReservations(elToAppendTo, userType, token) {
             // const frag = document.createRange().createContextualFragment("../html/userProfile.html");
             // idexUpdateUserDiv.innerHTML = userProfileElements;
             
-            setupUserProfile(user.email);
-            setupReservations(seshToken,userType);
+            
         }else if(userType=="CUSTOMER"){
             setupUserProfile(user.email);
-            setupReservations(seshToken,userType);
+           
         }
 
     if (userType == "OWNER") {
@@ -176,6 +196,15 @@ function navigatetoDogs() {
 
     function navigatetoDogs(){
         location.href="../html/DogsPage.html"
+    }
+
+
+    function updateStatusReser(){
+        let updateStatus = document.getElementById("updateStatus");
+        console.log(updateStatus.innerText)
+        editReservation.status = updateStatus.selected
+        
+    
     }
 
 
