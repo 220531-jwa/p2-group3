@@ -11,8 +11,8 @@ Feature: User Profile
     Given a use is on the new account page
     When the user enters valid account information
     And clicks on the submit button
-    Then the user will have a new account
-    And be on the home page
+    Then the user will be on the home page
+    And and will have a new account
 
   ## View User Profile page
   Scenario: A user can view their user information
