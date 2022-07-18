@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import dev.group3.model.Dog;
 import dev.group3.model.Reservation;
 import dev.group3.model.Service;
 import dev.group3.model.User;
@@ -17,6 +18,7 @@ public class MockDataSet {
     private static List<User> userTestSet;
     private static List<Reservation> reservationTestSet;
     private static List<Service> serviceTestSet;
+    private static List<Dog> dogTestSet;
     
     private static HashMap<String, List<Reservation>> filterStorage;
 
@@ -63,7 +65,17 @@ public class MockDataSet {
         serviceTestSet.add(new Service(4,   ServiceType.DOGWALK,      2,  15.00));
         serviceTestSet.add(new Service(5,   ServiceType.TRIMNAILS,    1,  19.99));
     }
-
+    
+    private static void setupDogTestSet() {
+    	dogTestSet = new ArrayList<Dog>();
+    	dogTestSet.add(new Dog(1, "email1", true, "Nikita", "Black Russian Terrier", 2, true));
+    	dogTestSet.add(new Dog(2, "email1", true, "Tyrion", "German Shepard", 2, false));
+    	dogTestSet.add(new Dog(3, "email1", true, "Blade", "Affenpinscher", 2, true));
+    	dogTestSet.add(new Dog(4, "email1", false, "Yeti", "Beagle", 2, false));
+    	dogTestSet.add(new Dog(5, "email2", true, "Ribena", "Boxer", 2, true));
+    	dogTestSet.add(new Dog(21, "email2", true, "Cookie", "Mix", 2, true));
+    }
+    
     // === GETTERS ===
 
     public static List<User> getUserTestSet() {
@@ -81,6 +93,11 @@ public class MockDataSet {
     public static List<Service> getServiceTestSet() {
         setupServicesTestSet();
         return serviceTestSet;
+    }
+    
+    public static List<Dog> getDogTestSet(){
+    	setupDogTestSet();
+    	return dogTestSet;
     }
     
     public static List<Reservation> getFilteredReservationDataSet(String username) {

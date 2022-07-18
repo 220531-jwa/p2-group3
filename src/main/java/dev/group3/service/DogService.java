@@ -43,26 +43,26 @@ public class DogService {
      * @param token The associated active user session of the requester
      * @return The dog if created successfully, and null otherwise
      */
-    public Dog postCreateNewDog(Dog dogData, String token) {
+    public boolean postCreateNewDog(Dog dogData, String token) {
         log.debug("Attempting to create a dog with dg: " + dogData + " token: " + token);
 
         // Validating inputs
         if (dogData == null || token == null || token.isBlank()) {
             log.error("incoming dogData or token was null or empty string");
-            return null;
+            return false;
         }
         
         // Checking if user is in an active session
         if (!ActiveUserSessions.isActiveUser(token)) {
             log.error("User is not in an active session");
-            return null;
+            return false;
         }
 
         // Attempting to add the dog to the database
-        Dog newdg = dd.createDog(dogData);
+        boolean result = dd.createDog(dogData);
 
-        // Returning the found dog (or null if not found)
-        return newdg;
+        // Returning true if successful (or false if it failed)
+        return result;
     }
 
     /*
@@ -109,7 +109,7 @@ public class DogService {
      * @param token The associated active user session of the requester
      * @return A list of dogs is successful, and null otherwise
      */
-    public List<Dog> getAllDogsByUserId(String userName, String token) {
+    public List<Dog> getAllDogsByUsername(String userName, String token) {
         log.debug("Attempting to get all dogs associated with the given userName: " + userName + " token: " + token);
 
         // Validating input
@@ -125,7 +125,7 @@ public class DogService {
         }
 
         // Attempting to get all the dogs associated with the given username
-        List<Dog> dg = dd.getAllDogsByUserId(userName);
+        List<Dog> dg = dd.getAllDogsByUsername(userName);
 
         // Returning the list of dogs or null if not found
         return dg;
