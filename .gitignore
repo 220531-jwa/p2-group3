@@ -29,6 +29,7 @@ target/
 .project
 connection.properties
 chromedriver.exe
+gechodriver.exe
 /bin/
 /.apt_generated/
 /.apt_generated_tests/
