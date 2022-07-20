@@ -65,25 +65,20 @@ async function getAllDogsByUsername(username,token){
     }
 }
 
-
-async function fetchAllDogs(token) {
-    // Init
-    const url = `${baseDogURL}`;
-
-    // Sending response
-    let response = await fetch(url, {
-        method: "GET",
-        headers: {
-            "Content-Type": "application/json",
-            Token: token,
-        },
-    });
-
-    // Getting data if status is ok
-    let data = null;
-    if (response.status == 200) {
-        data = await response.json();
+async function getAllDogs(token){
+		let response = await fetch(`${baseDogURL}`,{
+		method:'GET',
+		headers: addTokenHeader(baseDogHeaders, token),
+	});
+	
+	if(response.status === 200) {
+		let data = await response.json();
+		let request = data;
+		
+		return request;
+	}
+	else {
+		console.log("There was no data");
+        return null;
     }
-
-    return [response.status, data];
 }

@@ -31,11 +31,29 @@ function setUpNewReservationPage() {
     //     } else {
     //         console.log("Dogs are on the loose!");
     //     }
-    // }
+    }
+async function setUpNewReservationPage() {
+    // Getting user data
+    let userData = getSessionUserData();
+
+    // Getting all the dogs
+    let dogJson = await getAllDogsByUsername(userData.email, userData.pswd);
+
+    // Checking if dog data was retrieved
+    if (dogJson == null) {
+        // Failed to get dog information
+        notInActiveSession();
+    }
+
+    // Populating dog dropdown
+    populateData(dogJson);
 }
+
+/**
+ * Populates the dog drop down with the given dog data
+ * @param {JSON} data The data to populate the dog dropdown
+ */
 function populateData(data) {
-
-
     for (d of data) {
         // Status - Adding current status
         let selectElement = document.getElementById("inputDogName");
@@ -43,17 +61,14 @@ function populateData(data) {
         optionElement.value = d.id;
         optionElement.innerHTML = d.dog_name;
         selectElement.append(optionElement);
-
-        console.log(data)
     }
 }
 
 // Handles when the submit button is clicked
 async function submitReservation() {
     // Init
-    console.log("Submit button clicked");
-    let user = getSessionUserData();
-    const url = `http://localhost:8080/reservations/${user.email}`;
+    let userData = getSessionUserData();
+    const url = `http://localhost:8080/reservations/${userData.email}`;
 
     // Validating reservation input
     if (!validateInput()) {
@@ -63,7 +78,7 @@ async function submitReservation() {
 
     // Getting Reservation input
     const resData = {
-        userEmail: user.email,
+        userEmail: userData.email,
         dogId: document.getElementById("inputDogName").value,
         startDateTime: document.getElementById("inputStartDateTime").value,
         endDateTime: document.getElementById("inputEndDateTime").value,
@@ -76,27 +91,17 @@ async function submitReservation() {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
-            Token: user.pswd,
+            Token: userData.pswd,
         },
         body: resDataJson,
     });
-    //Getting response
+
+    // Getting response
     if (res.status == 200) {
         let data = await res.json();
         console.log(data);
     } else {
         console.log("Failed to create reservation, please try again");
-    }
-
-    console.log("got result");
-    console.log(result);
-
-    // Processing response
-    if (result[0] === 200) {
-        sessionStorage.resData = result[1];
-        location.href = "../html/index.html";
-    } else {
-        document.getElementById("error").innerHTML = "Invalid Reservation Input";
     }
 }
 

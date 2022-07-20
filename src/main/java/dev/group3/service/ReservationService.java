@@ -56,19 +56,72 @@ public class ReservationService {
     public Pair<Reservation, Integer> createReservation(String username, Reservation resData, String token) {
         log.debug("Attempting to create new reservation with username: " + username + " resData: " + resData + " token: " + token);
         
+        //Checking if inputs are null
+    	if (resData == null || token == null || username == null || token.isBlank() || username.isBlank()) {
+    		log.error("Failed to create reservation. Please ensure your information was entered correctly.");
+    		return new Pair<Reservation, Integer>(null, 400);
+    	}
+    	
+    	// Checking if user is in an active session
+        if (!ActiveUserSessions.isActiveUser(token)) {
+            log.error("User is not in an active user session");
+            return new Pair<Reservation, Integer>(null, 401);
+        }
+        
+    	//1- Reviewing if any required fields are null
+    	if (resData.getDogId() == null ||
+    	    resData.getStartDateTime() == null ||
+    	    resData.getEndDateTime() == null) {
+    		log.error("Reservation data is missing a required field. Try again.");
+    		return new Pair<Reservation, Integer>(null, 400);
+    	}
+    	
+    	//2-Making sure resData inputs are valid
+    	if (!isValidDogId(resData.getDogId()) ||
+    		!isValidServiceId(resData.getServiceId())) {
+    		log.error("Invalid input(s) entered. Try again.");
+    		return new Pair<Reservation, Integer>(null, 400);
+    	}
+
+    	//6- Making sure user is authorized to create reservation
+    	String RequestorUser = ActiveUserSessions.getActiveUserUsername(token);
+    	if (!RequestorUser.equals(username)) {
+    		log.error("User is not authorized to create this reservation");
+    		return new Pair<Reservation, Integer>(null, 403);
+    	}
+    	
         // Attempting to create a new reservation
         resData.setStatus(ResStatusType.REGISTERED);
     	Reservation createdReservation = resDAO.createReservation(resData);
+    	
+    	//4 && 5- Making sure dog/user exists--complete
+    	if (createdReservation == null) {
+    	    log.error("User or dog does not exist");
+    		return new Pair<Reservation, Integer>(null, 404);
+    	}
     	
     	// Successfully created new reservation
 		return new Pair<Reservation, Integer>(createdReservation, 200);
     }
     
+	private boolean isValidDogId(Integer dogId) {
+		return !(dogId == null || dogId < 0 || dogId > 2147483647) ;
+	}
+
+    private boolean isValidServiceId(Integer serviceId) {
+    	if (serviceId == null) {
+    		return true;
+    	}
+    	return !(serviceId < 0 || serviceId > 2147483647);
+    	}
+	
     /*
      * === GET / READ ===
      */
     
-    /**
+   
+
+	/**
      * Retrieves all the reservations.
      * Requires a token associated with an active user session to access this service.
      * Authorization:
@@ -165,10 +218,9 @@ public class ReservationService {
         // Checking to make sure the user is authorized to view all reservations
         UserType userType = requesterUser.getUserType();
         List<Reservation> respPair = resDAO.getAllRservationsByUsername(username);
-        
-//        System.out.println(username);
-//        System.out.println(respPair.get(0).getUserEmail());
-        if (userType == UserType.OWNER || username.equals(respPair.get(0).getUserEmail()) ) {
+
+        if (userType == UserType.OWNER || requesterUser.getEmail().equals(respPair.get(0).getUserEmail()) ) {
+
 
             // Attempting to get all reservations associated with username
             
