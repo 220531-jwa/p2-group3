@@ -175,7 +175,7 @@ public class DogDAO {
         
         // Init
         String sql = "select * from dogs where id = ?";
-        Dog dog  = null;
+//        Dog dog  = null;
 
         // Attempting to execute query
         try (Connection conn = cu.getConnection()) {
@@ -186,14 +186,26 @@ public class DogDAO {
             // Checking if dog was found
             if (rs.next()) {
                 // Successfully found dog
-                dog = createDogFromResultSet(rs);
-            }
+//                dog = createDogFromResultSet(rs);
+                Dog dog=  new Dog(
+                        rs.getInt("id"),
+                        rs.getString("user_email"),
+                        rs.getBoolean("status"),
+                        rs.getString("dog_name"),
+                        rs.getString("breed"),
+                        rs.getInt("dog_age"),
+                        rs.getBoolean("vaccinated"));
+            
+            System.out.println(dog);
+            return dog;
+          }
+            
         } catch (SQLException e) {
             log.error("Failed to execute query: " + sql);
             e.printStackTrace();
         }
         
-        return dog;
+        return null;
     }
 
     /*
@@ -226,6 +238,7 @@ public class DogDAO {
             if (rs.next()) {
                 // Dog updated successfully
                 dog = createDogFromResultSet(rs);
+                System.out.println(dog);
             }
         } catch (SQLException e) {
             log.error("Failed to execute query: " + sql);

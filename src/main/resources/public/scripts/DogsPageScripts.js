@@ -4,11 +4,38 @@
 
  
  var alldogs = [];
- var openELDogs = "alldogsTableRow";
+ var openELDogs = "";
  var openTopElDogs = "viewdogsDiv"
- var isEditOpen = "false"
-//  var userDogs = "allDogsByUserNameTableRow"
- var userDogs = "allDogsByUserNameTableCol"
+ var isEditOpenDogs = "false"
+ var userDogs = "allDogsByUserNameTableRow"
+//  var userDogs = "allDogsByUserNameTableCol"
+var alreadySearched = false
+
+
+
+var dog = {
+    id:null,
+	user_email:null,
+	status:null,
+	dog_name:null,
+	breed:null,
+	dog_age:null,
+	vaccinated:null
+
+};
+
+
+
+// THIS UPDATED THE ABOVE OBJECT LITERAL
+async function updateIncomingDogPage(incomingdog) {
+    if (incomingdog) {
+        Object.keys(incomingdog).forEach((key, index) => {
+            
+                dog[key] = incomingdog[key];
+            
+        });
+    }
+}
 
  
 async function setupDogs(seshToken,userType){
@@ -37,7 +64,7 @@ async function setupDogs(seshToken,userType){
          document.getElementById("allDogsButtnCol").classList.toggle("off")
         //  document.getElementById("allDogsByUserNameTableRow").classList.toggle("off")
 
-        var openELDogs = "allDogsByIDCol";
+        openELDogs = "allDogsTableRow";
      }
  
  
@@ -50,9 +77,9 @@ async function setupDogs(seshToken,userType){
  
  function topLvlButtonsHandlerDogs(e){
  
-     let elid = e.target.id;
+     let eliddog = e.id;
  
-     elid = elid.replace("_butt","");
+     eliddog = eliddog.replace("_butt","");
      let viewdogsDiv = document.getElementById("viewdogsDiv");
      let createNewdogDiv = document.getElementById("createNewdogDiv");
  
@@ -65,44 +92,51 @@ async function setupDogs(seshToken,userType){
          
      }
  
-     let eltochange = document.getElementById(elid);
+     let eltochange = document.getElementById(eliddog);
      
     
      eltochange.classList.toggle("off")
-     openTopElDogs = elid;
+     openTopElDogs = eliddog;
  
  }
  
  
  function testLvlButtonsHandlerDogs(e){
  
-     let elid = e.id;
- 
-     elid = elid.replace("_butt","");
+     let eliddog = e.id;
+     eliddog = eliddog.replace("_butt","");
  
  
      
-     let alldogsTableCol = document.getElementById("alldogsTableRow");
+    //  let alldogsTableCol = document.getElementById("alldogsTableRow");
      let alldogsByUserNameTableRow = document.getElementById("alldogsByUserNameTableRow");
      let alldogsByUserNameTableCol = document.getElementById("getdogByIdRow");
+
+     console.log(openELDogs)
+     console.log(eliddog)
  
-    if(openELDogs === elid){
+    if(openELDogs == eliddog){
         
     }else{
 
-        if(openELDogs === "alldogsTableRow"){
-            alldogsTableCol.classList.toggle("off");
-    
-        }else if(openELDogs === "alldogsByUserNameTableRow"){
-            alldogsByUserNameTableRow.classList.toggle("off");
-        }else if(openELDogs ==="getdogByIdRow"){
-            alldogsByUserNameTableCol.classList.toggle("off");
-        }
 
-        let eltochange = document.getElementById(elid);
+        // let initDivToClose = document.getElementById(openELDogs)
+        // initDivToClose.classList.toggle("off");
+        // if(openELDogs == "alldogsTableRow"){
+        //     alldogsTableCol.classList.toggle("off");
+    
+        // }else if(openELDogs == "alldogsByUserNameTableRow"){
+        //     alldogsByUserNameTableRow.classList.toggle("off");
+        // }else if(openELDogs =="getdogByIdRow"){
+        //     alldogsByUserNameTableCol.classList.toggle("off");
+        // }
+        let initialEltochange = document.getElementById(openELDogs);
+        initialEltochange.classList.toggle("off")
+
+        let eltochange = document.getElementById(eliddog);
         
         eltochange.classList.toggle("off")
-        openELDogs = elid;
+        openELDogs = eliddog;
 
     }
  
@@ -118,8 +152,9 @@ async function setupDogs(seshToken,userType){
      let alldogsTableCol = document.getElementById("alldogsTableCol");
  
      // PULL IN ALL dogS
-    //  let dogs = await getAlldogs(seshToken);
-    let dogs = [];
+     let dogs = await fetchAllDogs(seshToken);
+    //  username, id, token
+    // let dogs = [];
      alldogs = dogs
  
      // Passing to create table function to create the table append to appropriate place.
@@ -133,7 +168,7 @@ async function setupDogs(seshToken,userType){
  
 
      let alldogsByUserNameTableCol = document.getElementById(userDogs);
-     console.log(alldogsByUserNameTableCol)
+    //  console.log(alldogsByUserNameTableCol)
      
      // PULL IN ALL dogS
      let allAllDogsByUsername = await getAllDogsByUsername(username, seshToken);
@@ -150,96 +185,152 @@ async function setupDogs(seshToken,userType){
  
  
  
- async function setUpdogById(seshToken,username){
- 
-     let alldogsByUserNameTableCol = document.getElementById("getdogByIdTableCol");
-     let res_id = document.getElementById("req_id_box").value
-     
-     // PULL IN ALL dogS
-     let requesteddog = await fetchGetdogById(username,res_id, seshToken);
- 
-     await updateIncomingdogPage(requesteddog);
-     
- 
-     let tbl = document.createElement("table");
-     let tblHead = document.createElement("thead");
-     let tblHdrRow = document.createElement("tr");
- 
-     tbl.className="table";
- 
- 
-     let newHdr = ""
-     let r = 0;
- 
-     //  Appending Table Headers to Table.
-     for(dogProp in dog){
-         let tblHdr = document.createElement("th")
-         let dogPropStrng = dogProp.toString();
- 
-         newHdr = dogPropStrng
-         tblHdr.scope = "col"
-         tblHdr.innerText = newHdr
-         tblHdrRow.append(tblHdr);
- 
-         
- 
-         if(r===5){
-             let editHdr = document.createElement("th");
-             editHdr.scope="col";
-             editHdr.innerText = "Edit";
-             tblHdrRow.append(editHdr);
-         }
- 
-         r++
-     
-     }
- 
-     
-     
-     tblHead.append(tblHdrRow)
- 
- 
-     //CREATING TABLE BODY
-     let tbleBody = document.createElement("tbody");
-     let reqRow = document.createElement("tr");
-     let reqTdID = document.createElement("td");
-     let reqTduserEmail = document.createElement("td");
-     let reqTddogId = document.createElement("td");
-     let reqTdstatus = document.createElement("td");
-     let reqTdstartDateTime = document.createElement("td");
-     let reqTdendDateTime = document.createElement("td");
-     let buttTd = document.createElement("td");
-     let buttn = document.createElement("button");
- 
-     // ASSIGNING ATTRIBUTES TO BUTTON
-     buttn.type = "button";
-     buttn.className = "btn editButt";
-     buttn.innerText = "Edit";
-     buttTd.append(buttn);
+ async function setUpdogByIdAgain(seshToken,username){
+    
+    console.log("I ran")
+    let dogIdtblediv = document.createElement("div")
+    let getDogByIdTableCol = document.getElementById("getDogByIdTableCol");
+    let dog_id = document.getElementById("dog_req_id_box").value
+    
+    let userName = user.email
+    let token = user.pswd
+    // PULL IN ALL dogS
+    let requesteddog = await fetchGetDogById(userName,dog_id, token);
+    requesteddog = requesteddog[1]
+    await updateIncomingDogPage(requesteddog);
+    
+    if(alreadySearched ==true){
+        let removeObj = document.getElementById("dogbyIdTable")
+        getDogByIdTableCol.removeChild(removeObj)
+    }
+
+    let tbl = document.createElement("table");
+    let tblHead = document.createElement("thead");
+    let tblHdrRow = document.createElement("tr");
+
+    tbl.className="table";
+    dogIdtblediv.id="dogbyIdTable"
+
+
+    let newHdr = ""
+    let r = 0;
+
+
+    
+
+    //  Appending Table Headers to Table.
+    for(dogProp in dog){
+        let tblHdr = document.createElement("th")
+        let dogPropStrng = dogProp.toString();
+
+        newHdr = dogPropStrng
+        tblHdr.scope = "col"
+        tblHdr.innerText = newHdr
+        tblHdrRow.append(tblHdr);
+
         
-     
- 
-     reqTdID.innerText = reservation.id;
-     reqTduserEmail.innerText = reservation.userEmail;
-     reqTddogId.innerText = reservation.dogId;
-     reqTdstatus.innerText = reservation.status;
-     reqTdstartDateTime.innerText = reservation.startDateTime;
-     reqTdendDateTime.innerText = reservation.endDateTime;
- 
-     reqRow.append(reqTdID);
-     reqRow.append(reqTduserEmail);
-     reqRow.append(reqTddogId);
-     reqRow.append(reqTdstatus);
-     reqRow.append(reqTdstartDateTime);
-     reqRow.append(reqTdendDateTime);
-     reqRow.append(buttTd);
- 
-     tbleBody.append(reqRow)
-     tbl.append(tblHead)
-     tbl.append(tbleBody);
-     alldogsByUserNameTableCol.append(tbl)
- 
- }
+
+        if(r===8){
+            let editHdr = document.createElement("th");
+            editHdr.scope="col";
+            editHdr.innerText = "Edit";
+            tblHdrRow.append(editHdr);
+        }
+
+        r++
+    
+    }
+
+    
+    
+    tblHead.append(tblHdrRow)
+
+
+    let tbleBody = document.createElement("tbody");
+
+    // for (x = 0; x <= allReservations.length - 1; x++) {
+        let reqRow = document.createElement("tr");
+        w = 0;
+
+        // await updateIncomingReservationPage(allReservations[x]);
+
+        // for (key in allSessionCustomerResVations[x]) {
+
+        for (key in dog) {
+            let reqTd = document.createElement("td");
+
+            reqTd.innerText = dog[key];
+            reqRow.append(reqTd);
+
+            if (w === 8) {
+                let buttTd = document.createElement("td");
+                let buttn = document.createElement("button");
+                buttn.type = "button";
+                buttn.className = "btn editButt";
+                buttn.id = dog.id + "_edit";
+                buttn.onclick = () => {
+                    // let reserv_id = e.target.id;
+                    let reserve_id = buttn.id;
+                    reserve_id = reserve_id.replace("_edit", "");
+                    let sesh = user.pswd
+                    editButtonHandler(user.email,reserve_id, sesh);
+                    // document.getElementById("viewReservationsDivTop").classList.toggle("off")
+                };
+                buttn.innerText = "Edit";
+                buttTd.append(buttn);
+                reqRow.append(buttTd);
+            }
+
+            w++;
+        }
+
+        tbleBody.append(reqRow);
+    // }
+
+
+    //CREATING TABLE BODY
+    // let tbleBody = document.createElement("tbody");
+    // let reqRow = document.createElement("tr");
+    // let reqTdID = document.createElement("td");
+    // let reqTduserEmail = document.createElement("td");
+    // let reqTddogId = document.createElement("td");
+    // let reqTdstatus = document.createElement("td");
+    // let reqTdstartDateTime = document.createElement("td");
+    // let reqTdendDateTime = document.createElement("td");
+    // let buttTd = document.createElement("td");
+    // let buttn = document.createElement("button");
+
+    // ASSIGNING ATTRIBUTES TO BUTTON
+    // buttn.type = "button";
+    // buttn.className = "btn editButt";
+    // buttn.innerText = "Edit";
+    // buttTd.append(buttn);
+       
+    
+
+    // reqTdID.innerText = reservation.id;
+    // reqTduserEmail.innerText = reservation.userEmail;
+    // reqTddogId.innerText = reservation.dogId;
+    // reqTdstatus.innerText = reservation.status;
+    // reqTdstartDateTime.innerText = reservation.startDateTime;
+    // reqTdendDateTime.innerText = reservation.endDateTime;
+
+    // reqRow.append(reqTdID);
+    // reqRow.append(reqTduserEmail);
+    // reqRow.append(reqTddogId);
+    // reqRow.append(reqTdstatus);
+    // reqRow.append(reqTdstartDateTime);
+    // reqRow.append(reqTdendDateTime);
+    // reqRow.append(buttTd);
+
+    // tbleBody.append(reqRow)
+    tbl.append(tblHead)
+    tbl.append(tbleBody);
+    dogIdtblediv.appendChild(tbl)
+    getDogByIdTableCol.appendChild(dogIdtblediv)
+    alreadySearched = true;
+
+}
  
  
  
@@ -270,7 +361,7 @@ async function setupDogs(seshToken,userType){
                  tblHdr.scope = "col"
                  tblHdr.innerText = newHdr
                  tblHdrRow.append(tblHdr);
-                 if(r===5){
+                 if(r===6){
                      let editHdr = document.createElement("th");
                      editHdr.scope="col";
                      editHdr.innerText = "Edit";
@@ -300,7 +391,7 @@ async function setupDogs(seshToken,userType){
              reqTd.innerText = Object.values(dog)[key];
              reqRow.append(reqTd);
  
-             if(w===5){
+             if(w===6){
  
                  let buttTd = document.createElement("td")
                  let buttn = document.createElement("button");
@@ -335,15 +426,15 @@ async function setupDogs(seshToken,userType){
  }
  
  
- async function openEditdog(reser){
+ async function openEditdog(){
  
      console.log("i ran to open edit res")
      let editdogRow = document.getElementById('editdogRow');
-     let divToShowOrHide = document.getElementById(openEL);
+     let divToShowOrHide = document.getElementById(openELDogs);
  
-     // if(isEditOpen){
+     
          editdogRow.classList.toggle("off");
          divToShowOrHide.classList.toggle("off");
-     // }
+    
  
  }

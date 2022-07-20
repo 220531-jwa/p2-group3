@@ -19,6 +19,7 @@ public class Driver {
     public static void main(String[] args) {
         // Init server
         Javalin app = Javalin.create(config -> {
+        	
             config.addStaticFiles("/public", Location.CLASSPATH);
         });
 

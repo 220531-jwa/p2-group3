@@ -46,17 +46,20 @@ async function getAllReservations(token) {
 }
 
 async function getAllRservationsByUsername(username, token) {
+    
+    let newtoken = getSessionUserData().pswd;
+    console.log(token);
     let response = await fetch(`${baseURLReservations}/${username}`, {
         method: "GET",
-        header: {
+        headers: {
             "Content-Type": "application/json",
-            Token: token,
+            Token: newtoken,
         },
         // header:{'cors':'no-cors'},
     });
 
     if (response.status === 200) {
-        let data = await await response.json();
+        let data = await response.json();
         let request = data;
 
         return request;

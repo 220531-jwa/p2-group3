@@ -1,31 +1,37 @@
 //EVENT LISTENERS
 window.onload = setUpNewReservationPage();
+
+let allUserDogs = [];
+
 function setUpNewReservationPage() {
     let user = getSessionUserData();
-    getAllDogsByUsername(user.email, user.pswd);
+    let dadogs = await getAllDogsByUsername(user.email, user.pswd);
+    console.log(dadogs)
+
     //now get users dogs
     //sending get request to API and waiting for response to be returned and printing response to dropdown list
-    async function getAllDogsByUsername(user, token) {
-        console.log(inputDogName);
-        let url = `http://localhost:8080/dogs/${user}`;
-        let res = await fetch(url, {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json",
-                Token: token,
-            },
-        });
+    
+    // async function getAllDogsByUsername(user, token) {
+    //     console.log(inputDogName);
+    //     let url = `http://localhost:8080/dogs/${user}`;
+    //     let res = await fetch(url, {
+    //         method: "GET",
+    //         headers: {
+    //             "Content-Type": "application/json",
+    //             Token: token,
+    //         },
+    //     });
 
-        let result = await Response.json();
+    //     let result = await Response.json();
 
-        if (res.status == 200) {
-            let data = await res.json();
-            console.log(data);
-            populateData(data);
-        } else {
-            console.log("Dogs are on the loose!");
-        }
-    }
+    //     if (res.status == 200) {
+    //         let data = await res.json();
+    //         console.log(data);
+    //         populateData(data);
+    //     } else {
+    //         console.log("Dogs are on the loose!");
+    //     }
+    // }
 }
 function populateData(data) {
 

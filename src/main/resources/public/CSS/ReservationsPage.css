@@ -1,4 +1,4 @@
-#main{
+#resmain{
     /* width:75%; */
     /* left:25%; */
     /* margin-left:25%; */
@@ -9,9 +9,9 @@
 
 
 #topLvlButtsCont{
-    background-color: aqua;
-    margin-top:5vh;
-    margin-bottom:5vh;
+    /* background-color: aqua; */
+    margin-top:2vh;
+    margin-bottom:3vh;
     /* margin-left:25vh; */
     /* margin-right:25vh; */
 }

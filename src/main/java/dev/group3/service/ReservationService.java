@@ -138,7 +138,8 @@ public class ReservationService {
     public Pair<List<Reservation>, Integer> getAllReservationsByUsername(String username, String token) {
     	
         log.debug("Attemtping to get all reservations associated with username: " + username + " token: " + token);
-
+        
+        
         // Validating input
         if (username == null || token == null || username.isBlank() || token.isEmpty()) {
             log.error("incoming username or token was null or empty string");
@@ -164,7 +165,10 @@ public class ReservationService {
         // Checking to make sure the user is authorized to view all reservations
         UserType userType = requesterUser.getUserType();
         List<Reservation> respPair = resDAO.getAllRservationsByUsername(username);
-        if (userType == UserType.OWNER || requesterUser.getEmail() == respPair.get(0).getUserEmail() ) {
+        
+//        System.out.println(username);
+//        System.out.println(respPair.get(0).getUserEmail());
+        if (userType == UserType.OWNER || username.equals(respPair.get(0).getUserEmail()) ) {
 
             // Attempting to get all reservations associated with username
             
@@ -240,7 +244,7 @@ public class ReservationService {
             
            
         	
-        	if(userType == UserType.OWNER || requesterUserName == userName) {
+        	if(userType == UserType.OWNER || requesterUserName.equals(userName)) {
         		 System.out.println("Here is username "+userName);
                  System.out.println("Here is userType "+userType);
                  

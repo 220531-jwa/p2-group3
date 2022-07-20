@@ -1,23 +1,19 @@
-#main{
-    /* width:75%; */
-    /* left:25%; */
-    /* margin-left:25%; */
-    /* margin-top:18vh; */
+#dogmain{
+   
     border:black solid 2px;
     
 }
 
 
 #dogtopLvlButtsCont{
-    background-color: aqua;
-    margin-top:5vh;
-    /* margin-left:25vh; */
-    /* margin-right:25vh; */
+    /* background-color: aqua; */
+    margin-top:2vh;
+    margin-bottom:3vh;
 }
 
 #dogtestLvlButtsCont{
     background-color: green;
-    margin-top:5vh;
+    /* margin-top:5vh; */
     margin-bottom: 5vh;
     /* margin-left:25vh; */
     /* margin-right:25vh; */

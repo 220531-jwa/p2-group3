@@ -86,6 +86,7 @@ public class ReservationController {
 
         // Getting user input
         String userName = ctx.pathParam("username");
+//        String userName = ctx.queryParam("username");
         String token = ctx.header("Token");
 
         // Attempting to get reservations associated with the given username
@@ -180,7 +181,7 @@ public class ReservationController {
 
         // Checking if reservation was returned
         if (result.getFirst() != null) {
-            log.info("Successfully updated reservation");
+            log.info("Successfully updated reservations");
             ctx.json(result.getFirst());
         }
 

@@ -61,7 +61,7 @@ const CustomerTopNav = ` <nav class="navbar navbar-expand-lg bg-dark fixed-top">
 //   <!-- Side navigation -->
 const customerSideNavdos = `<div class="sidenav">
       <div class="container">
-        <h6>customer</h6>
+        <h6 style="color:lightgray">-Customer-</h6>
       </div>
       <div class="container">
         <div  class="row"  >
@@ -77,7 +77,7 @@ const customerSideNavdos = `<div class="sidenav">
 
 const ownerSideNavdos = `<div class="sidenav">
     <div class="container">
-      <h6>Owner</h6>
+      <h6 style="color:lightgray">-Owner-</h6>
     </div>
     <div class="container">
       <div  class="row"  >
