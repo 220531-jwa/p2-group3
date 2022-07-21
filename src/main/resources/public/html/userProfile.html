@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile</title>
+    <!-- CSS only -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+</head>
+<body>
+    <div class="container bg-light">
+        <h1 id="UPUpperBar" class="mb-4 bg-dark">#</h1>
+        <h1 id="UPtitle" class="mb-4">New User:</h1>
+        <div id="userProfileError" style="Color: red"></div>
+        <form id="userProfileForm">
+            <hr>
+            <p><b>User Information</b></p>
+            <div class="form-group row mb-4">
+                <div class="col">
+                    <div id="UPinputEmailError" style="color: red"></div>
+                    <lable style="display: block" for="UPinputEmail">Email:</lable>
+                    <input id="UPinputEmail" class="input readOnly" type="text">
+                </div>
+                <div class="col user">
+                    <div id="UPinputPasswordError" style="color: red"></div>
+                    <lable id="UPinputPasswordLabel" style="display: block" for="UPinputPassword">Password:</lable>
+                    <input id="UPinputPassword" class="input update" type="password">
+                </div>
+            </div>
+            <div class="form-group row mb-4">
+                <div class="col">
+                    <div id="UPinputFirstNameError" style="color: red"></div>
+                    <lable style="display: block" for="UPinputFirstName">First Name:</lable>
+                    <input id="UPinputFirstName" class="input update" type="text">
+                </div>
+                <div class="col">
+                    <div id="UPinputLastNameError" style="color: red"></div>
+                    <lable style="display: block" for="UPinputLastName">Last Name:</lable>
+                    <input id="UPinputLastName" class="input update" type="text">
+                </div>
+            </div>
+            <div class="form-group row mb-4">
+                <div class="col">
+                    <div id="UPinputPhoneNumberError" style="color: red"></div>
+                    <lable style="display: block" for="UPinputFirstName">Phone Number:</lable>
+                    <input id="UPinputPhoneNumber" class="input update" type="text">
+                </div>
+                <div class="col user">
+                    <div id="UPinputFundsError" style="color: red"></div>
+                    <lable style="display: block" for="UPinputFunds">Funds:</lable>
+                    <input id="UPinputFunds" type="number" class="input readOnly" min="0" max="9999.99" step="any" placeholder="$0.00">
+                </div>
+            </div>
+        </form>
+        <div class="row">
+            <div class="col">
+                <button id="userProfileBackBtn" class="btn btn-primary mb-4" type="button">Back</button>
+            </div>
+            <div class="col text-end">
+                <button id="userProfileSubmitBtn" class="btn btn-primary mb-4" type="button">Submit</button>
+            </div>
+        </div>
+        <h1 id="UPLowerBar" class="mb-4 bg-dark">#</h1>
+    </div>
+
+    <!-- JavaScript Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
+    <script src="../scripts/Apis/UserApi.js"></script>
+    <script src="../scripts/util.js"></script>
+    <script src="../scripts/userProfile.js"></script>
+    
+</body>
+</html>

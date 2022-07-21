@@ -1,18 +1,28 @@
 package dev.group3.service;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Stream;
 
 import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import dev.group3.model.Dog;
+import dev.group3.model.User;
 import dev.group3.repo.DogDAO;
+import dev.group3.util.ActiveUserSessions;
+import dev.group3.util.MockDataSet;
 import kotlin.Pair;
 
 @ExtendWith(MockitoExtension.class)
@@ -20,27 +30,55 @@ import kotlin.Pair;
 public class DogServiceTests {
 	
 	
-	// MOCKING THE DOG SERVICE LAYER
-	@InjectMocks
+	// Init
 	private static DogService dogService;
 	
-	@Mock
+	//Mock DAO
 	private static DogDAO mockDogDao;
 	
-	
+	//Mocking Database Data
+	private static List<Dog> mockDogs;
+	private static List<User> mockUsers;
 	@BeforeAll
-	static void setUp() {
-		
+	public static void setUp() {
+		mockDogDao = mock(DogDAO.class);
 		dogService = new DogService(mockDogDao);
-		
+		refreshMockData();
 	}
 	
-	@AfterAll
-	static void tearDown() {
-		
+	@AfterEach
+	public void tearDown() {
+		ActiveUserSessions.clearAllActiveSessions();
+		refreshMockData();
 	}
 	
+    /*
+     * === SETUP UTILITY ===
+     */
+    
+    public static void refreshMockData() {
+        // Getting refreshed mock data
+        mockDogs = MockDataSet.getDogTestSet();
+        mockUsers = MockDataSet.getUserTestSet();
+    }
 	
+	public static Stream<Dog> dogStream(){
+		return mockDogs.stream();
+	}
+	public static Stream<User> userStream(){
+		return mockUsers.stream();
+	}
+	
+	public static List<Dog> userDogs(User user){
+		List<Dog> userDogs = new ArrayList<>();
+		for (int i = 0; i < mockDogs.size(); i++) {
+			if(mockDogs.get(i).getUser_email() == user.getEmail()) {
+				userDogs.add(mockDogs.get(i));
+			}
+		}
+		
+		return userDogs;
+	}
 	
 	/**
 	 * POST
@@ -49,18 +87,15 @@ public class DogServiceTests {
 	
 	
 	// RETURNS DOG IF CREATED RETURNS NULL IF NOT CREATED
-	@Test
-	public static Pair<Dog,String> postCreateNewDog(Dog dg) {
-		
-		Pair<Dog,String> dgPair = new Pair<Dog,String>(null,null);
+    @ParameterizedTest
+    @MethodSource("dogStream")
+	public void postCreateNewDogTest(Dog dg) {
+    	when(mockDogDao.createDog(dg)).thenReturn(true);
+		String token = ActiveUserSessions.addActiveUser("email1");
+		boolean result = dogService.postCreateNewDog(dg, token);
 
-//		Pair<Dog,String> dgPair = dd.postCreateNewDog(dg);
-
-		
-		
-		return dgPair;
+		assertEquals(true, result);
 	}
-	
 	
 	
 	
@@ -72,39 +107,39 @@ public class DogServiceTests {
 	
 	// RETURNS ALL DOGS FROM DB  --> FOR THE OWNER
 	@Test
-	public static  List<Dog> getAllDogs() {
+	public void getAllDogsTest() {
+		when(mockDogDao.getAllDogs()).thenReturn(mockDogs);
+		String token = ActiveUserSessions.addActiveUser("email1");
+		List<Dog> lstDogs = dogService.getAllDogs(token);
 		
-		List<Dog> lstDogs = new ArrayList<>();
-		
-//		Dog dg = dd.getAllDogs();
-		
-		return lstDogs;
+		assertEquals(mockDogs, lstDogs);
 	}
 	
 	
 	
 	// RETURNS ONE DOG BY ID --> STORE OWNER AND CLIENT
-	@Test
-	public static List<Dog> getAllDogsByUserId(int userName) {
+    @ParameterizedTest
+    @MethodSource("dogStream")
+	public void getAllDogsByUsernameTest(int userName) {
 		Dog dg = new Dog();
 		List<Dog> lstDogs = new ArrayList<>();
 		
-//			Dog dg = dd.getAllDogsByUserId(userName);
+
 		
-		
-		return lstDogs;
+
 	}
 	
 	
 	// RETURNS ONE DOG BY ID
-	@Test
-	public static Dog getDogById(int dogId) {
-		Dog dg = new Dog();
+    @ParameterizedTest
+    @MethodSource("userStream")
+	public void getDogsByUsernameTest(User user) {
+    	
+		when(mockDogDao.getAllDogsByUsername(user.getEmail())).thenReturn(userDogs(user));
+		String token = ActiveUserSessions.addActiveUser("email1");
+		List <Dog> dg = dogService.getAllDogsByUsername(user.getEmail(), token);
 		
-//			Dog dg = dd.getDogByID(dogId);
-		
-		
-		return dg;
+		assertEquals(userDogs(user), dg);
 	}
 	
 	
@@ -124,15 +159,10 @@ public class DogServiceTests {
 	 */
 	
 	@Test
-	public static Pair<Dog,String> patchUpdateDog(Dog dg) {
+	public void patchUpdateDog(Dog dg) {
 		
-		Pair<Dog,String> dgPair = new Pair<Dog,String>(null,null);
 
-//		Pair<Dog,String> dgPair = dd.patchUpdateDog(dg);
 
-		
-		
-		return dgPair;
 	}
 	
 	
@@ -143,15 +173,9 @@ public class DogServiceTests {
 	 */
 	
 	@Test
-	public static String deleteDog(int dogId) {
+	public void deleteDog() {
 		
-		String dogDeleted = "";
 
-//		String dogDeleted = = dd.deleteDog(dogId);
-
-		
-		
-		return dogDeleted;
 	}
 
 	

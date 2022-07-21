@@ -47,6 +47,7 @@ create table if not exists reservations (
 	id serial primary key,
 	user_email varchar references users(email),
 	dog_id int references dogs(id),
+	service_id int references services(id),
 	status varchar,				-- Registered, checkedin, finished, Cancelled
 	start_datetime timestamp,
 	end_datetime timestamp
@@ -107,23 +108,23 @@ insert into services values
 
 insert into reservations values
 -- Current day (7 dogs)
-(default,	'email1',	1,	'REGISTERED',	'2022-07-01 9:00:00',	'2022-07-01 11:00:00'),
-(default,	'email1',	2,	'REGISTERED',	'2022-07-01 9:00:00',	'2022-07-01 11:00:00'),
-(default,	'email2',	5,	'CHECKEDIN',	'2022-07-01 9:00:00',	'2022-07-01 11:00:00'),
-(default,	'email3',	7,	'CHECKEDIN',	'2022-07-01 9:00:00',	'2022-07-01 11:00:00'),
-(default,	'email3',	8,	'CANCELLED',	'2022-07-01 9:00:00',	'2022-07-01 11:00:00'),
-(default,	'dogLover',	10,	'CHECKEDOUT',	'2022-07-01 9:00:00',	'2022-07-01 11:00:00'),
-(default,	'dogLover',	11,	'REGISTERED',	'2022-07-01 9:00:00',	'2022-07-01 11:00:00'),
+(default,	'email1',	1,	null,	'REGISTERED',	'2022-07-01 9:00:00',	'2022-07-01 11:00:00'),
+(default,	'email1',	2,	2,		'REGISTERED',	'2022-07-01 9:00:00',	'2022-07-01 11:00:00'),
+(default,	'email2',	5,	3,		'CHECKEDIN',	'2022-07-01 9:00:00',	'2022-07-01 11:00:00'),
+(default,	'email3',	7,	null,	'CHECKEDIN',	'2022-07-01 9:00:00',	'2022-07-01 11:00:00'),
+(default,	'email3',	8,	null,	'CANCELLED',	'2022-07-01 9:00:00',	'2022-07-01 11:00:00'),
+(default,	'dogLover',	10,	4,		'CHECKEDOUT',	'2022-07-01 9:00:00',	'2022-07-01 11:00:00'),
+(default,	'dogLover',	11,	5,		'REGISTERED',	'2022-07-01 9:00:00',	'2022-07-01 11:00:00'),
 -- Past days
-(default,	'dogLover',	12,	'CHECKEDOUT',	'2022-06-01 9:00:00',	'2022-06-01 11:00:00'),
-(default,	'dogLover',	13,	'CHECKEDOUT',	'2022-06-01 9:00:00',	'2022-06-01 11:00:00'),
-(default,	'dogLover',	14,	'CHECKEDOUT',	'2022-06-01 9:00:00',	'2022-06-01 11:00:00'),
-(default,	'dogLover',	15,	'CHECKEDOUT',	'2022-06-01 9:00:00',	'2022-06-01 11:00:00'),
-(default,	'dogLover',	16,	'CHECKEDOUT',	'2022-06-01 9:00:00',	'2022-06-01 11:00:00'),
-(default,	'dogLover',	17,	'CHECKEDOUT',	'2022-06-01 9:00:00',	'2022-06-01 11:00:00'),
-(default,	'dogLover',	18,	'CHECKEDOUT',	'2022-06-01 9:00:00',	'2022-06-01 11:00:00'),
-(default,	'dogLover',	19,	'CHECKEDOUT',	'2022-06-01 9:00:00',	'2022-06-01 11:00:00'),
-(default,	'dogLover',	20,	'CHECKEDOUT',	'2022-06-01 9:00:00',	'2022-06-01 11:00:00');
+(default,	'dogLover',	12,	2,		'CHECKEDOUT',	'2022-06-01 9:00:00',	'2022-06-01 11:00:00'),
+(default,	'dogLover',	13,	3,		'CHECKEDOUT',	'2022-06-01 9:00:00',	'2022-06-01 11:00:00'),
+(default,	'dogLover',	14,	4,		'CHECKEDOUT',	'2022-06-01 9:00:00',	'2022-06-01 11:00:00'),
+(default,	'dogLover',	15,	5,		'CHECKEDOUT',	'2022-06-01 9:00:00',	'2022-06-01 11:00:00'),
+(default,	'dogLover',	16,	null,	'CHECKEDOUT',	'2022-06-01 9:00:00',	'2022-06-01 11:00:00'),
+(default,	'dogLover',	17,	2,		'CHECKEDOUT',	'2022-06-01 9:00:00',	'2022-06-01 11:00:00'),
+(default,	'dogLover',	18,	2,		'CHECKEDOUT',	'2022-06-01 9:00:00',	'2022-06-01 11:00:00'),
+(default,	'dogLover',	19,	3,		'CHECKEDOUT',	'2022-06-01 9:00:00',	'2022-06-01 11:00:00'),
+(default,	'dogLover',	20,	null,	'CHECKEDOUT',	'2022-06-01 9:00:00',	'2022-06-01 11:00:00');
 
 insert into transactions values
 -- Current day
@@ -151,6 +152,11 @@ insert into transactions values
 --select * from services;
 --select * from reservations;
 --select * from transactions;
+--
+----Select all dog names of a specific user
+--select dog_name
+--from users, dogs d
+--where users.email = d.user_email;
 --
 ---- All dogs of user (gives back all dog infromation related to user)
 --select d.*
