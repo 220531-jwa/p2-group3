@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+     <!-- CSS only -->
+     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+    <link href="../CSS/dogPage.css" rel="stylesheet">
+    <link href="../CSS/NavBars/SideBarNav.css" rel="stylesheet">
+    <link href="../CSS/NavBars/TopNavBar.css" rel="stylesheet">
+    <title>Reservations</title>
+</head>
+<body>
+    <div id="dogmain">
+
+        <div id="dogtopLvlButtsCont" class="container">
+            <div class="row">
+                <div class="col-6 col-sm-6">
+                    <button id="viewDogsDiv_butt" type="button" class="btn btn-primary" onclick="topLvlButtonsHandlerDogs(event.target)">View All Your Dogs</button>
+                </div>
+                <div class="col-6 col-sm-6">
+                    <button id="createNewDogDiv_butt" type="button" class="btn btn-primary" onclick="topLvlButtonsHandlerDogs(event.target)">Book New Dog</button>
+                </div>
+            </div>
+
+        </div>
+        <div id="dogtestLvlButtsCont" class="container" >
+            <div class="row">
+                <div id="allDogsButtnCol" class="col-6 col-sm-6 off">
+                    <button id="allDogsTableRow_butt" type="button" class="btn btn-primary" onclick="testLvlButtonsHandlerDogs(event.target)">test get all Dogs</button>
+                </div>
+                <div id="allDogsByuserNameCol" class="col-6 col-sm-6 off">
+                    <button id="allDogsByUserNameTableRow_butt" type="button" class="btn btn-primary" onclick="testLvlButtonsHandlerDogs(event.target)">Get Dog by Username</button>
+                </div>
+                <div id="allDogsByIDCol" class="col-6 col-sm-6">
+                    <button id="getDogByIdRow_butt" type="button" class="btn btn-primary" onclick="testLvlButtonsHandlerDogs(event.target)">test get Dog by id</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="viewDogsDiv" class="container">
+
+            <div id="allDogsTableRow" class="row tableHolder off">
+                <div class="row">
+                    <div class="col-12 col-sm-12" style="margin-bottom: 3vh;">
+                        <h4 style="text-align:center; width: 100%;">All Dogs</h4>
+                    </div>
+                </div>
+                
+                <div id="alldogsTableCol" class="col-12 col-sm-12">
+                </div>
+            </div>
+
+            <div id="allDogsByUserNameTableRow" class="row tableHolder off">
+                <div class="row">
+                    <div class="col-12 col-sm-12" >
+                        <h4 style="text-align:center; width: 100%;">All By User Name</h4>
+
+                    </div>
+                </div>
+                <div id="allDogsByUserNameTableCol" class="col-12 col-sm-12">
+                </div>
+            </div>
+
+            <div id="getDogByIdRow" class="row tableHolder off">
+                <div id="getDogByIdTop" class="col-12 col-sm-12">
+                    <div class="row">
+                        <div class="col-12 col-sm-12" >
+                            <h4 style="text-align:center; width: 100%;">Get Dog By ID</h4>
+    
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-2 col-sm-2" style="padding:4vh">
+                            <label for="dog_req_id_box" style="float:right">Enter the Id of your dog</label>
+                        </div>
+                        <div class="col-2 col-sm-2" style="padding:4vh">
+                            <input id="dog_req_id_box" type="number">
+                        </div>
+                        <div class="col-2 col-sm-2" style="padding:4vh">
+                            <button id="doggetreqbutt" class="btn btn-primary" type="button" style="float:left" onclick="setUpdogByIdAgain()">Get Request</button>
+                        </div>
+                        <div class="col-6 col-sm-6" style="padding:4vh">
+                            <!-- <button id="getreqbutt" class="btn btn-primary" type="button" style="float:left">Get Request</button> -->
+                        </div>
+
+                    </div>
+                    <hr>
+
+                    <div class="row">
+                        <div id="getDogByIdTableCol" class="col-12 col-sm-12">
+                            <!-- <table class="table">
+                                <tr>
+                                    <thead>
+                                        <th scope="col">Hi there</th>
+                                        <th scope="col">yello</th>
+                                    </thead>
+                                </tr>
+                            </table> -->
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div id="editDogRow" class="row tableHolder off">
+                <div id="editDogCol" class="col-12 col-sm-12" style="margin-bottom: 3vh;">
+
+                    <div class="container bg-light">
+                        <h1 id="dogtitle" class="mb-4">Edit Dog:</h1>
+                        <div id="dogerror" style="Color: red"></div>
+                        <form id="dogform">
+                            <hr>
+                            <p><b>User Information</b></p>
+                            <div class="form-group row mb-4">
+                                <div id="emailField" class="col">
+                                    <label for="email">Email:</label>
+                                    <a id="dogemail" href="#"></a>
+                                </div>
+                                <div class="col">
+                                    <label for="dog">Dog:</label>
+                                    <a id="dog" href="#"></a>
+                                </div>
+                            </div>
+                            <hr>
+                            <p><b>Registration Information</b></p>
+                            <div class="form-group row mb-4">
+                                <div class="col">
+                                    <label style="display: block" for="updateStatus">Status:</label>
+                                    <select id="dogupdateStatus"></select>
+                                </div>
+                                <div class="col">
+                                    <label style="display: block" for="service">Service:</label>
+                                    <select id="dogservice" disabled></select>
+                                </div>
+                            </div>
+                            <div class="form-group row mb-4 readOnly">
+                                <div class="col">
+                                    <label style="display: block" for="startDate">Start Date</label>
+                                    <input id="dogstartDate" type="date" disabled>
+                                </div>
+                                <div class="col">
+                                    <label style="display: block" for="startTime">Start Time</label>
+                                    <input id="dogstartTime" type="time" disabled>
+                                </div>
+                            </div>
+                            <div class="form-group row mb-4 readOnly">
+                                <div class="col">
+                                    <label style="display: block" for="endDate">End Date</label>
+                                    <input id="dogendDate" type="date" disabled>
+                                </div>
+                                <div class="col">
+                                    <label style="display: block" for="endTime">End Time</label>
+                                    <input id="dogendTime" type="time" disabled>
+                                </div>
+                            </div>
+                        </form>
+                        <div class="row">
+                            <div class="col">
+                                <button class="btn btn-primary mb-4" type="button" onclick="openEditDog()">Back</button>
+                            </div>
+                            <div class="col text-end">
+                                <button id="dogsaveBtn" class="btn btn-primary mb-4" type="button" onclick="save()">Save</button>
+                            </div>
+                        </div>
+                        <h1 class="mb-4 bg-dark">#</h1>
+                    </div>
+
+
+
+                </div>
+            </div>
+
+
+        </div>
+
+        <div id="createNewDogDiv" class="container off">
+            <div class="row">
+                <div class="col-12 col-sm-12">
+                    <h5>Create Dog</h5>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12 col-sm-12">
+                    <div class="row">
+                        <div clas="col-6 col-sm-6">
+                            <label for="dognameinpt">Dog Name</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div clas="col-6 col-sm-6">
+                            <input id="dognameinpt">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            
+        </div>
+
+        
+        
+    </div>
+
+
+</body>
+
+    <!-- JavaScript Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
+    <script src="../scripts/util.js"></script>
+    <script src="../scripts/NavBars/Navs.js"></script>
+    <script src="../scripts/NavBars/SideNavBar.js"></script>
+
+    <script src="../scripts/DogsPageScripts.js"></script>
+    <script src="../scripts/Apis/ReservationsAPI.js"></script>
+    <script src="../scripts/Apis/DogAPI.js"></script>
+    <script src="../scripts/DogsPageScripts.js"></script>
+
+
+
+
+</html>

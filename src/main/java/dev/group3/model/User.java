@@ -6,22 +6,22 @@ public class User {
     
     private String email;
     private String pswd;
+    private UserType userType;
     private String firstName;
     private String lastName;
-    private UserType userType;
     private String phoneNumber;
     private Double funds;
     
     public User() {}
 
-    public User(String email, String pswd, String firstName, String lastName, dev.group3.model.enums.UserType userType,
-            String phoneNumber, Double funds) {
+    public User(String email, String pswd, UserType userType, String firstName, String lastName, String phoneNumber,
+            Double funds) {
         super();
         this.email = email;
         this.pswd = pswd;
+        this.userType = userType;
         this.firstName = firstName;
         this.lastName = lastName;
-        this.userType = userType;
         this.phoneNumber = phoneNumber;
         this.funds = funds;
     }
@@ -44,6 +44,15 @@ public class User {
         return this;
     }
 
+    public UserType getUserType() {
+        return userType;
+    }
+
+    public User setUserType(UserType userType) {
+        this.userType = userType;
+        return this;
+    }
+
     public String getFirstName() {
         return firstName;
     }
@@ -59,15 +68,6 @@ public class User {
 
     public User setLastName(String lastName) {
         this.lastName = lastName;
-        return this;
-    }
-
-    public UserType getUserType() {
-        return userType;
-    }
-
-    public User setUserType(UserType userType) {
-        this.userType = userType;
         return this;
     }
 
@@ -91,7 +91,7 @@ public class User {
 
     @Override
     public String toString() {
-        return "User [email=" + email + ", pswd=" + pswd + ", firstName=" + firstName + ", lastName=" + lastName
-                + ", userType=" + userType + ", phoneNumber=" + phoneNumber + ", funds=" + funds + "]";
+        return "User [email=" + email + ", pswd=" + pswd + ", userType=" + userType + ", firstName=" + firstName
+                + ", lastName=" + lastName + ", phoneNumber=" + phoneNumber + ", funds=" + funds + "]";
     }
 }

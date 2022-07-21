@@ -95,16 +95,22 @@ Start Program:
    * Click save/submit depending on whether you are creating or editing your account
 * Reservations:
    * If the index does not show it or work: You can manually go to .../newReservation.html or .../editReservation.html or .../ReservationPage.html
-   
    * When creating a New Reservation:
 	    * Your dog must be registered in order to appear in the dropdown list to select the dog for the reservation you are creating
 	    * Must select a Start Date and time to check in your dog for the reservation, this cannot be left blank
 	    * Must select an End Date and time to pick up/checkout your dog for the reservation, this can not be left blank
 	    * The service you would like to add on to your reservation is optional and does not need to be selected
 	    * Once you have entered the appropriate information you can then select the Submit button to submit your reservation
-
+   * To see all your resevations click the "View ALl Your Resevations" Button
+   * To register for a new reservation click the "Book New Reservation" button
+      * After selecting a dog, start/end drop off, and any optional service for your dog, click submit
+   * To edit a reservation, on the side of your reservation click "edit"
 * Dogs:
    * If you index does not show it or work: You can manually go to .../DogsPage.html
+   * To see all your dogs click "View ALl Your Dogs" button
+   * TO regitser a a dog to your account click "Bookt New Dog" button
+      * All fields are required
+   * To edit a dogs information click the "edit" button on the side of the record
 
 ## Contributors
 
