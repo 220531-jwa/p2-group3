@@ -1,0 +1,135 @@
+/* The side navigation menu */
+/* .sidenav {
+    margin-top:50%;
+    height: 100%; 100% Full-height
+    width: 0; 0 width - change this with JavaScript
+    position: fixed; Stay in place
+    z-index: 1; Stay on top
+    top: 0; Stay at the top
+    left: 0;
+    background-color: #111; Black
+    overflow-x: hidden; Disable horizontal scroll
+    padding-top: 60px; Place content 60px from the top
+    transition: 0.5s; 0.5 second transition effect to slide in the sidenav
+    margin-top:6.5vh;
+  } */
+  
+  /* The navigation menu links */
+  /* .sidenav a {
+    padding: 8px 8px 8px 32px;
+    text-decoration: none;
+    font-size: 25px;
+    color: #818181;
+    
+    display: block;
+    transition: 0.3s;
+  } */
+  
+  /* When you mouse over the navigation links, change their color */
+  /* .sidenav a:hover {
+    color:seagreen;
+    
+  } */
+  
+  /* Position and style the close button (top right corner) */
+  /* .sidenav .closebtn {
+    position: absolute;
+    top: 0;
+    right: 25px;
+    font-size: 36px;
+    margin-left: 50px;
+  } */
+  
+  /* Style page content - use this if you want to push the page content to the right when you open the side navigation */
+  /* #main {
+    transition: margin-left .5s;
+    padding: 20px;
+  } */
+  
+  /* @media screen and (max-height: 450px) {
+    .sidenav {padding-top: 15px;}
+    .sidenav a {font-size: 18px;}
+  } */
+
+
+
+  /* .sideNavButt{
+    border:solid black 2px;
+    margin-top:8vh;
+    margin-left:8vh;
+    margin-right:5vh;
+    background-color:black;
+    position: fixed;
+    color:seagreen;
+    border-radius: 15%;
+    cursor: pointer;
+    
+  } */
+
+
+
+
+
+
+/* OTHER SIDE BAR TEST */
+
+#forTheSideDiv{
+    position: relative;
+}
+
+
+  /* The sidebar menu */
+.sidenav {
+    height: 100%; /* Full-height: remove this if you want "auto" height */
+    width: 175px; /* Set the width of the sidebar */
+    position: fixed; /* Fixed Sidebar (stay in place on scroll) */
+    z-index: 1; /* Stay on top */
+    top: 0; /* Stay at the top */
+    left: 0;
+    background-color: #111; /* Black */
+    overflow-x: hidden; /* Disable horizontal scroll */
+    padding-top: 20px;
+    margin-top:6vh;
+  }
+  
+  /* The navigation menu links */
+  .sidenav a {
+    padding: 6px 8px 6px 16px;
+    text-decoration: none;
+    font-size: 25px;
+    color: #818181;
+    display: block;
+  }
+  
+  /* When you mouse over the navigation links, change their color */
+  .sidenav a:hover {
+    color: #f1f1f1;
+  }
+  
+  /* Style page content */
+  .main {
+    margin-left: 160px; /* Same as the width of the sidebar */
+    padding: 0px 10px;
+  }
+  
+  /* On smaller screens, where height is less than 450px, change the style of the sidebar (less padding and a smaller font size) */
+  @media screen and (max-height: 450px) {
+    .sidenav {padding-top: 15px;}
+    .sidenav a {font-size: 18px;}
+  }
+
+
+  .sideOpt{
+    border: none;
+    color:white;
+    margin-top:3vh;
+    background-color: #111;
+  }
+
+
+  .sideOpt:hover{
+    border: none;
+    color:white;
+    margin-top:3vh;
+    background-color: rgb(58, 57, 57);
+  }
