@@ -28,8 +28,6 @@ The Doggy Daycare System (DDS) manages the process of customers booking and trac
 * Agile-Scrum
 * Eclipse
 
-
-
 ## Features
 
 Implementedd Features:
